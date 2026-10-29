@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Project Page Skill: live demos</title>
+  <meta name="description" content="An agent skill that turns a folder of paper, figures and videos into a polished, checked academic project page. Three live demos built in one run each.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2563eb">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Academic Project Page Skill: live demos">
+  <meta property="og:description" content="An agent skill that turns a folder of paper, figures and videos into a polished, checked academic project page.">
+  <meta property="og:image" content="https://royh1122.github.io/academic-project-page-skill/static/images/thumb-paper.jpg">
+  <link rel="icon" href="./static/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <style>
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    .demo-card { background: var(--background-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); overflow: hidden; display: flex; flex-direction: column; transition: var(--transition); }
+    .demo-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-2px); }
+    .demo-card img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; border-bottom: 1px solid var(--border-color); }
+    .demo-body { padding: 1.25rem 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+    .demo-body h3 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+    .demo-body p { margin: 0; color: var(--text-secondary); }
+    .demo-body p { margin-bottom: .75rem; }
+    .demo-body .button { margin-top: auto; align-self: flex-start; background: var(--button-background); color: var(--on-button); border: 0; border-radius: 999px; font-weight: 600; }
+    .demo-body .button:hover { background: var(--primary-hover); color: var(--on-primary); }
+    .demo-body .button:focus-visible, .install a:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+    .install { display: inline-block; max-width: 100%; overflow-x: auto; background: var(--text-primary); color: #f8fafc; padding: .75rem 1.25rem; border-radius: var(--border-radius); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; }
+    .lead { font-size: 1.2rem; color: var(--text-secondary); max-width: 40rem; margin: 1rem auto 1.5rem; }
+    .note { background: var(--award-background); border: 1px solid var(--award-border); color: var(--award-color); border-radius: var(--border-radius); padding: .75rem 1rem; max-width: 40rem; margin: 0 auto; font-weight: 500; }
+    .section-title { margin-bottom: 1.5rem; }
+    .repo-links { margin-top: 1.5rem; }
+    @media (prefers-reduced-motion: reduce) { .demo-card { transition: none; } .demo-card:hover { transform: none; } }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<main id="main-content" tabindex="-1">
+
+<section class="hero publication-header">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-1 publication-title">Academic Project Page Skill</h1>
+      <p class="lead">An agent skill that turns a folder of paper, figures and videos into a polished, checked academic project page, then audits it for contrast, links, numbers and layout before handing it over.</p>
+      <p><code class="install">npx skills add royh1122/academic-project-page-skill</code></p>
+      <p class="repo-links"><a class="button is-dark is-rounded" href="https://github.com/royh1122/academic-project-page-skill">View on GitHub</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light" aria-labelledby="demos-heading">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered section-title" id="demos-heading">Three live demos</h2>
+    <p class="note has-text-centered" style="margin-bottom:1.5rem">The demo projects, people, institutions and results are fictional (the &ldquo;Quillwave&rdquo; example kit). Each page was built in one run of the skill, with no edits afterwards.</p>
+    <ul class="demo-grid">
+      <li class="demo-card">
+        <img src="./static/images/thumb-paper.jpg" width="640" height="400" alt="Top of the paper demo page: title, authors, venue badge, Paper and Code buttons, and a side-by-side comparison video." loading="lazy">
+        <div class="demo-body">
+          <h3>Accepted paper</h3>
+          <p>A published paper with every link: paper, code, video, poster and results.</p>
+          <a class="button" href="./paper/">Open demo<span class="is-sr-only">, accepted paper</span></a>
+        </div>
+      </li>
+      <li class="demo-card">
+        <img src="./static/images/thumb-in-preparation.jpg" width="640" height="400" alt="Top of the in-preparation demo page: title, one author, a Research in preparation badge, and a comparison video." loading="lazy">
+        <div class="demo-body">
+          <h3>Research in preparation</h3>
+          <p>Work not yet released: no public links, and nothing invented to fill the gap.</p>
+          <a class="button" href="./in-preparation/">Open demo<span class="is-sr-only">, research in preparation</span></a>
+        </div>
+      </li>
+      <li class="demo-card">
+        <img src="./static/images/thumb-final-year-project.jpg" width="640" height="400" alt="Top of the final-year project demo page: title, authors, an award badge, Report and Video buttons, and a comparison video." loading="lazy">
+        <div class="demo-body">
+          <h3>Final-year project</h3>
+          <p>A student project with a verified award, report and video.</p>
+          <a class="button" href="./final-year-project/">Open demo<span class="is-sr-only">, final-year project</span></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered">
+      <p>
+        This page was built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>,
+        which was adapted from the <a href="https://nerfies.github.io">Nerfies</a> project page.
+        It is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
