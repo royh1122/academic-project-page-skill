@@ -1,0 +1,16 @@
+{
+  "id": "V1",
+  "name": "paper-full-links",
+  "description": "Accepted paper (FICTIONAL FCSV 2026) with all links: paper, code and a self-hosted video.",
+  "authors": ["ada", "ben", "cleo"],
+  "status": "Accepted at FCSV 2026 (Fictional Conference on Synthetic Vision); see acceptance_email.txt.",
+  "citation": "inproceedings",
+  "remove": ["submission", "data", "media"],
+  "add": ["acceptance_email", "links_json"],
+  "links_md": [
+    "- Project page: https://quillwave.example.org/",
+    "- Paper (PDF): https://quillwave.example.org/quillwave_fcsv2026.pdf (local copy: `paper/paper.pdf`)",
+    "- Code: https://code.example.org/quillwave",
+    "- Video: `video/overview_explainer.mp4` (self-hosted file; captions in `video/overview_explainer.en.vtt`)"
+  ]
+}

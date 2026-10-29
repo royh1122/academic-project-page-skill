@@ -1,0 +1,31 @@
+% Quillwave overview diagram (FICTIONAL synthetic test material). Same file is used
+% for figures/overview.png (standalone) and inside the paper.
+\begin{tikzpicture}[x=1cm,y=1cm,font=\sffamily,
+  box/.style={draw=black!65, line width=0.9pt, rounded corners=4pt, align=center,
+              minimum height=2.6cm, minimum width=3.0cm, font=\sffamily\large},
+  arr/.style={-{Stealth[length=3.2mm,width=2.6mm]}, line width=1.2pt, black!70}]
+\useasboundingbox (0,0) rectangle (20.32,7.62);
+% sensors
+\node[box, fill=blue!4, minimum width=3.6cm, minimum height=3.6cm] (s) at (2.3,4.2) {};
+\foreach \i in {0,...,7}{\foreach \j in {0,...,7}{
+  \fill[blue!55!black] ($(s.south west)+({0.33+\i*0.42}, {0.33+\j*0.42})$) circle (2.1pt);}}
+\node[font=\sffamily\large, below=3mm of s] {64 point sensors};
+% encoder, latent, decoder
+\node[box, fill=orange!12] (e) at (6.5,4.2) {Sensor\\encoder};
+\node[box, fill=teal!12, minimum width=2.6cm] (z) at (10.1,4.2) {Latent field\\code\\(128-d)};
+\node[box, fill=orange!12] (d) at (13.7,4.2) {Field\\decoder};
+% output field: concentric ripples clipped to a square
+\node[box, fill=white, minimum width=3.6cm, minimum height=3.6cm] (o) at (17.9,4.2) {};
+\begin{scope}
+\clip[rounded corners=4pt] (o.south west) rectangle (o.north east);
+\foreach \r in {0.2,0.5,...,3.2}{\draw[blue!60!teal, line width=2.2pt, opacity=0.55] ($(o.center)+(-0.6,-0.4)$) circle (\r);}
+\foreach \r in {0.3,0.65,...,3.0}{\draw[teal!70!black, line width=1.6pt, opacity=0.45] ($(o.center)+(0.9,0.8)$) circle (\r);}
+\end{scope}
+\draw[black!65, line width=0.9pt, rounded corners=4pt] (o.south west) rectangle (o.north east);
+\node[font=\sffamily\large, below=3mm of o] {$256\times256$ field};
+% query coordinate
+\node[font=\sffamily\large] (q) at (13.7,7.0) {pixel position $x$};
+\draw[arr] (q) -- (d);
+\node[font=\sffamily, text=black!70] at (13.7,2.45) {value and confidence};
+\draw[arr] (s) -- (e); \draw[arr] (e) -- (z); \draw[arr] (z) -- (d); \draw[arr] (d) -- (o);
+\end{tikzpicture}

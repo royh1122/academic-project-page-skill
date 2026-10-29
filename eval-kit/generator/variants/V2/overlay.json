@@ -1,0 +1,11 @@
+{
+  "id": "V2",
+  "name": "in-preparation",
+  "description": "Individual research in preparation: no paper, no public links.",
+  "authors": ["ada"],
+  "status": "Research in preparation. No public code or preprint yet.",
+  "citation": "misc-prep",
+  "remove": ["paper", "poster", "video"],
+  "add": ["summary_pdf"],
+  "links_md": ["No public code or preprint yet. A project summary is in `summary.pdf`."]
+}

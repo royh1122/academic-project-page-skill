@@ -1,0 +1,1 @@
+Make a project page from the materials in this folder. Author: Ada Placeholder, Example University (fictional), Department of Imaginary Sciences. Individual project. Present it as research in preparation. No paper yet and no public links. Put the page in docs/.

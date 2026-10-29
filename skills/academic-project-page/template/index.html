@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- How to use this template
+       - Every optional component sits between "BEGIN optional" and "END" comments. Delete the whole block
+         when the project lacks that material; never leave an empty section or a placeholder.
+       - Replace every bracketed INSERT token. scripts/audit.mjs fails while any remain.
+       - Blocks wrapped in a single comment are alternatives that start switched off; remove the comment
+         markers to use one. -->
+
+  <title>[INSERT PAPER TITLE] | [INSERT SHORT AUTHOR LIST, e.g. A. Author et al.]</title>
+  <meta name="description" content="[INSERT 150-160 CHARACTER SUMMARY OF THE CONTRIBUTION]">
+  <meta name="keywords" content="[INSERT 5-10 COMMA-SEPARATED KEYWORDS]">
+  <meta name="author" content="[INSERT AUTHOR NAMES, COMMA-SEPARATED]">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="canonical" href="[INSERT PAGE URL, e.g. https://user.github.io/repo/]">
+
+  <!-- Open Graph / social cards -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="[INSERT LAB, GROUP, OR PROJECT NAME]">
+  <meta property="og:title" content="[INSERT PAPER TITLE]">
+  <meta property="og:description" content="[INSERT 150-160 CHARACTER SUMMARY OF THE CONTRIBUTION]">
+  <meta property="og:url" content="[INSERT PAGE URL, e.g. https://user.github.io/repo/]">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[INSERT PAPER TITLE]">
+  <meta name="twitter:description" content="[INSERT 150-160 CHARACTER SUMMARY OF THE CONTRIBUTION]">
+  <!-- Social preview image (optional): only with a real 1200 x 630 image at an absolute URL.
+       When used, also change twitter:card above to summary_large_image.
+  <meta property="og:image" content="[INSERT ABSOLUTE URL OF 1200x630 PREVIEW IMAGE]">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="[INSERT PREVIEW IMAGE DESCRIPTION]">
+  <meta name="twitter:image" content="[INSERT ABSOLUTE URL OF 1200x630 PREVIEW IMAGE]">
+  <meta name="twitter:image:alt" content="[INSERT PREVIEW IMAGE DESCRIPTION]">
+  -->
+
+  <!-- Scholar metadata (Google Scholar reads citation_*). One citation_author per author, "Last, First".
+       citation_conference_title only for a verified acceptance; delete it otherwise. -->
+  <meta name="citation_title" content="[INSERT PAPER TITLE]">
+  <meta name="citation_author" content="[INSERT AUTHOR 1 LAST NAME], [INSERT AUTHOR 1 FIRST NAME]">
+  <meta name="citation_author" content="[INSERT AUTHOR 2 LAST NAME], [INSERT AUTHOR 2 FIRST NAME]">
+  <meta name="citation_publication_date" content="[INSERT YEAR]">
+  <meta name="citation_conference_title" content="[INSERT VERIFIED VENUE NAME]">
+  <meta name="citation_pdf_url" content="[INSERT ABSOLUTE PAPER PDF URL]">
+
+  <!-- Structured data. Keep the values in step with the visible page. Add a "license" property only for
+       the paper's own licence; the page's CC BY-SA 4.0 licence covers the website code, not the paper. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "[INSERT PAPER TITLE]",
+    "description": "[INSERT 150-160 CHARACTER SUMMARY OF THE CONTRIBUTION]",
+    "author": [
+      { "@type": "Person", "name": "[INSERT AUTHOR 1 NAME]", "affiliation": { "@type": "Organization", "name": "[INSERT INSTITUTION 1]" } },
+      { "@type": "Person", "name": "[INSERT AUTHOR 2 NAME]", "affiliation": { "@type": "Organization", "name": "[INSERT INSTITUTION 2]" } }
+    ],
+    "datePublished": "[INSERT PUBLICATION DATE, e.g. 2026-06-01]",
+    "url": "[INSERT PAGE URL, e.g. https://user.github.io/repo/]",
+    "keywords": ["[INSERT KEYWORD 1]", "[INSERT KEYWORD 2]"],
+    "abstract": "[INSERT ABSTRACT AS PLAIN TEXT]",
+    "isAccessibleForFree": true
+  }
+  </script>
+
+  <!-- Inter at every weight the CSS uses: 400 body, 500 authors, 600 buttons and links, 700 headings, 800 title. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+
+  <!-- Relative paths keep GitHub Pages repository subpaths working. -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <!-- Academicons supplies the arXiv icon; delete with the arXiv button. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- Figure viewer: keep with figure-viewer.js while any <img> has data-zoom; delete both otherwise. -->
+  <link rel="stylesheet" href="./static/css/figure-viewer.css">
+  <link rel="icon" href="./static/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Icons: Font Awesome SVG JavaScript (no webfont files needed). -->
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script defer src="./static/js/index.js"></script>
+  <script defer src="./static/js/figure-viewer.js"></script>
+  <!-- Pauses <video autoplay> loops for reduced-motion visitors; delete when no video autoplays. -->
+  <script defer src="./static/js/reduced-motion.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- BEGIN optional: More Works menu (other projects by the same group). Delete the whole header if unused. -->
+<header class="site-header">
+  <div class="container is-max-desktop">
+    <div class="more-works">
+      <button type="button" class="more-works-btn" aria-expanded="false" aria-controls="more-works-panel">
+        <span class="icon" aria-hidden="true"><i class="fas fa-flask"></i></span>
+        <span>More Works</span>
+        <span class="dropdown-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+      </button>
+      <div class="more-works-panel" id="more-works-panel" role="region" aria-labelledby="more-works-title" hidden>
+        <div class="more-works-header">
+          <p class="more-works-title" id="more-works-title">[INSERT MENU TITLE, e.g. More works from our lab]</p>
+          <button type="button" class="close-btn" aria-label="Close More Works">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="works-list">
+          <li>
+            <a class="work-item" href="[INSERT RELATED WORK 1 URL]">
+              <span>
+                <span class="work-title">[INSERT RELATED WORK 1 TITLE]</span>
+                <span class="work-description">[INSERT ONE-SENTENCE DESCRIPTION]</span>
+                <span class="work-venue">[INSERT VENUE AND YEAR]</span>
+              </span>
+              <span class="icon" aria-hidden="true"><i class="fas fa-external-link-alt"></i></span>
+            </a>
+          </li>
+          <li>
+            <a class="work-item" href="[INSERT RELATED WORK 2 URL]">
+              <span>
+                <span class="work-title">[INSERT RELATED WORK 2 TITLE]</span>
+                <span class="work-description">[INSERT ONE-SENTENCE DESCRIPTION]</span>
+                <span class="work-venue">[INSERT VENUE AND YEAR]</span>
+              </span>
+              <span class="icon" aria-hidden="true"><i class="fas fa-external-link-alt"></i></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- END More Works menu -->
+
+<main id="main-content" tabindex="-1">
+
+<!-- Title block: title, authors, affiliations, notes, status/venue/award, resource buttons -->
+<section class="hero publication-header">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <!-- Wrap hyphenated terms in <span class="nowrap"> so the title never breaks at the hyphen. -->
+        <h1 class="title is-1 publication-title">[INSERT PAPER TITLE]</h1>
+
+        <!-- Authors: link only to verified personal pages; otherwise write the name as plain text. -->
+        <p class="is-size-5 publication-authors">
+          <span class="author-block"><a href="[INSERT AUTHOR 1 URL]">[INSERT AUTHOR 1 NAME]</a><sup>1,*</sup>,</span>
+          <span class="author-block"><a href="[INSERT AUTHOR 2 URL]">[INSERT AUTHOR 2 NAME]</a><sup>2,*</sup>,</span>
+          <span class="author-block">[INSERT AUTHOR 3 NAME]<sup>1</sup></span>
+        </p>
+
+        <p class="is-size-5 publication-affiliations">
+          <span class="author-block"><sup>1</sup>[INSERT INSTITUTION 1]</span>
+          <span class="author-block"><sup>2</sup>[INSERT INSTITUTION 2]</span>
+        </p>
+
+        <!-- BEGIN optional: equal contribution note (delete with the * marks above) -->
+        <p class="eql-cntrb"><sup>*</sup>Equal contribution</p>
+        <!-- END equal contribution note -->
+
+        <!-- BEGIN optional: venue line, only for a verified acceptance (a target venue is not a venue) -->
+        <p class="publication-venue">[INSERT VERIFIED VENUE, e.g. Conference Name 2026]</p>
+        <!-- END venue line -->
+
+        <!-- Alternative to the venue line: the user's own status wording.
+        <p class="publication-venue">[INSERT STATUS, e.g. Preprint]</p>
+        -->
+
+        <!-- Award line, only for an award verified by the user or a source.
+        <p class="publication-awards">[INSERT AWARD, e.g. Best Paper Award]</p>
+        -->
+
+        <!-- Resource buttons: one per verified resource; delete the rest. Never a "coming soon" button. -->
+        <div class="publication-links">
+          <a href="[INSERT PAPER PDF URL]" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-file-pdf"></i></span>
+            <span>Paper</span>
+          </a>
+          <a href="[INSERT ARXIV ABSTRACT URL]" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="ai ai-arxiv"></i></span>
+            <span>arXiv</span>
+          </a>
+          <a href="[INSERT SUPPLEMENTARY PDF URL]" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-file-alt"></i></span>
+            <span>Supplementary</span>
+          </a>
+          <a href="[INSERT CODE REPOSITORY URL]" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fab fa-github"></i></span>
+            <span>Code</span>
+          </a>
+          <a href="[INSERT DATASET URL]" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-database"></i></span>
+            <span>Data</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEGIN optional: teaser. One medium at full width and natural aspect ratio. For two media side by
+     side see references/layout-polish.md (aspect-ratio grid columns, never a fixed height).
+     Option A, a short silent loop: set width/height to the file's pixel size and pick the poster frame by looking. -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <figure>
+        <video autoplay muted loop playsinline controls preload="metadata"
+               width="[INSERT VIDEO WIDTH IN PX]" height="[INSERT VIDEO HEIGHT IN PX]"
+               poster="[INSERT POSTER IMAGE PATH, e.g. ./static/images/teaser-poster.jpg]"
+               aria-label="[INSERT SHORT DESCRIPTION OF THE TEASER VIDEO]">
+          <source src="[INSERT TEASER VIDEO PATH, e.g. ./static/videos/teaser.mp4]" type="video/mp4">
+          <a href="[INSERT TEASER VIDEO PATH, e.g. ./static/videos/teaser.mp4]">Download the teaser video (MP4)</a>
+        </video>
+        <figcaption class="teaser-caption">[INSERT ONE-SENTENCE TEASER CAPTION]</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+<!-- END teaser -->
+<!-- Option B, an image teaser: replace the <figure> above with this one.
+      <figure>
+        <img src="[INSERT TEASER IMAGE PATH, e.g. ./static/images/teaser.png]" alt="[INSERT TEASER DESCRIPTION]"
+             width="[INSERT IMAGE WIDTH IN PX]" height="[INSERT IMAGE HEIGHT IN PX]" data-zoom>
+        <figcaption class="teaser-caption">[INSERT ONE-SENTENCE TEASER CAPTION]</figcaption>
+      </figure>
+-->
+
+<!-- Abstract: centered reading column, tinted band -->
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>[INSERT ABSTRACT]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEGIN optional: YouTube video (centered column). Privacy-enhanced domain, lazy loaded, titled. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube-nocookie.com/embed/[INSERT YOUTUBE VIDEO ID]?rel=0"
+                  title="[INSERT VIDEO TITLE, e.g. Project overview video]" loading="lazy"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END YouTube video -->
+
+<!-- BEGIN optional: method figure (full width). Shown inline, never in a disclosure; data-zoom enlarges it. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Method</h2>
+    <div class="content" data-zoom-context>
+      <figure class="figure-block">
+        <img src="[INSERT METHOD FIGURE PATH, e.g. ./static/images/method.png]" alt="[INSERT METHOD FIGURE DESCRIPTION]"
+             width="[INSERT IMAGE WIDTH IN PX]" height="[INSERT IMAGE HEIGHT IN PX]"
+             data-zoom data-zoom-title="[INSERT SHORT FIGURE TITLE, e.g. Method overview]">
+        <figcaption><strong>Figure 1.</strong> [INSERT METHOD FIGURE CAPTION]</figcaption>
+      </figure>
+      <p class="measure">[INSERT METHOD DESCRIPTION]</p>
+    </div>
+  </div>
+</section>
+<!-- END method figure -->
+
+<!-- BEGIN optional: image carousel. One slide at a time; off-screen slides are inert.
+     Rotation is off. To rotate, add data-autoplay="6000" (ms) to the carousel: a pause button appears,
+     rotation stops on hover and focus, and it never starts for reduced-motion visitors. -->
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">[INSERT CAROUSEL HEADING, e.g. Qualitative Results]</h2>
+    <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="[INSERT CAROUSEL NAME, e.g. Qualitative results]">
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <img src="[INSERT IMAGE 1 PATH]" alt="[INSERT IMAGE 1 DESCRIPTION]" width="[INSERT WIDTH IN PX]" height="[INSERT HEIGHT IN PX]" loading="lazy" data-zoom>
+              <figcaption>[INSERT IMAGE 1 CAPTION]</figcaption>
+            </figure>
+          </div>
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <img src="[INSERT IMAGE 2 PATH]" alt="[INSERT IMAGE 2 DESCRIPTION]" width="[INSERT WIDTH IN PX]" height="[INSERT HEIGHT IN PX]" loading="lazy" data-zoom>
+              <figcaption>[INSERT IMAGE 2 CAPTION]</figcaption>
+            </figure>
+          </div>
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <img src="[INSERT IMAGE 3 PATH]" alt="[INSERT IMAGE 3 DESCRIPTION]" width="[INSERT WIDTH IN PX]" height="[INSERT HEIGHT IN PX]" loading="lazy" data-zoom>
+              <figcaption>[INSERT IMAGE 3 CAPTION]</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END image carousel -->
+
+<!-- BEGIN optional: video carousel. Muted clips play only while their slide is shown and on screen, and
+     never for reduced-motion visitors; every clip keeps its controls. No autoplay attribute here. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">[INSERT VIDEO CAROUSEL HEADING, e.g. Video Results]</h2>
+    <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="[INSERT CAROUSEL NAME, e.g. Video results]">
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <video muted loop playsinline controls preload="metadata" width="[INSERT WIDTH IN PX]" height="[INSERT HEIGHT IN PX]"
+                     poster="[INSERT CLIP 1 POSTER PATH]" aria-label="[INSERT CLIP 1 DESCRIPTION]">
+                <source src="[INSERT CLIP 1 PATH]" type="video/mp4">
+                <a href="[INSERT CLIP 1 PATH]">Download clip 1 (MP4)</a>
+              </video>
+              <figcaption>[INSERT CLIP 1 CAPTION]</figcaption>
+            </figure>
+          </div>
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <video muted loop playsinline controls preload="metadata" width="[INSERT WIDTH IN PX]" height="[INSERT HEIGHT IN PX]"
+                     poster="[INSERT CLIP 2 POSTER PATH]" aria-label="[INSERT CLIP 2 DESCRIPTION]">
+                <source src="[INSERT CLIP 2 PATH]" type="video/mp4">
+                <a href="[INSERT CLIP 2 PATH]">Download clip 2 (MP4)</a>
+              </video>
+              <figcaption>[INSERT CLIP 2 CAPTION]</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END video carousel -->
+
+<!-- BEGIN optional: results (full width). Table caption above; the table keeps its natural width and
+     scrolls inside a keyboard-focusable region on narrow screens. is-numeric right-aligns every column
+     after the first; mark text columns with has-text-left. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Results</h2>
+    <div class="content">
+      <p class="measure">[INSERT RESULTS SUMMARY]</p>
+    </div>
+    <div class="table-figure">
+      <p class="table-caption" id="table-1-caption"><strong>Table 1.</strong> [INSERT TABLE CAPTION]</p>
+      <div class="table-container" role="region" aria-labelledby="table-1-caption" tabindex="0">
+        <table class="table is-narrow is-numeric">
+          <thead>
+            <tr><th scope="col">[INSERT ROW LABEL HEADING]</th><th scope="col" class="has-text-left">[INSERT TEXT COLUMN, e.g. Backbone]</th><th scope="col">[INSERT METRIC 1]</th><th scope="col">[INSERT METRIC 2]</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">[INSERT ROW 1 LABEL]</th><td class="has-text-left">[INSERT TEXT]</td><td>[INSERT VALUE]</td><td>[INSERT VALUE]</td></tr>
+            <tr><th scope="row">[INSERT ROW 2 LABEL]</th><td class="has-text-left">[INSERT TEXT]</td><td>[INSERT VALUE]</td><td>[INSERT VALUE]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END results -->
+
+<!-- BEGIN optional: PDF poster (full width). Embedded on wider screens; phones get the link only. -->
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Poster</h2>
+    <object class="poster-embed" data="[INSERT POSTER PDF PATH, e.g. ./static/pdfs/poster.pdf]" type="application/pdf"
+            title="[INSERT POSTER TITLE, e.g. Conference poster (PDF)]">
+      <p><a href="[INSERT POSTER PDF PATH, e.g. ./static/pdfs/poster.pdf]">Open the poster (PDF)</a></p>
+    </object>
+    <p class="poster-links">
+      <a class="button is-dark" href="[INSERT POSTER PDF PATH, e.g. ./static/pdfs/poster.pdf]" download>
+        <span class="icon" aria-hidden="true"><i class="fas fa-download"></i></span>
+        <span>Download poster (PDF, [INSERT FILE SIZE, e.g. 2.4 MB])</span>
+      </a>
+    </p>
+  </div>
+</section>
+<!-- END PDF poster -->
+
+<!-- BibTeX: visible whenever the project has a citation -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop">
+    <div class="bibtex-header">
+      <h2 class="title is-3" id="bibtex-heading">BibTeX</h2>
+      <button type="button" class="copy-bibtex-btn" data-copy-target="bibtex-code" data-copy-status="bibtex-copy-status">
+        <span class="icon" aria-hidden="true"><i class="fas fa-copy"></i></span>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <div class="sr-only" id="bibtex-copy-status" role="status" aria-live="polite"></div>
+    <pre tabindex="0" role="region" aria-labelledby="bibtex-heading"><code id="bibtex-code">[INSERT BIBTEX ENTRY]</code></pre>
+  </div>
+</section>
+
+</main>
+
+<!-- BEGIN optional: back-to-top button; shown only on screens wide enough to keep it beside the content. -->
+<button type="button" class="scroll-to-top" aria-label="Back to top">
+  <i class="fas fa-chevron-up" aria-hidden="true"></i>
+</button>
+<!-- END back-to-top button -->
+
+<!-- Footer: keep both template credits and the licence link (CC BY-SA 4.0 requires attribution). -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered">
+      <p>
+        This page was built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>,
+        which was adapted from the <a href="https://nerfies.github.io">Nerfies</a> project page.
+        It is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+method,psnr_db,ssim,runtime_ms
+Linear interpolation,21.37,0.612,0.8
+Radial-basis interpolation,24.05,0.701,6.4
+Quillwave-Lite (ablation),27.82,0.834,3.1
+Quillwave (ours),29.46,0.887,4.7

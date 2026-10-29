@@ -1,0 +1,21 @@
+{
+  "_comment": "FICTIONAL people. Personal pages verified by the project owners.",
+  "authors": [
+    {
+      "name": "Ada Placeholder",
+      "homepage": "https://ada.example.org/"
+    },
+    {
+      "name": "Ben Example",
+      "homepage": "https://ben.example.org/"
+    },
+    {
+      "name": "Cleo Sample",
+      "homepage": null
+    }
+  ],
+  "supervisor": {
+    "name": "Dr. Dana Specimen",
+    "homepage": null
+  }
+}

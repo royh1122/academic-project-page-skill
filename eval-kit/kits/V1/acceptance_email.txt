@@ -1,0 +1,19 @@
+From: program-chairs@fcsv2026.example.org
+To: ada@example.invalid
+Date: 2026-07-10
+Subject: [FCSV 2026] Decision on your submission "Quillwave"
+
+Dear Ada Placeholder,
+
+We are pleased to inform you that your paper
+
+  "Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields"
+
+has been accepted for presentation at FCSV 2026, the Fictional Conference on Synthetic Vision.
+
+Camera-ready instructions will follow.
+
+Program Chairs, FCSV 2026
+
+--
+Synthetic test material. All people, institutions, venues and results are fictional.

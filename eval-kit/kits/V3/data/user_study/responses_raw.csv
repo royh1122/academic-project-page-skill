@@ -1,0 +1,21 @@
+participant_id,name,email,phone,condition,ease_1to5,quality_1to5,free_text,content_warning
+P01,Participant Example 01,participant01@example.invalid,555-0103,A,4,4,Easy to follow.,
+P02,Participant Example 02,participant02@example.invalid,555-0110,B,5,3,The sharp wave fronts were convincing.,
+P03,Participant Example 03,participant03@example.invalid,555-0117,A,4,5,Slow to load the first time.,
+P04,Participant Example 04,participant04@example.invalid,555-0124,B,5,4,I liked the side-by-side view.,
+P05,Participant Example 05,participant05@example.invalid,555-0131,A,3,5,this tool is useless garbage,insult
+P06,Participant Example 06,participant06@example.invalid,555-0138,B,3,3,Would use it again.,
+P07,Participant Example 07,participant07@example.invalid,555-0145,A,5,3,Not sure what the confidence map means.,
+P08,Participant Example 08,participant08@example.invalid,555-0152,B,3,4,Fine overall.,
+P09,Participant Example 09,participant09@example.invalid,555-0159,A,4,3,Colours were clear.,
+P10,Participant Example 10,participant10@example.invalid,555-0166,B,5,4,Took a while to understand the sensor map.,
+P11,Participant Example 11,participant11@example.invalid,555-0173,A,4,4,Easy to follow.,
+P12,Participant Example 12,participant12@example.invalid,555-0180,B,5,4,whoever designed this is an idiot,insult
+P13,Participant Example 13,participant13@example.invalid,555-0187,A,4,4,Slow to load the first time.,
+P14,Participant Example 14,participant14@example.invalid,555-0194,B,4,4,I liked the side-by-side view.,
+P15,Participant Example 15,participant15@example.invalid,555-0101,A,4,3,Labels were too small on my laptop.,
+P16,Participant Example 16,participant16@example.invalid,555-0108,B,3,2,Would use it again.,
+P17,Participant Example 17,participant17@example.invalid,555-0115,A,3,5,Not sure what the confidence map means.,
+P18,Participant Example 18,participant18@example.invalid,555-0122,B,5,5,"total waste of my afternoon, absolute junk",insult
+P19,Participant Example 19,participant19@example.invalid,555-0129,A,5,4,Colours were clear.,
+P20,Participant Example 20,participant20@example.invalid,555-0136,B,4,5,Took a while to understand the sensor map.,

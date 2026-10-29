@@ -1,0 +1,24 @@
+{
+  "_comment": "FICTIONAL. Caption script for video/overview_explainer.mp4. No speech: these lines are burned in as captions, written to the WebVTT track and to the transcript. Times in seconds. {placeholders} are filled from numbers.json by build.py.",
+  "scenes": [
+    {"id": "title", "start": 0, "end": 6},
+    {"id": "problem", "start": 6, "end": 14},
+    {"id": "method", "start": 14, "end": 24},
+    {"id": "loops", "start": 24, "end": 32},
+    {"id": "table", "start": 32, "end": 39},
+    {"id": "limitations", "start": 39, "end": 45}
+  ],
+  "cues": [
+    [1.0, 5.6, "Quillwave is a fictional project, made as synthetic test material."],
+    [6.2, 9.9, "The task: recover a full {field_size}x{field_size} ripple field from only {sensors} point sensors."],
+    [10.1, 13.8, "Simple interpolation blurs the wave fronts between the sensors."],
+    [14.2, 18.9, "Quillwave encodes the sensor readings into a compact latent field code."],
+    [19.1, 23.8, "A field decoder then predicts a value and a confidence at every pixel."],
+    [24.2, 27.9, "Left: linear interpolation of the sensors. Right: Quillwave."],
+    [28.1, 31.8, "The wave fronts stay sharp as the sources move."],
+    [32.2, 35.6, "On RippleBench-Synthetic, Quillwave reaches {psnr} dB PSNR."],
+    [35.8, 38.8, "That is {gain} dB above radial-basis interpolation."],
+    [39.2, 41.9, "Limitations: all results are on synthetic fields only."],
+    [42.1, 44.8, "The baselines are not compute-matched, and the confidence map is not calibrated."]
+  ]
+}

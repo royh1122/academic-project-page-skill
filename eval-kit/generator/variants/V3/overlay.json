@@ -1,0 +1,17 @@
+{
+  "id": "V3",
+  "name": "fyp-verified-award",
+  "description": "Completed final-year project with a report, a verified departmental award, a competition finalist short paper and private repositories.",
+  "authors": ["ada", "ben", "cleo"],
+  "supervisor": "dana",
+  "status": "Completed Final Year Project 2025-2026.",
+  "citation": "misc-fyp",
+  "remove": ["paper", "poster"],
+  "add": ["report", "award_letter", "short_paper", "repos", "authors_json"],
+  "links_md": [
+    "- Report: `report/FYP_Final_Report.pdf`",
+    "- Video: `video/overview_explainer.mp4` (captions in `video/overview_explainer.en.vtt`)",
+    "- Personal pages: see `authors.json`",
+    "- The system and dashboard repositories (`repos/`) are private."
+  ]
+}

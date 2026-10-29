@@ -1,0 +1,5 @@
+method,psnr_db_16_sensors,psnr_db_32_sensors,psnr_db_64_sensors,psnr_db_128_sensors
+Linear interpolation,16.92,19.10,21.37,23.88
+Radial-basis interpolation,18.44,21.26,24.05,26.71
+Quillwave-Lite (ablation),21.03,24.67,27.82,30.15
+Quillwave (ours),22.58,26.31,29.46,31.94

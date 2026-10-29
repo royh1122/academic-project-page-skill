@@ -1,0 +1,31 @@
+{
+  "name": "APT modern (Inter) - bundled theme",
+  "lineage": "Academic Project Page Template (eliahuhorwitz, commit d38af1c) -> Nerfies (nerfies.github.io); contrast and motion fixes in this bundle",
+  "measured": "2026-10-28, Chrome headless, 1440 x 1000, bundled template filled with sample content",
+  "viewport": { "width": 1440, "height": 1000 },
+  "tolerances": {
+    "px": 0.5,
+    "weight": 0,
+    "color": 2
+  },
+  "rules": [
+    { "selector": "body", "expect": { "fontFamily": "Inter", "fontSize": 16, "lineHeight": 25.6, "color": "#1e293b" } },
+    { "selector": ".publication-title", "expect": { "fontFamily": "Inter", "fontSize": 48, "fontWeight": 800, "lineHeight": 52.8, "letterSpacing": "normal", "color": "#1e293b" } },
+    { "selector": ".publication-authors", "expect": { "fontFamily": "Inter", "fontSize": 20, "fontWeight": 500, "lineHeight": 32 } },
+    { "selector": ".publication-authors a", "optional": true, "expect": { "fontWeight": 600, "color": "#2563eb" } },
+    { "selector": ".publication-affiliations", "optional": true, "expect": { "fontFamily": "Inter", "fontSize": 20, "color": "#475569" } },
+    { "selector": ".publication-links .button", "optional": true, "expect": { "fontFamily": "Inter", "fontSize": 16, "fontWeight": 600, "color": "#ffffff", "backgroundColor": "#1e293b", "borderTopLeftRadius": 12 } },
+    { "selector": "h2.title.is-3", "expect": { "fontFamily": "Inter", "fontSize": 32, "fontWeight": 700, "lineHeight": 36, "color": "#1e293b" } },
+    { "selector": ".content.has-text-justified", "optional": true, "expect": { "fontSize": 17.6, "lineHeight": 31.68, "color": "#475569" } },
+    { "selector": ".container.is-max-desktop", "expect": { "maxWidth": 960 } },
+    { "selector": "section.section:not(.teaser)", "expect": { "paddingTop": 64, "paddingBottom": 64 } },
+    { "selector": ".section.is-light", "optional": true, "expect": { "backgroundColor": "#f8fafc" } },
+    { "selector": ".footer", "expect": { "backgroundColor": "#f8fafc", "paddingTop": 48, "paddingBottom": 48 } },
+    { "selector": ".footer a", "expect": { "color": "#2563eb" } }
+  ],
+  "renderedFonts": [
+    { "selector": ".publication-title", "family": "Inter" },
+    { "selector": ".publication-authors", "family": "Inter" },
+    { "selector": ".content", "family": "Inter" }
+  ]
+}

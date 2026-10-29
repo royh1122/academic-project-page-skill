@@ -1,0 +1,8 @@
+{
+  "_comment": "FICTIONAL links on the reserved example.org domain; they do not resolve.",
+  "project_page": "https://quillwave.example.org/",
+  "paper": "https://quillwave.example.org/quillwave_fcsv2026.pdf",
+  "code": "https://code.example.org/quillwave",
+  "video": "video/overview_explainer.mp4 (self-hosted; no external video service)",
+  "paper_local": "paper/paper.pdf"
+}

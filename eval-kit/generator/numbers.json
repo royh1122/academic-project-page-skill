@@ -1,0 +1,98 @@
+{
+  "_comment": "FICTIONAL. Single source of truth for every number in the synthetic Quillwave kits. Values are invented, not measured. The only deliberate disagreement in any kit is stale_draft (trap T7).",
+  "project": {
+    "short_name": "Quillwave",
+    "title": "Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields",
+    "benchmark": "RippleBench-Synthetic",
+    "fictional_marker": "Synthetic test material. All people, institutions, venues and results are fictional.",
+    "affiliation": "Example University (fictional), Department of Imaginary Sciences",
+    "people": {
+      "ada": {"name": "Ada Placeholder", "email": "ada@example.invalid", "homepage": "https://ada.example.org/"},
+      "ben": {"name": "Ben Example", "email": "ben@example.invalid", "homepage": "https://ben.example.org/"},
+      "cleo": {"name": "Cleo Sample", "email": "cleo@example.invalid"},
+      "dana": {"name": "Dr. Dana Specimen", "email": "dana@example.invalid"}
+    },
+    "urls": {
+      "project": "https://quillwave.example.org/",
+      "paper": "https://quillwave.example.org/quillwave_fcsv2026.pdf",
+      "code": "https://code.example.org/quillwave"
+    },
+    "venue": {"short": "FCSV 2026", "full": "Fictional Conference on Synthetic Vision", "next_short": "FCSV 2027", "next_deadline": "2027-03-12"},
+    "award": {"name": "Best Final Year Project Award 2026", "issuer": "Department of Imaginary Sciences, Example University (fictional)", "letter_date": "2026-06-30"},
+    "competition": {"name": "Example Student Challenge 2026 (fictional)", "outcome": "finalist", "finalists": 6},
+    "licence": "CC0 1.0 Universal"
+  },
+  "setup": {
+    "field_size": 256,
+    "sensors": 64,
+    "sensor_grid": 8,
+    "train_fields": 2000,
+    "test_fields": 500,
+    "training_runs": 5,
+    "epochs": 200,
+    "params_millions": 1.2,
+    "gpu_hours": 3.5,
+    "latent_dim": 128
+  },
+  "main_table": {
+    "caption": "Reconstruction quality on RippleBench-Synthetic (64 sensors, 256x256 fields, mean over 5 training runs). Higher PSNR/SSIM is better; lower runtime is better.",
+    "columns": ["Method", "PSNR (dB)", "SSIM", "Runtime (ms)"],
+    "rows": [
+      ["Linear interpolation", 21.37, 0.612, 0.8],
+      ["Radial-basis interpolation", 24.05, 0.701, 6.4],
+      ["Quillwave-Lite (ablation)", 27.82, 0.834, 3.1],
+      ["Quillwave (ours)", 29.46, 0.887, 4.7]
+    ]
+  },
+  "sensor_sweep": {
+    "caption": "PSNR (dB) on RippleBench-Synthetic as the number of sensors changes (256x256 fields).",
+    "sensor_counts": [16, 32, 64, 128],
+    "psnr_rows": [
+      ["Linear interpolation", 16.92, 19.10, 21.37, 23.88],
+      ["Radial-basis interpolation", 18.44, 21.26, 24.05, 26.71],
+      ["Quillwave-Lite (ablation)", 21.03, 24.67, 27.82, 30.15],
+      ["Quillwave (ours)", 22.58, 26.31, 29.46, 31.94]
+    ],
+    "ssim_rows": [
+      ["Linear interpolation", 0.402, 0.511, 0.612, 0.705],
+      ["Radial-basis interpolation", 0.468, 0.590, 0.701, 0.786],
+      ["Quillwave-Lite (ablation)", 0.597, 0.731, 0.834, 0.902],
+      ["Quillwave (ours)", 0.648, 0.785, 0.887, 0.931]
+    ]
+  },
+  "derived": {
+    "_comment": "Checked by build.py against main_table: gain = ours - best baseline PSNR; mse reduction = 1 - 10^(-gain/10); speedup = RBF runtime / ours runtime.",
+    "psnr_gain_over_best_baseline_db": 5.41,
+    "relative_mse_reduction_pct": 71.2,
+    "speedup_vs_rbf": 1.36
+  },
+  "user_study": {
+    "participants": 20,
+    "scale_max": 5,
+    "mean_ease": 4.10,
+    "mean_quality": 3.90,
+    "flagged_free_text": 3
+  },
+  "stale_draft": {
+    "_comment": "Trap T7: superseded draft numbers that appear only in notes/EXPERIMENT_LOG.md.",
+    "run": 3,
+    "date": "2026-08-14",
+    "psnr": 28.90,
+    "ssim": 0.851,
+    "superseded_by_run": 7
+  },
+  "videos": {
+    "loop_seconds": 4,
+    "loop_fps": 24,
+    "loop_size": [960, 360],
+    "explainer_seconds": 45,
+    "explainer_size": [854, 480],
+    "demo_seconds": 6,
+    "demo_stored_size": [720, 480],
+    "demo_sar": "32:27",
+    "gif_seconds": 3,
+    "gif_fps": 12,
+    "gif_size": [320, 180]
+  },
+  "seeds": {"fields": 7, "panels": 11, "user_study": 23, "demo": 31}
+}

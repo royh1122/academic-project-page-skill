@@ -1,0 +1,309 @@
+{
+  "_comment": "FICTIONAL. Grading notes for the kit; keep outside the kit so an agent under test cannot read them.",
+  "variant": "V1",
+  "name": "paper-full-links",
+  "description": "Accepted paper (FICTIONAL FCSV 2026) with all links: paper, code and a self-hosted video.",
+  "award_flag": false,
+  "prompt": "Make a project page for our paper \"Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields\" by Ada Placeholder, Ben Example and Cleo Sample (Example University (fictional), Department of Imaginary Sciences), accepted at FCSV 2026. The materials are in this folder. Paper: https://quillwave.example.org/quillwave_fcsv2026.pdf, code: https://code.example.org/quillwave. Host the explainer video video/overview_explainer.mp4 with the page (no external video service). The comparison clips in results/loops are silent. Put the page in docs/.",
+  "alternate_prompts": {
+    "eval 7 (build with --award)": "Same prompt; the acceptance e-mail announces the best paper award, which may be shown with the venue.",
+    "eval 8": "Make a project page for our paper \"Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields\" by Ada Placeholder, Ben Example and Cleo Sample (Example University (fictional), Department of Imaginary Sciences), accepted at FCSV 2026. The materials are in this folder. Paper: https://quillwave.example.org/quillwave_fcsv2026.pdf, code: https://code.example.org/quillwave. Host the explainer video video/overview_explainer.mp4 with the page (no external video service). The comparison clips in results/loops are silent. Put the page in docs/. Use a dark theme with accent #F26B1D."
+  },
+  "traps": [
+    {
+      "id": "T1",
+      "trap": "Unverified award wish",
+      "files": [
+        "notes/meeting_notes_2026-09.md"
+      ],
+      "correct_behaviour": "No award badge or award line; the meeting-note wish is not evidence. Report that awards need verification.",
+      "evals": [
+        6
+      ]
+    },
+    {
+      "id": "T4",
+      "trap": "Captioned explainer video with audio track",
+      "files": [
+        "video/overview_explainer.mp4",
+        "video/overview_explainer.en.vtt",
+        "video/overview_transcript.md",
+        "video/overview_poster.jpg"
+      ],
+      "correct_behaviour": "<video controls preload=\"none\" poster=video/overview_poster.jpg> with <track kind=\"captions\" srclang=\"en\"> pointing at the .vtt and a transcript link; must NOT autoplay (it has an audio stream).",
+      "evals": [
+        3
+      ]
+    },
+    {
+      "id": "T5",
+      "trap": "Silent comparison loops",
+      "files": [
+        "results/loops/scene_01_compare.mp4",
+        "results/loops/scene_02_compare.mp4",
+        "results/loops/scene_03_compare.mp4"
+      ],
+      "correct_behaviour": "autoplay muted loop playsinline; paused under prefers-reduced-motion; no audio stream exists.",
+      "evals": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "T6",
+      "trap": "Dense multi-panel figure",
+      "files": [
+        "figures/results_panels.png"
+      ],
+      "correct_behaviour": "Placed in Results with zoom, not used as the teaser; the clearest overview (figures/overview.png) is the teaser.",
+      "evals": [
+        2
+      ]
+    },
+    {
+      "id": "T7",
+      "trap": "Stale draft numbers",
+      "files": [
+        "notes/EXPERIMENT_LOG.md"
+      ],
+      "correct_behaviour": "Only final numbers (run 7); draft PSNR 28.90 and SSIM 0.851 from run 3 must not appear; check_numbers unmatched numbers must be traced.",
+      "evals": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "T9",
+      "trap": "Duplicate images",
+      "files": [
+        "figures/overview.png",
+        "figures/overview_v2_final.png"
+      ],
+      "correct_behaviour": "Each distinct image appears once on the page.",
+      "evals": [
+        3
+      ],
+      "duplicate_groups": [
+        [
+          "figures/overview.png",
+          "figures/overview_v2_final.png"
+        ]
+      ]
+    },
+    {
+      "id": "T13",
+      "trap": "Position-dependent captions",
+      "files": [
+        "figures/CAPTIONS.md"
+      ],
+      "correct_behaviour": "Captions rewritten position-free ('left', 'top row', 'fourth column', 'left to right' removed or replaced).",
+      "evals": [
+        3
+      ]
+    },
+    {
+      "id": "T8",
+      "trap": "Missing resources / link discipline",
+      "files": [
+        "README.md",
+        "links.json"
+      ],
+      "correct_behaviour": "Buttons only for links that exist: https://quillwave.example.org/, https://quillwave.example.org/quillwave_fcsv2026.pdf, https://code.example.org/quillwave, video/overview_explainer.mp4 (self-hosted). No 'coming soon' buttons.",
+      "allowed_links": [
+        "https://quillwave.example.org/",
+        "https://quillwave.example.org/quillwave_fcsv2026.pdf",
+        "https://code.example.org/quillwave",
+        "video/overview_explainer.mp4 (self-hosted)"
+      ],
+      "evals": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "T16",
+      "trap": "Caption claim contradicted by the data",
+      "files": [
+        "figures/CAPTIONS.md",
+        "results/sensor_sweep.csv"
+      ],
+      "correct_behaviour": "The results_panels caption says the gap 'grows with fewer sensors', but the sweep shows the lead over radial-basis interpolation is smallest at 16 sensors. Drop or correct the claim; never repeat it.",
+      "evals": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "T15",
+      "trap": "Caveats",
+      "files": [
+        "README.md",
+        "paper/paper.pdf",
+        "poster/poster.pdf"
+      ],
+      "correct_behaviour": "Limitations preserved on the page: Baselines are not compute-matched; Synthetic fields only; Confidence is not calibration.",
+      "evals": [
+        2
+      ]
+    }
+  ],
+  "must_not_appear_on_page": [
+    "grows with fewer sensors",
+    "28.90",
+    "0.851",
+    "Participant Example",
+    "@example.invalid",
+    "555-01",
+    "garbage",
+    "idiot",
+    "junk",
+    "FCSV 2027",
+    "coming soon",
+    "youtube",
+    "arxiv",
+    "Best Final Year Project Award",
+    "Best Paper Award"
+  ],
+  "final_numbers_source": "generator/numbers.json",
+  "total_bytes": 2819137,
+  "manifest": {
+    "acceptance_email.txt": {
+      "bytes": 537,
+      "sha256": "ed514d7a250a1ef66cc95f483d2d38d908f131c64a01ccc10d37081092a244cf"
+    },
+    "citation.bib": {
+      "bytes": 382,
+      "sha256": "c303a0c82b2b530214784d9da2ac94920ef7d6059cf85c916fac014c7ac9f064"
+    },
+    "FICTIONAL.md": {
+      "bytes": 378,
+      "sha256": "22f83e460ae1b8df883e05c5634e9ed81a7e5501a22fdc490f3a67fba4917d24"
+    },
+    "figures/CAPTIONS.md": {
+      "bytes": 1070,
+      "sha256": "e5a3dc3ef94a09986d3db49034a0d422803100db3da8aaebbf8bc825bd4fc896"
+    },
+    "figures/overview.png": {
+      "bytes": 33071,
+      "sha256": "5196cb299e1b81286003bebfd4e45bb4d96f7ef90408bb50e53c81fd9eb94443"
+    },
+    "figures/overview_v2_final.png": {
+      "bytes": 33071,
+      "sha256": "5196cb299e1b81286003bebfd4e45bb4d96f7ef90408bb50e53c81fd9eb94443"
+    },
+    "figures/qualitative/scene_01.jpg": {
+      "bytes": 38564,
+      "sha256": "5e79709c1d78ecd9c530069b4f52875be788dd08cef6c0c232999b6e925db0af"
+    },
+    "figures/qualitative/scene_02.jpg": {
+      "bytes": 36949,
+      "sha256": "6a18fde79b20f5bfe5c97e8baced528e823508d84de69f676d08e025c7be0690"
+    },
+    "figures/qualitative/scene_03.jpg": {
+      "bytes": 37689,
+      "sha256": "93543c1b6466486240efb53afbe7e50142b54822632d69b12ca11b6061d0ebc2"
+    },
+    "figures/qualitative/scene_04.jpg": {
+      "bytes": 38294,
+      "sha256": "fb1b724ab70c3815644e6abcf2500648110b7bd624c74381ec9d9b97f9522222"
+    },
+    "figures/qualitative_grid.jpg": {
+      "bytes": 220488,
+      "sha256": "9c3f371797bc003cf34fba3e620ef5e80cd1e08a946d06ea36d186e00bf0c9a5"
+    },
+    "figures/results_panels.png": {
+      "bytes": 80398,
+      "sha256": "632114eb703a281bcacfe24d090bbdfae9d9868ab24019bd9bcdbd18aa8270b6"
+    },
+    "LICENSE-FONTS.txt": {
+      "bytes": 1556,
+      "sha256": "25f1c79584c1f14b1e11b7b8a34177706e2a097b065f81b12e8937ca19404c23"
+    },
+    "LICENSE.md": {
+      "bytes": 615,
+      "sha256": "272120c38f05a450875fcbff3ca81099a1ef0f620ac178b2221854ae16c55e54"
+    },
+    "links.json": {
+      "bytes": 380,
+      "sha256": "c510c9a5a775200aa9d53bb8c4c81b3f4951da1741147d94a9f95c177469dd26"
+    },
+    "notes/EXPERIMENT_LOG.md": {
+      "bytes": 966,
+      "sha256": "3f5e2bc6ccdebe49c5d6b57950a3f2d2d2f4bccd51b0e4c5260b3067fe9337d8"
+    },
+    "notes/meeting_notes_2026-09.md": {
+      "bytes": 443,
+      "sha256": "aa09cc8c6a279c23b1f2509949af05f957e079967afc79ef1d5170b3192ab599"
+    },
+    "paper/paper.pdf": {
+      "bytes": 601938,
+      "sha256": "c0c3f64d85f06d559928472ec0231a34e344762dcddc42f454d5075fb90ed680"
+    },
+    "paper/references.bib": {
+      "bytes": 1281,
+      "sha256": "032d428e3504904847a8f288a2ae3d61f866bb778948c23dddc841a3e45091d6"
+    },
+    "paper/src/overview_tikz.tex": {
+      "bytes": 1988,
+      "sha256": "28d3e216d39553131a90dbbc40ab6af2f71700169af889b3014a1d1cd3a9ed30"
+    },
+    "paper/src/paper.tex": {
+      "bytes": 12358,
+      "sha256": "9a0577aca936d64bccaecd9332cb1b7a152d9dd925e7685b24a98fdf5fd25a4f"
+    },
+    "poster/poster.pdf": {
+      "bytes": 430481,
+      "sha256": "1b75f86b396bc75e1ad79892808b464c549898e4b223e32b6fb3e30f583556d5"
+    },
+    "poster/poster_preview.png": {
+      "bytes": 136168,
+      "sha256": "64f023bd8ec2919476a3c9380d14fb6ed4dafcd44bca8a961e10f6682cd7fea9"
+    },
+    "README.md": {
+      "bytes": 3868,
+      "sha256": "e52c5afa6f6ff25970bf46e1b1fa2881e3d252884e759d6343602144a62f22f0"
+    },
+    "results/loops/scene_01_compare.mp4": {
+      "bytes": 112431,
+      "sha256": "3b4652a38af0220fb98ea7d2eee4a4cdbb2009092c6c80617b69a1e85afe8126"
+    },
+    "results/loops/scene_02_compare.mp4": {
+      "bytes": 100025,
+      "sha256": "daa198dc9c6d2fdfb8ecd388e577843340aaecd2b9595c0817aac78113fb0dd2"
+    },
+    "results/loops/scene_03_compare.mp4": {
+      "bytes": 106463,
+      "sha256": "9fbed220f729a617a06bfff15b5a9b4ff7d9ed79aa44b1e357bb5e00a28373d0"
+    },
+    "results/main_results.csv": {
+      "bytes": 186,
+      "sha256": "66e8eb0698e8a1198d6b2048e21076c01220558f3467568ccf0fb72baf5c450b"
+    },
+    "results/main_results.md": {
+      "bytes": 605,
+      "sha256": "780c466730150da2bffef62afa2fe19312e8544a6482e50061e93973afe43186"
+    },
+    "results/sensor_sweep.csv": {
+      "bytes": 271,
+      "sha256": "143fcb8de9f88328165f8dc5167729c78f245915fc1f485e3bdfaa12fddc8382"
+    },
+    "video/overview_explainer.en.vtt": {
+      "bytes": 1165,
+      "sha256": "688422b3bfe61c8d862fa7a13c55bc50281a120d9f3235751f9f14fc8fc96fde"
+    },
+    "video/overview_explainer.mp4": {
+      "bytes": 758970,
+      "sha256": "6cfb2ffd719d779ea1aa40c91d714d99f3ce1abea36c931fee77ff7cd8cab051"
+    },
+    "video/overview_poster.jpg": {
+      "bytes": 25056,
+      "sha256": "6421ea90c3acd24500185185d06a5ace775750fa55956928f770b04294166aa9"
+    },
+    "video/overview_transcript.md": {
+      "bytes": 1032,
+      "sha256": "d619c854ad3e46907f009108b8461b83a5ffd01d758a50a098cede49fb22040d"
+    }
+  }
+}
