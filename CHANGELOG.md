@@ -2,6 +2,11 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.0.1
+
+- `preview_server.py` refuses a port that another server is still listening on, instead of binding it alongside (Windows) and leaving requests to reach the old server. It exits with a message naming the port.
+- `audit.mjs` fails at once when the page does not load (HTTP error or no server), instead of auditing the server's error page and reporting a pass.
+
 ## 1.0.0
 
 First release.

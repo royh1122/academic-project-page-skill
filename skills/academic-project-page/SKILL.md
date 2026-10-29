@@ -2,7 +2,7 @@
 name: academic-project-page
 description: Use when building, polishing, or auditing an academic project website - a research paper page, thesis or final-year project page, course project page, or demo page hosted on GitHub Pages, including pages based on the Academic Project Page Template or Nerfies. Also use when the user asks to "make a website for my paper", "create a project page", put a paper or project online with its figures, videos, poster, and BibTeX, or says an existing project page looks off, unpolished, or broken (fonts, alignment, videos that will not seek, carousels, images, links).
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   author: "Roy Huang"
   license: "CC-BY-SA-4.0"
 ---

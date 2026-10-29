@@ -34,6 +34,18 @@ const out = resolve(outIndex >= 0 ? args[outIndex + 1] : '.page-audit');
 const here = dirname(fileURLToPath(import.meta.url));
 const load = name => (0, eval)(readFileSync(join(here, name), 'utf8'));
 
+// A server error page would otherwise pass the checks, which only look for problems in what loads.
+let response;
+try { response = await fetch(url); } catch (error) {
+  console.log(`Page audit: FAIL\n  Could not reach ${url} (${error.cause?.code || error.message}). Is the preview server running?`);
+  process.exit(1);
+}
+await response.body?.cancel();
+if (!response.ok) {
+  console.log(`Page audit: FAIL\n  ${url} returned HTTP ${response.status}. Check the server's --root and --base, and that no other server holds the port.`);
+  process.exit(1);
+}
+
 mkdirSync(out, { recursive: true });
 const { page, close } = await launch({ profileRoot: out });
 let failed = false;

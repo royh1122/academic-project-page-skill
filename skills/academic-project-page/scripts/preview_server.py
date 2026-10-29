@@ -9,6 +9,8 @@ before they allow seeking in <video> (GitHub Pages supports them too).
 import argparse
 import os
 import re
+import socket
+import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
@@ -68,6 +70,17 @@ class Handler(SimpleHTTPRequestHandler):
         return True
 
 
+class Server(ThreadingHTTPServer):
+    # On Windows, SO_REUSEADDR lets a second server bind a port that another server is still
+    # listening on, and requests keep reaching the old one. Claim the port exclusively there.
+    allow_reuse_address = os.name != 'nt'
+
+    def server_bind(self):
+        if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('--root', default='.', help='directory containing index.html')
@@ -76,8 +89,13 @@ def main():
     args = parser.parse_args()
     base = '/' + args.base.strip('/') + '/' if args.base.strip('/') else '/'
     handler = partial(Handler, base=base, directory=os.path.abspath(args.root))
-    print(f'Serving {os.path.abspath(args.root)} at http://127.0.0.1:{args.port}{base}')
-    ThreadingHTTPServer(('127.0.0.1', args.port), handler).serve_forever()
+    try:
+        server = Server(('127.0.0.1', args.port), handler)
+    except OSError:
+        sys.exit(f'Port {args.port} is not available. '
+                 'Another server may still be running; stop it or choose another --port.')
+    print(f'Serving {os.path.abspath(args.root)} at http://127.0.0.1:{args.port}{base}', flush=True)
+    server.serve_forever()
 
 
 if __name__ == '__main__':
