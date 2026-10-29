@@ -26,7 +26,7 @@ npx skills add royh1122/academic-project-page-skill
 
 A first prompt to try:
 
-> Make a project page for our paper "…" by …, accepted at …. Paper: <paper link>, code: <code link>. The materials are in this folder. Put the page in `docs/`.
+> Make a project page for our paper "…" by …, accepted at …. Paper: `<paper link>`, code: `<code link>`. The materials are in this folder. Put the page in `docs/`.
 
 To polish or check an existing page:
 
