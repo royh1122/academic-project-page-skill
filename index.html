@@ -96,6 +96,9 @@
     .name-tile .name { display: block; font-size: var(--step-name); line-height: 0.9; letter-spacing: -0.05em; margin-left: -0.04em; }
     .name-tile .name-rest { display: block; margin-top: 14px; font-size: var(--step-lead); line-height: 1.2; letter-spacing: -0.01em; }
     .picture-tile img, .picture-tile video { width: 100%; height: 100%; object-fit: cover; }
+    .picture-clip { background: #f6f8fc; }
+    .picture-page { background: var(--surface); padding: 24px 24px 0; }
+    .picture-page img { border-radius: 6px 6px 0 0; }
     .picture-tile img { object-position: 50% 0; }
     .picture-tile figcaption { position: absolute; left: 12px; bottom: 12px; padding: 6px 10px; border-radius: 6px; background: var(--field-1); color: #fff; font-size: var(--step-small); }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
@@ -260,6 +263,7 @@
       .top { grid-template-columns: 60px 1fr 72px 60px; }
       .nav { grid-template-columns: 1fr; }
       .nav ul, .top-action .label { display: none; }
+      .nav-name { display: block; font-size: var(--step-small); }
       .top-action { justify-content: center; padding: 0; }
       .menu { display: block; position: relative; }
       .menu-button { width: 100%; height: 100%; min-height: 60px; border: 0; border-radius: var(--radius); background: var(--surface); cursor: pointer; font-weight: 500; }
@@ -270,9 +274,10 @@
       .name-tile { min-height: 30svh; }
       .name-tile .name { font-size: 22vw; }
       .picture-page { aspect-ratio: 4 / 3; }
+      .picture-page { padding: 16px 16px 0; }
       .picture-page img { height: 100%; }
       .split { grid-template-columns: 1fr; }
-      .picture-loop { aspect-ratio: 16 / 9; }
+      .picture-clip { aspect-ratio: 16 / 9; }
       .demos { grid-template-columns: 1fr; }
       .demos-list { grid-column: 1; padding-top: 28px; }
       .preview { display: none; }
@@ -345,13 +350,12 @@
   <div class="tile name-tile">
     <h1 id="title"><span class="name">Academic</span><span class="name-rest">Project Page, an agent skill</span></h1>
   </div>
+  <figure class="tile picture-tile picture-clip">
+    <video src="./static/media/demo.mp4" poster="./static/media/demo-poster.jpg" muted loop playsinline preload="metadata" width="1280" height="720" aria-label="An 18-second clip: a folder of project materials, one prompt to the agent, then the checked project page on desktop and phone."></video>
+  </figure>
   <figure class="tile picture-tile picture-page shutter">
     <img src="./static/images/hero-page.jpg" width="1600" height="909" alt="The top of a project page the skill built: the paper's title, three authors, the venue, Paper and Code buttons, and a comparison video.">
-    <figcaption>Built in one run, no edits</figcaption>
-  </figure>
-  <figure class="tile picture-tile picture-loop">
-    <video src="./paper/static/videos/scene_03_compare.mp4" poster="./paper/static/images/loop-03-poster.jpg" muted loop playsinline preload="metadata" width="960" height="480" aria-label="The demo's comparison loop: linear interpolation of 64 sensors beside the reconstructed ripple field."></video>
-    <figcaption>One of its comparison loops</figcaption>
+    <figcaption>A page the skill built in one run</figcaption>
   </figure>
   <div class="split">
     <div class="tile tile-text statement">
@@ -560,8 +564,8 @@ against 11 sources</code></pre>
     });
   }));
 
-  // The loop plays muted, except for visitors who prefer reduced motion: they get the poster and controls.
-  const loop = document.querySelector('.picture-loop video');
+  // The clip plays muted, except for visitors who prefer reduced motion: they get the poster and controls.
+  const loop = document.querySelector('.picture-clip video');
   const applyMotion = () => {
     if (reduce.matches) { loop.pause(); loop.controls = true; }
     else { loop.controls = false; loop.play().catch(() => { loop.controls = true; }); }
