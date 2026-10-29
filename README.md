@@ -10,9 +10,9 @@ Point your coding agent at a folder of project materials (a paper or report PDF,
 
 **[Live demo](https://royh1122.github.io/academic-project-page-skill/)** · demos: [paper](https://royh1122.github.io/academic-project-page-skill/paper/), [in preparation](https://royh1122.github.io/academic-project-page-skill/in-preparation/), [final year project](https://royh1122.github.io/academic-project-page-skill/final-year-project/) · [Examples](#examples) · [Install](#quick-start)
 
-![Before and after: a plain page, then the page the skill built](./assets/readme/before-after.webp)
+![A folder of project materials, one prompt, then the checked project page the skill built, on desktop and phone](./assets/readme/before-after.webp)
 
-[Watch as MP4](./assets/readme/before-after.mp4). The demos use a fictional project, so nothing real is shown.
+The demo uses a fictional project, so nothing real is shown.
 
 ## Quick start
 
