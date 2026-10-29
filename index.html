@@ -10,7 +10,10 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Academic Project Page Skill: live demos">
   <meta property="og:description" content="An agent skill that turns a folder of paper, figures and videos into a polished, checked academic project page.">
-  <meta property="og:image" content="https://royh1122.github.io/academic-project-page-skill/static/images/thumb-paper.jpg">
+  <meta property="og:image" content="https://royh1122.github.io/academic-project-page-skill/static/images/social-preview.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="./static/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,88 +21,330 @@
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <style>
-    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
-    .demo-card { background: var(--background-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); overflow: hidden; display: flex; flex-direction: column; transition: var(--transition); }
-    .demo-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-2px); }
-    .demo-card img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; border-bottom: 1px solid var(--border-color); }
-    .demo-body { padding: 1.25rem 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
-    .demo-body h3 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
-    .demo-body p { margin: 0; color: var(--text-secondary); }
-    .demo-body p { margin-bottom: .75rem; }
-    .demo-body .button { margin-top: auto; align-self: flex-start; background: var(--button-background); color: var(--on-button); border: 0; border-radius: 999px; font-weight: 600; }
-    .demo-body .button:hover { background: var(--primary-hover); color: var(--on-primary); }
-    .demo-body .button:focus-visible, .install a:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
-    .install { display: inline-block; max-width: 100%; overflow-x: auto; background: var(--text-primary); color: #f8fafc; padding: .75rem 1.25rem; border-radius: var(--border-radius); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; }
-    .lead { font-size: 1.2rem; color: var(--text-secondary); max-width: 40rem; margin: 1rem auto 1.5rem; }
-    .note { background: var(--award-background); border: 1px solid var(--award-border); color: var(--award-color); border-radius: var(--border-radius); padding: .75rem 1rem; max-width: 40rem; margin: 0 auto; font-weight: 500; }
-    .section-title { margin-bottom: 1.5rem; }
-    .repo-links { margin-top: 1.5rem; }
-    @media (prefers-reduced-motion: reduce) { .demo-card { transition: none; } .demo-card:hover { transform: none; } }
+    :root { --wrap: 64rem; --code-background: #0f172a; --on-code: #e2e8f0; --code-muted: #94a3b8; }
+    body { background: var(--background-primary); }
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1.25rem; }
+    .icon-svg { width: 1.125rem; height: 1.125rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-svg.is-filled { fill: currentColor; stroke: none; }
+    a:focus-visible, button:focus-visible, video:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+
+    /* Top bar */
+    .topbar { border-bottom: 1px solid var(--border-color); background: var(--background-primary); }
+    .topbar .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 3.75rem; gap: 1rem; }
+    .brand { display: inline-flex; align-items: center; gap: .6rem; white-space: nowrap; font-weight: 700; color: var(--text-primary); }
+    .brand img { width: 1.75rem; height: 1.75rem; }
+    .topbar-links { display: flex; align-items: center; gap: .25rem; }
+    .topbar-links a { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: 0 .75rem; border-radius: 8px; color: var(--text-secondary); font-weight: 500; }
+    .topbar-links a:hover { color: var(--text-primary); background: var(--background-accent); }
+
+    /* Hero */
+    .hero-block { padding: 4.5rem 0 3rem; text-align: center; background: radial-gradient(60rem 24rem at 50% -6rem, #eef4ff 0%, rgba(238,244,255,0) 70%); }
+    .eyebrow { display: inline-flex; align-items: center; gap: .5rem; padding: .3rem .8rem; border: 1px solid var(--border-color); border-radius: 999px; background: var(--background-primary); color: var(--text-secondary); font-size: .875rem; font-weight: 500; }
+    .eyebrow .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--primary-color); }
+    .hero-title { margin: 1.25rem auto 0; max-width: 54rem; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; font-weight: 800; letter-spacing: -.025em; color: var(--text-primary); text-wrap: balance; }
+    .hero-title em { font-style: normal; color: var(--primary-color); }
+    .hero-lead { margin: 1.25rem auto 0; max-width: 38rem; font-size: 1.15rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+
+    /* Install command with copy button */
+    .install { display: flex; align-items: center; max-width: 40rem; margin: 2rem auto 0; padding: .375rem .375rem .375rem 1.1rem; border-radius: 12px; background: var(--code-background); color: var(--on-code); box-shadow: var(--shadow-lg); text-align: left; }
+    .install code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; background: none; padding: .6rem 0; color: inherit; font-family: var(--font-mono); font-size: .95rem; font-weight: 500; scrollbar-width: none; }
+    .install code.is-overflowing { mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); }
+    .install code::-webkit-scrollbar { display: none; }
+    .install .prompt { color: var(--code-muted); user-select: none; margin-right: .6rem; }
+    .copy-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; min-width: 5.75rem; min-height: 2.75rem; margin-left: .5rem; padding: 0 .9rem; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: var(--on-code); font: 600 .875rem var(--font-sans); cursor: pointer; transition: background .15s ease, border-color .15s ease; }
+    .copy-btn:hover { background: #334155; }
+    .copy-btn > span { display: inline-flex; align-items: center; gap: .4rem; }
+    .copy-btn .when-copied, .copy-btn.is-copied .when-idle { display: none; }
+    .copy-btn.is-copied .when-copied { display: inline-flex; }
+    .copy-btn.is-copied { background: var(--success-color); border-color: var(--success-color); color: var(--on-success); }
+    .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.875rem; padding: 0 1.25rem; border-radius: 999px; font-weight: 600; transition: background .15s ease, color .15s ease, border-color .15s ease; }
+    .btn-primary { background: var(--button-background); color: var(--on-button); }
+    .btn-primary:hover { background: var(--primary-hover); color: var(--on-primary); }
+    .btn-ghost { border: 1px solid var(--border-color); color: var(--text-primary); background: var(--background-primary); }
+    .btn-ghost:hover { border-color: var(--text-light); color: var(--text-primary); }
+    .hero-note { margin-top: 1.25rem; font-size: .875rem; color: var(--text-light); }
+
+    /* Clip */
+    .clip { margin: 3rem auto 0; max-width: 56rem; }
+    .clip-frame { border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; background: #f6f8fc; box-shadow: var(--shadow-xl); }
+    .clip-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+    .clip figcaption { margin-top: .9rem; text-align: center; font-size: .9rem; color: var(--text-light); }
+
+    /* Sections */
+    .block { padding: 4.5rem 0; }
+    .block.is-tinted { background: var(--background-secondary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+    .block-head { max-width: 40rem; margin: 0 auto 2.5rem; text-align: center; }
+    .block-head h2 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); font-weight: 800; letter-spacing: -.02em; color: var(--text-primary); line-height: 1.2; }
+    .block-head p { margin-top: .75rem; color: var(--text-secondary); font-size: 1.05rem; text-wrap: pretty; }
+
+    /* What it adds */
+    .features { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 52rem; list-style: none; margin: 0 auto; padding: 0; }
+    .feature { padding: 1.4rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--background-primary); }
+    .feature .badge { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 10px; background: #eff6ff; color: var(--primary-color); }
+    .feature .badge .icon-svg { width: 1.3rem; height: 1.3rem; }
+    .feature h3 { text-wrap: pretty; margin-top: 1rem; font-size: 1.05rem; font-weight: 700; color: var(--text-primary); }
+    .feature p { margin-top: .4rem; color: var(--text-secondary); font-size: .95rem; line-height: 1.55; }
+
+    /* Demos */
+    .demo-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
+    .demo-card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); background: var(--background-primary); overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; }
+    .demo-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: #cbd5e1; }
+    .demo-card:focus-within { outline: var(--focus-ring); outline-offset: 3px; }
+    .demo-thumb { background: var(--background-accent); border-bottom: 1px solid var(--border-color); }
+    .demo-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: top; }
+    .demo-body { display: flex; flex-direction: column; gap: .5rem; flex: 1; padding: 1.25rem 1.25rem 1.4rem; }
+    .chip { align-self: flex-start; padding: .2rem .65rem; border-radius: 999px; font-size: .8rem; font-weight: 600; background: var(--background-accent); color: var(--text-secondary); }
+    .chip.is-award { background: var(--award-background); color: var(--award-color); }
+    .demo-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); }
+    .demo-body h3 a { color: inherit; }
+    .demo-body h3 a::after { content: ""; position: absolute; inset: 0; }
+    .demo-body h3 a:focus-visible { outline: none; text-decoration: underline; text-underline-offset: 3px; }  /* the card draws the ring */
+    .demo-body p { color: var(--text-secondary); font-size: .95rem; line-height: 1.55; }
+    .demo-open { display: inline-flex; align-items: center; gap: .35rem; margin-top: auto; padding-top: .5rem; color: var(--primary-color); font-weight: 600; font-size: .95rem; }
+    .demo-open .icon-svg { transition: transform .2s ease; }
+    .demo-card:hover .demo-open .icon-svg { transform: translateX(3px); }
+    .fiction-note { margin-top: 1.5rem; text-align: center; font-size: .9rem; color: var(--text-light); }
+
+    /* Closing install */
+    .cta { text-align: center; }
+    .cta .install { margin-top: 0; }
+
+    /* Footer */
+    .site-footer { padding: 2.5rem 0 3rem; font-size: .9rem; color: var(--text-secondary); }
+    .site-footer nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1.25rem; list-style: none; margin: 0 0 1.25rem; padding: 0; }
+    .site-footer nav a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--text-primary); font-weight: 500; }
+    .site-footer nav a:hover { color: var(--primary-color); }
+    .site-footer p { max-width: 44rem; margin: 0 auto; text-align: center; line-height: 1.6; }
+    .site-footer p a { color: var(--link-color); text-decoration: underline; text-underline-offset: 2px; }
+
+    @media (min-width: 640px) { .features { grid-template-columns: 1fr 1fr; } }
+    /* Three cards in a row on wide screens; between phone and desktop, one per row with the thumbnail beside the text. */
+    @media (min-width: 900px) { .demo-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 600px) and (max-width: 899px) {
+      .demo-card { flex-direction: row; }
+      .demo-thumb { flex: 0 0 44%; border-bottom: 0; border-right: 1px solid var(--border-color); }
+      .demo-thumb img { height: 100%; }
+    }
+    @media (max-width: 600px) {
+      .hero-block { padding: 3rem 0 2.25rem; }
+      .hero-lead { font-size: 1.05rem; }
+      .block { padding: 3.25rem 0; }
+      .topbar-links .label-wide { display: none; }
+      .brand { font-size: .95rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .demo-card, .demo-open .icon-svg, .btn, .copy-btn { transition: none; }
+      .demo-card:hover, .demo-card:hover .demo-open .icon-svg { transform: none; }
+    }
   </style>
 </head>
 <body>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-github" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><path d="m9 10 2 2 4-4"/><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="./static/images/favicon.svg" alt="" width="28" height="28">Academic Project Page</a>
+    <nav class="topbar-links" aria-label="Site">
+      <a href="#demos">Demos</a>
+      <a href="https://github.com/royh1122/academic-project-page-skill"><svg class="icon-svg is-filled" aria-hidden="true"><use href="#i-github"/></svg><span class="label-wide" aria-hidden="true">GitHub</span><span class="is-sr-only">GitHub repository</span></a>
+    </nav>
+  </div>
+</header>
+
 <main id="main-content" tabindex="-1">
 
-<section class="hero publication-header">
-  <div class="hero-body">
-    <div class="container is-max-desktop has-text-centered">
-      <h1 class="title is-1 publication-title">Academic Project Page Skill</h1>
-      <p class="lead">An agent skill that turns a folder of paper, figures and videos into a polished, checked academic project page, then audits it for contrast, links, numbers and layout before handing it over.</p>
-      <p><code class="install">npx skills add royh1122/academic-project-page-skill</code></p>
-      <p class="repo-links"><a class="button is-dark is-rounded" href="https://github.com/royh1122/academic-project-page-skill">View on GitHub</a></p>
+<section class="hero-block" aria-labelledby="hero-heading">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Agent skill · free and open source</span>
+    <h1 class="hero-title" id="hero-heading">Your paper, figures and videos, <em>as a checked project page</em></h1>
+    <p class="hero-lead">Point your coding agent at a folder of project materials. It builds a responsive project page in the style of the Academic Project Page Template and Nerfies, then checks it in a real browser before handing it back.</p>
+
+    <div class="install">
+      <code><span class="prompt" aria-hidden="true">$</span><span class="install-cmd">npx skills add royh1122/academic-project-page-skill</span></code>
+      <button type="button" class="copy-btn" aria-label="Copy install command">
+        <span class="when-idle"><svg class="icon-svg" aria-hidden="true"><use href="#i-copy"/></svg>Copy</span>
+        <span class="when-copied"><svg class="icon-svg" aria-hidden="true"><use href="#i-check"/></svg>Copied</span>
+      </button>
     </div>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#demos">See the live demos<svg class="icon-svg" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-ghost" href="https://github.com/royh1122/academic-project-page-skill"><svg class="icon-svg is-filled" aria-hidden="true"><use href="#i-github"/></svg>View on GitHub</a>
+    </div>
+    <p class="hero-note">Tested with Claude Code. Needs Python 3, Node 22+, Chrome or Edge, and ffmpeg.</p>
+
+    <figure class="clip">
+      <div class="clip-frame">
+        <video id="demo-clip" src="./static/media/demo.mp4" poster="./static/media/demo-poster.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="A folder of project materials, one prompt, then the checked project page on desktop and phone"></video>
+      </div>
+      <figcaption>Materials, one prompt, a checked page. The project shown is fictional.</figcaption>
+    </figure>
   </div>
 </section>
 
-<section class="section is-light" aria-labelledby="demos-heading">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered section-title" id="demos-heading">Three live demos</h2>
-    <p class="note has-text-centered" style="margin-bottom:1.5rem">The demo projects, people, institutions and results are fictional (the &ldquo;Quillwave&rdquo; example kit). Each page was built in one run of the skill, with no edits afterwards.</p>
-    <ul class="demo-grid">
-      <li class="demo-card">
-        <img src="./static/images/thumb-paper.jpg" width="640" height="400" alt="Top of the paper demo page: title, authors, venue badge, Paper and Code buttons, and a side-by-side comparison video." loading="lazy">
-        <div class="demo-body">
-          <h3>Accepted paper</h3>
-          <p>A published paper with every link: paper, code, video, poster and results.</p>
-          <a class="button" href="./paper/">Open demo<span class="is-sr-only">, accepted paper</span></a>
-        </div>
+<section class="block is-tinted" aria-labelledby="adds-heading">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="adds-heading">What it adds to the template</h2>
+      <p>The page builds on the Academic Project Page Template. The skill adds the parts a template can't do.</p>
+    </div>
+    <ul class="features">
+      <li class="feature">
+        <span class="badge" aria-hidden="true"><svg class="icon-svg"><use href="#i-shield"/></svg></span>
+        <h3>It does not invent</h3>
+        <p>Venues, awards, links and metrics appear only when your sources verify them. A finalist is not an award.</p>
       </li>
-      <li class="demo-card">
-        <img src="./static/images/thumb-in-preparation.jpg" width="640" height="400" alt="Top of the in-preparation demo page: title, one author, a Research in preparation badge, and a comparison video." loading="lazy">
-        <div class="demo-body">
-          <h3>Research in preparation</h3>
-          <p>Work not yet released: no public links, and nothing invented to fill the gap.</p>
-          <a class="button" href="./in-preparation/">Open demo<span class="is-sr-only">, research in preparation</span></a>
-        </div>
+      <li class="feature">
+        <span class="badge" aria-hidden="true"><svg class="icon-svg"><use href="#i-list"/></svg></span>
+        <h3>It checks reused claims</h3>
+        <p>Caption text from the paper is compared with the data, and claims the data contradicts are dropped.</p>
       </li>
-      <li class="demo-card">
-        <img src="./static/images/thumb-final-year-project.jpg" width="640" height="400" alt="Top of the final-year project demo page: title, authors, an award badge, Report and Video buttons, and a comparison video." loading="lazy">
-        <div class="demo-body">
-          <h3>Final-year project</h3>
-          <p>A student project with a verified award, report and video.</p>
-          <a class="button" href="./final-year-project/">Open demo<span class="is-sr-only">, final-year project</span></a>
-        </div>
+      <li class="feature">
+        <span class="badge" aria-hidden="true"><svg class="icon-svg"><use href="#i-eye-off"/></svg></span>
+        <h3>It keeps personal data off</h3>
+        <p>Names, IDs and plates in raw files and video frames stay out of the page.</p>
+      </li>
+      <li class="feature">
+        <span class="badge" aria-hidden="true"><svg class="icon-svg"><use href="#i-monitor"/></svg></span>
+        <h3>It checks its own work</h3>
+        <p>A browser audit, an interaction check, every number against your sources, and screenshots at three widths.</p>
       </li>
     </ul>
   </div>
 </section>
 
-</main>
+<section class="block" id="demos" aria-labelledby="demos-heading">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="demos-heading">Three live demos</h2>
+      <p>Each page was built in one run of the skill, with no edits afterwards.</p>
+    </div>
+    <ul class="demo-grid">
+      <li class="demo-card">
+        <div class="demo-thumb"><img src="./static/images/thumb-paper.jpg" width="800" height="600" alt="" loading="lazy"></div>
+        <div class="demo-body">
+          <span class="chip">Accepted at a venue</span>
+          <h3><a href="./paper/">Accepted paper</a></h3>
+          <p>Every link a published paper has: paper, code, video, poster and results.</p>
+          <span class="demo-open" aria-hidden="true">Open demo<svg class="icon-svg"><use href="#i-arrow"/></svg></span>
+        </div>
+      </li>
+      <li class="demo-card">
+        <div class="demo-thumb"><img src="./static/images/thumb-in-preparation.jpg" width="800" height="600" alt="" loading="lazy"></div>
+        <div class="demo-body">
+          <span class="chip">Not yet released</span>
+          <h3><a href="./in-preparation/">Research in preparation</a></h3>
+          <p>No public links, and nothing invented to fill the gap. Personal data in the raw files stays out.</p>
+          <span class="demo-open" aria-hidden="true">Open demo<svg class="icon-svg"><use href="#i-arrow"/></svg></span>
+        </div>
+      </li>
+      <li class="demo-card">
+        <div class="demo-thumb"><img src="./static/images/thumb-final-year-project.jpg" width="800" height="600" alt="" loading="lazy"></div>
+        <div class="demo-body">
+          <span class="chip is-award">Verified award</span>
+          <h3><a href="./final-year-project/">Final-year project</a></h3>
+          <p>A student project with an award the letter confirms, a report and an explainer video.</p>
+          <span class="demo-open" aria-hidden="true">Open demo<svg class="icon-svg"><use href="#i-arrow"/></svg></span>
+        </div>
+      </li>
+    </ul>
+    <p class="fiction-note">The projects, people, institutions and results in the demos are fictional (the &ldquo;Quillwave&rdquo; example kit).</p>
+  </div>
+</section>
 
-<footer class="footer">
-  <div class="container is-max-desktop">
-    <div class="content has-text-centered">
-      <p>
-        This page was built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>,
-        which was adapted from the <a href="https://nerfies.github.io">Nerfies</a> project page.
-        It is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-      </p>
+<section class="block is-tinted cta" aria-labelledby="cta-heading">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="cta-heading">Try it on your project</h2>
+      <p>Install it, put your materials in a folder, and ask for a project page in one prompt.</p>
+    </div>
+    <div class="install">
+      <code><span class="prompt" aria-hidden="true">$</span><span class="install-cmd">npx skills add royh1122/academic-project-page-skill</span></code>
+      <button type="button" class="copy-btn" aria-label="Copy install command">
+        <span class="when-idle"><svg class="icon-svg" aria-hidden="true"><use href="#i-copy"/></svg>Copy</span>
+        <span class="when-copied"><svg class="icon-svg" aria-hidden="true"><use href="#i-check"/></svg>Copied</span>
+      </button>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-ghost" href="https://github.com/royh1122/academic-project-page-skill#quick-start">Read the quick start<svg class="icon-svg" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Project links">
+      <ul>
+        <li><a href="https://github.com/royh1122/academic-project-page-skill">GitHub</a></li>
+        <li><a href="https://github.com/royh1122/academic-project-page-skill/releases">Releases</a></li>
+        <li><a href="https://github.com/royh1122/academic-project-page-skill/blob/main/CHANGELOG.md">Changelog</a></li>
+        <li><a href="https://github.com/royh1122/academic-project-page-skill/issues/new/choose">Report a bug or share a page</a></li>
+      </ul>
+    </nav>
+    <p>
+      This page was built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>,
+      which was adapted from the <a href="https://nerfies.github.io">Nerfies</a> project page.
+      It is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </p>
+  </div>
 </footer>
+
+<p class="is-sr-only" role="status" aria-live="polite" id="copy-status"></p>
+
+<script>
+  // Copy buttons: clipboard API, with a selection fallback for older browsers and non-secure previews.
+  const copyStatus = document.getElementById('copy-status');
+  document.querySelectorAll('.copy-btn').forEach(button => {
+    let timer;
+    button.addEventListener('click', async () => {
+      const text = button.parentElement.querySelector('.install-cmd').textContent;
+      let copied = false;
+      try { await navigator.clipboard.writeText(text); copied = true; }
+      catch {
+        const area = Object.assign(document.createElement('textarea'), { value: text });
+        area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0';
+        document.body.append(area); area.select();
+        try { copied = document.execCommand('copy'); } catch {}
+        area.remove();
+      }
+      copyStatus.textContent = copied ? 'Install command copied' : 'Copy failed; select the command and copy it';
+      if (!copied) return;
+      button.classList.add('is-copied');
+      clearTimeout(timer);
+      timer = setTimeout(() => button.classList.remove('is-copied'), 2000);
+    });
+  });
+
+  // Fade the right edge of an install command that does not fit, so it reads as scrollable.
+  const markOverflow = () => document.querySelectorAll('.install code').forEach(code => code.classList.toggle('is-overflowing', code.scrollWidth > code.clientWidth + 1));
+  markOverflow();
+  window.addEventListener('resize', markOverflow);
+
+  // The clip plays muted on a loop, except for visitors who prefer reduced motion: they get the poster and controls.
+  const clip = document.getElementById('demo-clip');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const applyMotion = () => {
+    if (reduce.matches) { clip.pause(); clip.controls = true; }
+    else { clip.controls = false; clip.play().catch(() => { clip.controls = true; }); }
+  };
+  applyMotion();
+  reduce.addEventListener('change', applyMotion);
+</script>
 
 </body>
 </html>
