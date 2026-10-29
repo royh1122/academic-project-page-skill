@@ -2,19 +2,29 @@
    Look adapted from the Academic Project Page Template (github.com/eliahuhorwitz/Academic-project-page-template),
    itself adapted from Nerfies (github.com/nerfies/nerfies.github.io); both CC BY-SA 4.0.
    Changes from APT: AA contrast for every text colour, motion behind prefers-reduced-motion,
-   heading accent bar follows the heading's alignment, no floating controls over content on phones,
+   heading accent bar follows the heading's alignment, no floating control over the text being read on phones,
    an accessible carousel without jQuery or bulma-carousel. See references/style-fidelity.md. */
 
 :root {
-  --primary-color: #2563eb;        /* 5.2:1 on white; links and focus rings */
+  /* The palette. A re-theme is an override block of these tokens and nothing else (references/style-fidelity.md).
+     Every colour below is used by name; no component rule carries a literal colour. */
+  --primary-color: #2563eb;        /* 5.2:1 on white; the accent: author and footer links, focus rings, hover fills, copy button */
   --primary-hover: #1d4ed8;
+  --on-primary: #ffffff;           /* text on a --primary-color or --primary-hover fill; 5.2:1 here, pick dark text for a light accent */
   --accent-color: #0ea5e9;         /* decorative only, never text */
   --text-primary: #1e293b;
   --text-secondary: #475569;       /* APT #64748b is 4.3:1 on #f1f5f9; this is 6.9:1 */
+  --text-strong: #363636;          /* Bulma's grey for bold text, row headers and viewer controls; keep it equal to --text-primary in a re-theme */
   --text-light: #5b6576;           /* APT #94a3b8 is 2.6:1 on white; this is 5.4:1 on #f1f5f9 */
+  --link-color: #3273dc;           /* links in running text (transcript, poster); Bulma's blue, 4.7:1 on white */
+  --link-hover: var(--text-strong);
+  --button-background: var(--text-primary);   /* resource buttons and the skip link; the label colour is derived: */
+  --on-button: var(--background-primary);
   --success-color: #047857;        /* "Copied" state; APT #10b981 is 2.5:1 with white text */
-  --award-color: #b91c1c;          /* APT #ef4444 is 3.4:1 on its pink fill; this is 5.9:1 */
-  --award-background: #fef2f2;
+  --on-success: #ffffff;           /* text on the --success-color fill */
+  --award-color: #7c4a03;          /* warm amber text; 6.6:1 on its fill (APT's red #ef4444 was 3.4:1) */
+  --award-background: #fef3c7;
+  --award-border: #f3d98b;         /* hairline around the award pill; decorative */
   --background-primary: #ffffff;
   --background-secondary: #f8fafc;
   --background-accent: #f1f5f9;
@@ -42,6 +52,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Bulma colours links, bold text and table cells itself; route those through the tokens too. */
+a {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+strong,
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6,
+.table th {
+  color: var(--text-strong);
+}
+
 /* Bulma sets its own families on these; keep one family throughout. */
 .button, .input, .select select, .textarea, .title, .subtitle {
   font-family: var(--font-sans);
@@ -66,14 +91,18 @@ body {
   left: .5rem;
   padding: .5rem 1rem;
   border-radius: var(--border-radius);
-  color: #fff;
-  background: var(--text-primary);
+  color: var(--on-button);
+  background: var(--button-background);
   transform: translateY(-200%);
 }
 
 .skip-link:focus {
   transform: none;
-  color: #fff;
+}
+
+.skip-link:hover,
+.skip-link:focus {
+  color: var(--on-button);
 }
 
 /* Focus: visible ring for keyboard users only. */
@@ -325,11 +354,22 @@ summary:focus-visible {
   font-weight: 600;
 }
 
+/* Same pill shape as the venue line, in a warm tone so it reads as recognition, not an alert.
+   An optional <i class="fas fa-trophy"> (or fa-award) before the text takes the text colour. */
 .publication-awards {
-  border-left: 4px solid var(--award-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border: 1px solid var(--award-border);
   color: var(--award-color);
   background: var(--award-background);
-  font-weight: 700;
+  font-weight: 600;
+}
+
+.publication-awards .fas {
+  flex: none;
+  font-size: .9em;
 }
 
 .publication-links {
@@ -353,14 +393,14 @@ summary:focus-visible {
 
 .button.is-dark {
   border: none;
-  color: #fff;
-  background: var(--text-primary);
+  color: var(--on-button);
+  background: var(--button-background);
   box-shadow: var(--shadow-md);
 }
 
 .button.is-dark:hover,
 .button.is-dark:focus-visible {
-  color: #fff;
+  color: var(--on-primary);
   background: var(--primary-color);
   box-shadow: var(--shadow-lg);
 }
@@ -467,7 +507,7 @@ main video {
   height: 0;
   padding-bottom: 56.25%;
   overflow: hidden;
-  /* Dark until the embed loads, so a lazy or blocked iframe never looks like an empty white box. */
+  /* Dark until the embed loads, so a lazy or blocked iframe never looks like an empty white box. Fixed on purpose: it must be dark in every theme. */
   background: #0f172a;
   box-shadow: var(--shadow-xl);
 }
@@ -667,6 +707,7 @@ figcaption {
   width: auto;
   margin-bottom: 0;
   color: var(--text-primary);
+  background-color: var(--background-primary);
 }
 
 .table-figure .table th,
@@ -713,7 +754,7 @@ figcaption {
   padding: .6rem 1rem;
   border: 0;
   border-radius: var(--border-radius);
-  color: #fff;
+  color: var(--on-primary);
   background: var(--primary-color);
   font: 600 .9rem/1.2 var(--font-sans);
   cursor: pointer;
@@ -721,11 +762,13 @@ figcaption {
 }
 
 .copy-bibtex-btn:hover {
+  color: var(--on-primary);
   background: var(--primary-hover);
   box-shadow: var(--shadow-md);
 }
 
 .copy-bibtex-btn.is-copied {
+  color: var(--on-success);
   background: var(--success-color);
 }
 
@@ -775,40 +818,188 @@ pre code {
   color: var(--primary-hover);
 }
 
-/* Back-to-top: only where the page has a gutter wide enough to hold it beside the content. */
-.scroll-to-top {
+/* ---------- Contents menu and back to top (optional; built by index.js from the h2 headings) ----------
+   Hidden, and out of the tab order, until the reader scrolls past the header. Colours are theme tokens only,
+   so a re-themed page recolours it by changing the tokens. */
+.page-nav {
   position: fixed;
   z-index: 30;
-  right: 2rem;
-  bottom: 2rem;
-  display: none;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  background: var(--primary-color);
-  box-shadow: var(--shadow-lg);
-  font-size: 1.1rem;
-  cursor: pointer;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  flex-direction: column-reverse; /* buttons first in the DOM (and tab order), menu drawn above them */
+  align-items: flex-end;
+  gap: .625rem;
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition);
+  transform: translateY(10px);
 }
 
-.scroll-to-top:hover {
+.page-nav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.page-nav-buttons {
+  display: flex;
+  gap: .375rem;
+  padding: .3125rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--background-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.page-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.page-nav-toggle {
+  padding: 0 1rem;
+  color: var(--on-button);
+  background: var(--button-background);
+}
+
+.page-nav-toggle:hover,
+.page-nav-toggle[aria-expanded="true"] {
+  color: var(--on-primary);
   background: var(--primary-hover);
 }
 
-.scroll-to-top.is-visible {
-  opacity: 1;
-  visibility: visible;
+.page-nav-top {
+  color: var(--text-primary);
+  background: var(--background-primary);
+  border-color: var(--border-color);
 }
 
-@media screen and (min-width: 1280px) {
-  .scroll-to-top {
-    display: grid;
+.page-nav-top:hover {
+  background: var(--background-accent);
+}
+
+.page-nav-menu {
+  width: 18rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 7rem);
+  max-height: calc(100dvh - 7rem);
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--background-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.page-nav-menu[hidden] {
+  display: none;
+}
+
+.page-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: .625rem;
+  margin-bottom: .5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-nav-title {
+  color: var(--text-primary);
+  font-size: .9375rem;
+  font-weight: 700;
+}
+
+.page-nav-close {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  background: none;
+  font-size: 1.375rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.page-nav-close:hover {
+  color: var(--text-primary);
+  background: var(--background-accent);
+}
+
+.page-nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-nav-list a {
+  display: block;
+  padding: .375rem .625rem;
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: .875rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.page-nav-list a:hover {
+  color: var(--primary-color);
+  background: var(--background-accent);
+}
+
+.page-nav-list a[aria-current] {
+  color: var(--primary-color);
+  background: var(--background-accent);
+  font-weight: 600;
+}
+
+/* Headings jumped to from the menu or a link are not tucked under the screen edge. */
+main [id] {
+  scroll-margin-top: 1rem;
+}
+
+/* Room under the footer text so the floating buttons never cover its last line. */
+.page-nav ~ .footer > .container,
+.footer.has-page-nav > .container {
+  padding-bottom: 3.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .page-nav {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  /* Icon-only on phones; the label stays as the button's accessible name. */
+  .page-nav-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .page-nav-btn {
+    min-width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .page-nav-toggle {
+    padding: 0;
   }
 }
 
@@ -948,9 +1139,12 @@ details.figure-details[open] {
 
   .button.is-dark:hover,
   .copy-bibtex-btn:hover,
-  .more-works-btn:hover,
-  .scroll-to-top:hover {
+  .more-works-btn:hover {
     transform: translateY(-2px);
+  }
+
+  .page-nav {
+    transition: opacity .25s ease, transform .25s ease, visibility .25s;
   }
 
   .publication-authors a::after {
@@ -967,7 +1161,7 @@ details.figure-details[open] {
 }
 
 @media print {
-  .site-header, .scroll-to-top, .carousel-controls, .copy-bibtex-btn, .skip-link {
+  .site-header, .page-nav, .carousel-controls, .copy-bibtex-btn, .skip-link {
     display: none !important;
   }
 

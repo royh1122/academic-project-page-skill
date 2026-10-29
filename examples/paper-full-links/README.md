@@ -11,7 +11,7 @@
 
 > Make a project page for our paper "Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields" by Ada Placeholder, Ben Example and Cleo Sample (Example University (fictional), Department of Imaginary Sciences), accepted at FCSV 2026. The materials are in this folder. Paper: https://quillwave.example.org/quillwave_fcsv2026.pdf, code: https://code.example.org/quillwave. Host the explainer video video/overview_explainer.mp4 with the page (no external video service). The comparison clips in results/loops are silent. Put the page in docs/.
 
-Built in one run by a fresh agent with the skill. No edits afterwards.
+Built in one run by a fresh agent with the skill (v1.1.0). No edits afterwards.
 
 ![Header and teaser at 1440 px](./hero-desktop.jpg)
 
@@ -19,19 +19,24 @@ Built in one run by a fresh agent with the skill. No edits afterwards.
 
 ## What the agent did
 
-- **Header:** a venue line confirmed by the acceptance e-mail. Paper and Code buttons, plus Video and Poster buttons that jump to sections on the page.
-- **Video:** the explainer has controls, `preload="none"`, captions and a transcript. The loops autoplay muted, with reduced motion respected.
-- **PDF poster:** embedded with a download button, falling back to a link on phones. It flagged that the poster has a placeholder QR box.
-- **Figures:** both dense figures are zoomable, with their empty margins cropped.
+- **Header:** a venue line confirmed by the acceptance e-mail, and Paper and Code buttons with the user's two links.
+- **Teaser:** a silent comparison loop, linear interpolation beside the Quillwave reconstruction, so the page opens on the result. The other two loops are in a carousel, and the pipeline diagram is inline in Method.
+- **Video:** the explainer has controls, `preload="none"`, a poster, captions and a transcript link.
+- **PDF poster:** embedded with a download button, falling back to a link on phones.
+- **Figures:** the dense results figure and the comparison grid are zoomable, with their empty margins cropped.
+- **Caption fix:** it dropped a source caption's claim that the sweep data contradicts ("the gap grows with fewer sensors").
+- **Left out:** an award a co-author hoped for in the meeting notes, a meeting attendee whose role the materials don't give, the authors' e-mail addresses, and the duplicate and single-scene images.
 
-**Gate:** page audit and typography pass, with no warnings. A scripted check confirmed figure zoom, the carousel, video seeking (206 responses) and the copy button.
-
-**What it missed:** it repeated a caption sentence that the data contradicts ("the gap grows with fewer sensors"). `check_numbers.py` compares values, not claims. This run led to a new rule in the skill: check reused captions' claims against the tables. The fictional kit now registers that sentence as trap T16.
+**Gate:** the first audit run failed because the title broke inside "Sparse-Sensor"; the agent kept the term together and re-ran. The page audit, interaction check and typography check then passed with no warnings. `check_numbers.py` matched 78 of 80 numbers; the other two are the poster's file size and the licence version.
 
 ## Compared with no skill
+
+The baseline ran in the first evaluation round; it does not depend on the skill's version.
 
 - **Invented address:** the baseline made up a hosting address for the page's link-preview tags.
 - **Figures and layout:** metric tiles, figures that can't be enlarged, and loops without poster frames, which the audit warned about.
 - **Video seeking:** never verified, because Python's simple server ignores range requests.
 
 ![Full pages, with and without the skill](./full-page-comparison.jpg)
+
+The dark box in the Poster section is the embedded PDF, which headless screenshots leave blank; it shows in a browser.

@@ -111,6 +111,26 @@ async (page) => {
         if (edges.size > 1) out.warnings.push(`Section "${name}" starts content at ${edges.size} left edges: ${[...edges].map(([x, what]) => `${x}px ${what}`).join('; ')}`);
       });
 
+      // Numeric columns read best right-aligned, so digits line up.
+      const number = /^[~≈<>≥≤+\-−–\s]*\d[\d.,]*\s*(±\s*[\d.,]+\s*)?(%|×|x|ms|s|m|k|M|B|G|GB|MB|dB|fps|px)?(\s*\([^)]*\))?\*?$/;
+      document.querySelectorAll('table').forEach(table => {
+        if (!visible(table) || table.closest('dialog') || table.querySelector('[colspan], [rowspan]')) return;
+        const rows = [...table.rows];
+        const headRows = table.tHead ? table.tHead.rows.length : 1;
+        const head = rows[headRows - 1], body = rows.slice(headRows);
+        if (!head || body.length < 2) return;
+        const caption = table.caption?.textContent.trim().slice(0, 40) || table.closest('figure')?.querySelector('figcaption')?.textContent.trim().slice(0, 40) || 'untitled';
+        [...head.cells].forEach((th, c) => {
+          const cells = body.map(row => row.cells[c]).filter(cell => cell && cell.textContent.trim());
+          const name = th.textContent.trim();
+          if (cells.length < 2 || /year|\bids?\b|^#|rank|\bno\b|seed|date/i.test(name)) return;
+          const texts = cells.map(cell => cell.textContent.trim());
+          if (texts.every(t => /^(19|20)\d\d$/.test(t)) || texts.filter(t => number.test(t)).length < texts.length * .8) return;
+          const left = cells.filter(cell => /^(left|start)$/.test(getComputedStyle(cell).textAlign)).length;
+          if (left > cells.length / 2) out.warnings.push(`Table "${caption}" column "${name.slice(0, 30)}": numbers are left-aligned; right-align numeric columns`);
+        });
+      });
+
       const disclosed = [...document.querySelectorAll('details img')].map(img => img.alt).filter(alt => /architect|pipeline|overview|method/i.test(alt));
       if (disclosed.length) out.warnings.push(`Method/architecture figure hidden in a disclosure: "${disclosed[0].slice(0, 50)}"`);
 
@@ -139,6 +159,35 @@ async (page) => {
     failures.push(...report.failures);
     warnings.push(...report.warnings);
     Object.assign(evidence, report.evidence);
+
+    // A poster that is one flat colour (a black first frame) shows the visitor nothing. Sample it small;
+    // same-origin posters only, and a tainted canvas is skipped.
+    const posters = await page.evaluate(async () => {
+      const bad = [];
+      for (const video of document.querySelectorAll('video[poster]')) {
+        if (video.closest('[data-cloned]')) continue;
+        try {
+          const src = new URL(video.getAttribute('poster'), location.href);
+          if (src.origin !== location.origin) continue;
+          const img = new Image();
+          img.src = src.href;
+          await img.decode();
+          const canvas = document.createElement('canvas');
+          canvas.width = 48; canvas.height = 27;
+          const context = canvas.getContext('2d');
+          context.drawImage(img, 0, 0, 48, 27);
+          const data = context.getImageData(0, 0, 48, 27).data;
+          const lum = [];
+          for (let i = 0; i < data.length; i += 4) lum.push(.2126 * data[i] + .7152 * data[i + 1] + .0722 * data[i + 2]);
+          const mean = lum.reduce((a, b) => a + b) / lum.length;
+          const deviation = Math.sqrt(lum.reduce((a, b) => a + (b - mean) ** 2, 0) / lum.length);
+          // A blank frame is flat; a near-black one may carry noise, so allow a little more spread when it is dark.
+          if (deviation < 4 || (mean < 25 && deviation < 10)) bad.push(`${src.pathname.split('/').pop()} (mean ${Math.round(mean)}, spread ${deviation.toFixed(1)})`);
+        } catch { /* cross-origin, tainted canvas or undecodable: skip */ }
+      }
+      return bad;
+    });
+    posters.forEach(poster => warnings.push(`Video poster is a blank or near-black frame: ${poster}; pick a frame by looking at candidates`));
 
     // Root-relative paths only break when the page is served beneath a repository subpath.
     if (new URL(page.url()).pathname !== '/' && report.localRefs.some(ref => ref.startsWith('/'))) failures.push('Root-relative paths (/static/...) break repository-subpath hosting; use ./static/...');
@@ -178,6 +227,34 @@ async (page) => {
           overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
           upscaled,
           teaserHeights: sideBySide ? media.map(r => Math.round(r.height)) : null,
+          // Line of each non-space title character, to find a break right after an in-word hyphen and a one-word last line.
+          title: (() => {
+            const h = document.querySelector('h1');
+            if (!h) return { hyphen: [], orphan: null };
+            const chars = [], walker = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+            for (let node; (node = walker.nextNode());) for (let i = 0; i < node.length; i++) {
+              if (/\s/.test(node.data[i])) { chars.push({ ch: ' ' }); continue; }
+              const range = document.createRange();
+              range.setStart(node, i); range.setEnd(node, i + 1);
+              const rect = range.getClientRects()[0];
+              chars.push({ ch: node.data[i], top: rect ? rect.top : null, bottom: rect ? rect.bottom : null });
+            }
+            const hyphen = [];
+            chars.forEach((c, i) => {
+              const n = chars[i + 1];
+              if (!/[-‐]/.test(c.ch) || !n || c.top === null || n.top === null || !/\p{L}/u.test(n.ch) || !/\p{L}/u.test(chars[i - 1]?.ch || '')) return;
+              if (n.top > c.top + 5) {
+                const text = chars.map(x => x.ch).join('');
+                const start = text.lastIndexOf(' ', i) + 1, end = text.indexOf(' ', i);
+                hyphen.push(text.slice(start, end < 0 ? undefined : end));
+              }
+            });
+            const placed = chars.filter(c => c.top !== null);
+            const lastTop = placed.length ? placed[placed.length - 1].top : 0;
+            const last = chars.slice(chars.findIndex(c => c.top !== null && Math.abs(c.top - lastTop) < 2)).map(c => c.ch).join('').trim();
+            const multiline = placed.some(c => c.top < lastTop - 2);
+            return { hyphen, orphan: multiline && last && !last.includes(' ') && last.length <= 10 ? last : null };
+          })(),
           titleLines: (() => { const h = document.querySelector('h1'); return h ? Math.round(h.getBoundingClientRect().height / parseFloat(getComputedStyle(h).lineHeight)) : 0; })(),
         };
       });
@@ -186,6 +263,8 @@ async (page) => {
       if (layout.teaserHeights && Math.max(...layout.teaserHeights) - Math.min(...layout.teaserHeights) > 4)
         warnings.push(`Teaser media differ in height at ${width}px: ${layout.teaserHeights.join(' vs ')} px. Use aspect-ratio grid columns.`);
       if (layout.letterboxed.length) warnings.push(`Teaser media letterboxed at ${width}px (box shape differs from the media): ${layout.letterboxed.join(', ')}. Remove the fixed height; use aspect-ratio grid columns.`);
+      layout.title.hyphen.forEach(word => failures.push(`Title breaks inside "${word}" at ${width}px; wrap the term in <span class="nowrap">`));
+      if (layout.title.orphan) warnings.push(`Title ends with a single word "${layout.title.orphan}" alone on its last line at ${width}px; rebalance the title (text-wrap: balance)`);
       evidence[`titleLines@${width}`] = layout.titleLines;
     }
 

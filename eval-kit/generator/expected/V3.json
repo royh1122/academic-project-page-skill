@@ -78,7 +78,7 @@
       "files": [
         "figures/results_panels.png"
       ],
-      "correct_behaviour": "Placed in Results with zoom, not used as the teaser; the clearest overview (figures/overview.png) is the teaser.",
+      "correct_behaviour": "Placed in Results with zoom, not used as the teaser; the teaser shows the main result legibly (in this kit, a comparison loop or one clear result image); figures/overview.png only if no result visual is legible.",
       "evals": [
         2
       ]

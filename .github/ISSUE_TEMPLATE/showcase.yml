@@ -1,0 +1,54 @@
+name: Add my page to "Built with this skill"
+description: Show a project page you built or polished with the skill.
+title: "Showcase: <project name>"
+labels: ["showcase"]
+body:
+  - type: markdown
+    attributes:
+      value: Only submit a page you own or have the owners' permission to list. It must be public.
+  - type: input
+    id: page_url
+    attributes:
+      label: Page URL
+      placeholder: https://username.github.io/project/
+    validations:
+      required: true
+  - type: input
+    id: repo_url
+    attributes:
+      label: Repository URL
+      placeholder: https://github.com/username/project
+    validations:
+      required: true
+  - type: dropdown
+    id: project_type
+    attributes:
+      label: Project type
+      options:
+        - Accepted paper
+        - Research in preparation
+        - Thesis or final year project
+        - Course project
+        - Demo or other
+    validations:
+      required: true
+  - type: input
+    id: skill_version
+    attributes:
+      label: Skill version
+      description: The `metadata.version` in SKILL.md, or the release you installed.
+      placeholder: "1.2.0"
+    validations:
+      required: true
+  - type: checkboxes
+    id: ownership
+    attributes:
+      label: Confirmation
+      options:
+        - label: I own this page (or have permission to list it) and it is public.
+          required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      description: What you asked the skill to do, and anything you changed by hand.

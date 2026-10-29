@@ -34,7 +34,7 @@ def catalogue(vid, kit: Path):
          [f"results/loops/scene_0{i}_compare.mp4" for i in (1, 2, 3)],
          "autoplay muted loop playsinline; paused under prefers-reduced-motion; no audio stream exists.", [1, 3]),
         ("T6", "Dense multi-panel figure", ["figures/results_panels.png"],
-         "Placed in Results with zoom, not used as the teaser; the clearest overview (figures/overview.png) is the teaser.",
+         "Placed in Results with zoom, not used as the teaser; the teaser shows the main result legibly (in this kit, a comparison loop or one clear result image); figures/overview.png only if no result visual is legible.",
          [2]),
         ("T7", "Stale draft numbers", ["notes/EXPERIMENT_LOG.md"],
          f"Only final numbers (run {ST['superseded_by_run']}); draft PSNR {ST['psnr']:.2f} and SSIM {ST['ssim']:.3f} "

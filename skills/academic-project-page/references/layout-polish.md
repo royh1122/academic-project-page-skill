@@ -25,7 +25,7 @@ Read this before arranging media. Part 1 applies to any academic project page, w
 
 - Never combine a fixed `height` with `object-fit: contain` for teaser media: it letterboxes and misaligns the visible edges.
 - One caption per medium, or one caption for the group, not both. Do not refer to media by position ("left", "right"): they stack on phones.
-- Open with a teaser whenever the project has any visual. Choose the clearest overview: a representative result, a short clip, or the overview or method diagram. When the method diagram is the teaser, the method section refers to it instead of repeating it.
+- Open with a teaser whenever the project has any visual. The teaser shows the project's main finding or outcome: whichever visual a visitor would most want to see first, in whatever form the project has it (a result image or plot, a demo or result clip, a qualitative example, a before/after, a screenshot of the working system). Prefer the visual that is legible at 375 px and needs the least explanation. Use the overview or method diagram only when the method itself is the contribution or no outcome visual exists or reads at that size; then the method section refers to it instead of repeating it.
 - Prefer a teaser whose key content is legible in the 375 px screenshot. A dense multi-panel figure is the last choice for the teaser; if it is used, make it zoomable, and never drop the teaser only because the best visual is dense.
 
 ### Figures
@@ -64,12 +64,12 @@ Read this before arranging media. Part 1 applies to any academic project page, w
 - Tables: caption above, natural width, a keyboard-focusable scrolling container on narrow screens; cells do not wrap, the container scrolls. Right-align numeric columns and left-align text columns. Do not stretch narrow tables to full width.
 - In the title only, keep hyphenated terms (such as Non-Autoregressive) from breaking at the hyphen. In body text a break at a hyphen is normal.
 - In the header (status, venue, award lines), keep year ranges and short labels together, for example "2025–2026" inside `<span class="nowrap">`.
-- An in-page navigation bar, if any, has one link per section with labels matching the section headings.
+- An in-page navigation, if any, has one link per section with labels matching the section headings. The template's contents menu builds itself from the `h2` headings, so it matches by construction; a hand-written nav must be checked.
 
 ### Header
 
 - **Status line:** when there is no verified venue, the user's own description of the status (Preprint, Research in preparation) may take the venue line. A target venue, author kit, or template found in the materials is not a venue.
-- **Venue and awards** appear only when verified by the user or a source. A finalist, shortlist, or nomination is not an award; mention it only in the user's words if they ask.
+- **Venue and awards** appear only when verified by the user or a source. The awarding body saying the work received, won, or was selected for the award verifies it; a finalist, shortlist, nomination, candidacy, or someone's hope does not (when the wording is ambiguous, show nothing and ask, quoting it). Mention a finalist or nomination only in the user's words if they ask.
 - **Author links** go to verified personal pages; otherwise plain text.
 - **Resource buttons:** one per verified resource. Private repositories and unreleased data get no button.
 
@@ -89,7 +89,7 @@ Class names and values are in [style-fidelity.md](style-fidelity.md). The templa
 
 ### Header
 
-- Venue or status: `.publication-venue` (a pill). Award: the commented `.publication-awards` line, used only for a verified award.
+- Venue or status: `.publication-venue` (a pill). Award: the commented `.publication-awards` line, used only for a verified award of any kind (best paper, thesis prize, department award). It is a quiet warm pill in the venue pill's shape with an optional trophy icon; keep the text short enough for one line at 360 px, and put the details in the abstract or a sentence below, not in the pill. Re-theming overrides `--award-color`, `--award-background`, `--award-border`, keeping 4.5:1. A full re-theme (dark, a custom accent) is a token override block only; see "Re-theming" in style-fidelity.md.
 - Equal contribution: `*` marks after the names and the `.eql-cntrb` note; delete both together.
 - The resource buttons' arXiv icon comes from Academicons; delete its stylesheet when there is no arXiv button.
 - **More Works** (optional) sits in the page flow above the title. List only the user's own verified projects; delete the block otherwise.
@@ -105,16 +105,18 @@ Class names and values are in [style-fidelity.md](style-fidelity.md). The templa
 ### PDF poster
 
 - The poster block embeds the PDF with a titled `<object>`, an inner link as fallback, and a download button that states the file size. Below 769 px only the link and button show.
-- Headless screenshots show the embed blank; check it in the live preview. A poster PNG preview, if the materials have one, may go in the teaser or results instead, but not both.
+- The full-page screenshots show the embed blank; `audit.mjs` saves a separate `page-<width>-pdf<N>.png` of each visible embedded PDF, so check that one, and confirm it loads in the live preview. A poster PNG preview, if the materials have one, may go in the teaser or results instead, but not both.
 
 ### BibTeX
 
 - Show the citation whenever the project has one. Keep the copy button: it reports "Copied" or "Copy failed" and announces the result through the `role="status"` region. Keep the `pre` focusable.
 - For work without a venue, use the entry the materials give (often `@misc` or `@unpublished`); do not invent a booktitle.
 
-### Back-to-top and footer
+### Contents menu, back to top, and footer
 
-- The back-to-top button shows only at 1280 px and wider, in the gutter beside the column. Delete it for short pages.
+- The `.page-nav` block is one floating pill: a Contents button that opens a menu of the page's sections, and back to top. `index.js` builds the list from the `h2` headings (no list to maintain); with fewer than three headings it keeps only back to top. Keep it when the page is long or has many sections (about five or more, or when a reader would scroll several screens to find one); delete the whole block when the page is short enough to scan.
+- It appears after the header is scrolled past. On phones it is icon-only. Wherever it would sit over the text column (phones, tablets, narrow windows) it steps aside while the reader scrolls down, so it does not cover text being read; it returns on scroll up and at the end of the page.
+- Behaviour to keep: real buttons with `aria-expanded`/`aria-controls`; Esc closes the menu and returns focus to the button; the current section carries `aria-current`; reduced motion removes the fade and the smooth scroll. Colours are theme tokens, so a dark or custom-accent re-theme needs no extra CSS.
 - Keep the footer credit to both templates and the CC BY-SA 4.0 link. Add a line for the page's own content licence or a disclaimer only when the user gives one.
 
 ### Figure viewer
@@ -125,12 +127,12 @@ Behaviour (do not reimplement): light backdrop; the figure grows from its page p
 
 ## Pre-delivery checklist
 
-Run `node scripts/audit.mjs <url>` and fix every failure. Then confirm on the screenshots it saves at 375, 768, and 1440 px, and in the live preview:
+Run `node scripts/audit.mjs <url>` and fix every failure. Then confirm on the screenshots it saves (the screen-height slices at 1440 and 375 px, and the full-page shot at 768 px), and in the live preview:
 
 - [ ] Within each section, one left edge per column; no indented block under a full-width grid.
 - [ ] Side-by-side teaser media share one height; no letterboxing.
 - [ ] The method or architecture figure, if the project has one, is visible without opening a disclosure or a carousel.
-- [ ] No image used twice; local video posters inspected.
+- [ ] No image used twice; local video posters opened and not blank or black.
 - [ ] One corner treatment for comparable media.
 - [ ] No orphaned single word on the title or headings at 375 px.
 - [ ] Tinted and plain bands still alternate after optional blocks were deleted.

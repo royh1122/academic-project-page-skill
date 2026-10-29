@@ -15,6 +15,7 @@
     { "selector": ".publication-authors a", "optional": true, "expect": { "fontWeight": 600, "color": "#2563eb" } },
     { "selector": ".publication-affiliations", "optional": true, "expect": { "fontFamily": "Inter", "fontSize": 20, "color": "#475569" } },
     { "selector": ".publication-links .button", "optional": true, "expect": { "fontFamily": "Inter", "fontSize": 16, "fontWeight": 600, "color": "#ffffff", "backgroundColor": "#1e293b", "borderTopLeftRadius": 12 } },
+    { "selector": ".publication-awards", "optional": true, "expect": { "fontSize": 16, "fontWeight": 600, "color": "#7c4a03", "backgroundColor": "#fef3c7", "borderTopLeftRadius": 12 } },
     { "selector": "h2.title.is-3", "expect": { "fontFamily": "Inter", "fontSize": 32, "fontWeight": 700, "lineHeight": 36, "color": "#1e293b" } },
     { "selector": ".content.has-text-justified", "optional": true, "expect": { "fontSize": 17.6, "lineHeight": 31.68, "color": "#475569" } },
     { "selector": ".container.is-max-desktop", "expect": { "maxWidth": 960 } },

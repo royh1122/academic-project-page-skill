@@ -138,13 +138,14 @@ function createPage(send, once) {
       },
     },
     context: () => ({ newCDPSession: async () => ({ send, detach: async () => {} }) }),
-    async screenshot({ path, fullPage = false }) {
+    async screenshot({ path, fullPage = false, clip: region }) {
       let clip;
-      if (fullPage) {
+      if (region) clip = { ...region, scale: 1 };
+      else if (fullPage) {
         const { cssContentSize } = await send('Page.getLayoutMetrics');
         clip = { x: 0, y: 0, width: viewport.width, height: Math.ceil(cssContentSize.height), scale: 1 };
       }
-      const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: fullPage, ...(clip ? { clip } : {}) });
+      const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: fullPage || !!region, ...(clip ? { clip } : {}) });
       writeFileSync(path, Buffer.from(data, 'base64'));
     },
   };

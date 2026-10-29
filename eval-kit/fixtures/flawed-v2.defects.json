@@ -1,0 +1,73 @@
+{
+  "_comment": "FICTIONAL fixture. Grading notes for evals 9 and 10; keep outside the agent's working folder. Defects are visual or judgement defects; the bundled audit is expected to pass or only warn.",
+  "serve": "preview_server.py --root docs --base quillwave",
+  "defects": [
+    {
+      "id": "V1",
+      "defect": "Teaser image sits centred in a fixed 560 px tall grey box (max-height 100%, auto width), so empty bars show around the diagram (a large empty area around the diagram, worst at 375 px)",
+      "detected_by": "audit: warning 'Teaser media letterboxed' at 375, 1024 and 1440 px; also visible in the screenshots (375 px worst)",
+      "fix": "Remove the wrapper box and the inline sizing so the teaser fills the content width at its natural aspect ratio"
+    },
+    {
+      "id": "V2",
+      "defect": "The dense six-panel results figure (with its caption) was made the teaser and the clear pipeline diagram was moved into the Method section; the Method text no longer says 'at the top'",
+      "detected_by": "looking: 375 px, the first screen is unreadable panels; the audit does not flag it",
+      "fix": "Put the results figure back in Results (zoomable) and open with a legible teaser that shows the main result (here a comparison clip or a clear result image), or the pipeline diagram"
+    },
+    {
+      "id": "V3",
+      "defect": "A hand-inserted <br> in the title before the last word, so the title wraps with the single word 'Fields' alone on the last line (and a short line above it)",
+      "detected_by": "looking: 1440 px, header",
+      "fix": "Remove the <br> so the title wraps freely and balances"
+    },
+    {
+      "id": "V4",
+      "defect": "Two tinted bands in a row (Abstract and Video) after a reorder; Method lost its tint, so the alternation is broken and the two bands read as one tall block",
+      "detected_by": "looking: 1440 and 768 px, sections 2-3",
+      "fix": "Make Video a plain section and Method a tinted one again, restoring alternation"
+    },
+    {
+      "id": "V5",
+      "defect": "Third carousel clip given a square box (aspect-ratio 1/1, contain), so the carousel is as tall as the square and clips 1 and 2 leave a large blank gap under their captions, while clip 3 shows black side bars",
+      "detected_by": "looking: 1440 px, Qualitative Results",
+      "fix": "Remove the aspect-ratio and object-fit on clip 3 so all slides share the 8:3 shape and the carousel height fits"
+    },
+    {
+      "id": "V6",
+      "defect": "Table 2 stretched to the full column width with numeric columns left-aligned (is-numeric removed), so numbers sit far from their headers and decimals do not line up",
+      "detected_by": "looking: 1440 px, Results",
+      "fix": "Let the table take its natural width and restore the is-numeric class so number columns are right-aligned"
+    },
+    {
+      "id": "V7",
+      "defect": "Figure 2 caption lists the columns in the wrong order (linear and radial-basis swapped), so it no longer matches the figure",
+      "detected_by": "looking: compare Figure 2 with its caption (1440 px)",
+      "fix": "Restore the order in the figure: sensor map, linear interpolation, radial-basis interpolation, Quillwave, ground truth"
+    },
+    {
+      "id": "V8",
+      "defect": "The explainer video's poster is a black frame, so the Video section shows a black rectangle before play",
+      "detected_by": "looking: 1440 px and 375 px, Video",
+      "fix": "Extract a representative frame from the MP4 (for example at 0:20, when the decoder is explained) and use it as the poster"
+    },
+    {
+      "id": "V9",
+      "defect": "The Limitations section has doubled vertical padding (8 rem instead of 4 rem), an uneven rhythm",
+      "detected_by": "looking: 1440 px, gap around Limitations",
+      "fix": "Remove the inline padding so it matches the other sections"
+    },
+    {
+      "id": "V10",
+      "defect": "Figure 2 uses a soft, upscaled copy of the figure (an old low-resolution export re-saved at 1640 px), so it is blurry at full width and in the zoom viewer; the sharp original sits unused beside it",
+      "detected_by": "looking: 1440 px, Figure 2",
+      "fix": "Point the image at the sharp qualitative_grid.jpg and delete the soft copy"
+    }
+  ],
+  "content_must_stay": [
+    "Quillwave",
+    "FCSV 2026",
+    "29.46",
+    "Limitations",
+    "BibTeX"
+  ]
+}

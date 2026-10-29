@@ -13,7 +13,7 @@
 
 > Make a project page from the materials in this folder. Author: Ada Placeholder, Example University (fictional), Department of Imaginary Sciences. Individual project. Present it as research in preparation. No paper yet and no public links. Put the page in docs/.
 
-Built in one run by a fresh agent with the skill. No edits afterwards.
+Built in one run by a fresh agent with the skill (v1.1.0). No edits afterwards.
 
 ![Header and teaser at 1440 px](./hero-desktop.jpg)
 
@@ -21,19 +21,23 @@ Built in one run by a fresh agent with the skill. No edits afterwards.
 
 ## What the agent did
 
-- **Status:** a "Research in preparation" pill, the user's own wording. The target venue in `submission/` is not presented as a venue.
+- **Status:** a "Research in preparation" pill, the user's own wording. The target venue in `submission/` is not presented as a venue, and there is no award.
 - **No resource buttons**, and no "coming soon" placeholders.
-- **Caption fix:** it noticed that a source caption claims the gap "grows with fewer sensors" while the sweep shows the opposite. It removed the claim.
-- **Personal data:** only the permitted user-study averages appear. The screen capture with an operator badge is left out.
+- **Teaser:** a silent comparison loop, linear interpolation beside the Quillwave reconstruction, chosen because it reads at phone width; the dense results figure and the method diagram were the alternatives.
+- **Caption fix:** it noticed that a source caption claims the gap "grows with fewer sensors" while the sweep shows otherwise, removed the claim, and gave the real margins.
+- **Personal data:** the screen capture showing an operator's name, ID number and licence plate is left out, and so is the raw study data.
 - **Layout:**
-  - method figure inline and zoomable, with its empty margins cropped
-  - the dense results figure zoomable in Results
-  - the remaining loops in a carousel that does not rotate
+  - the method diagram inline and zoomable, with its empty margins cropped
+  - the dense results figure and the comparison grid zoomable
+  - the other loops in a carousel that does not rotate
+  - the floating Contents menu
 - **Metadata:** filled. The page-URL lines were deleted because the address isn't known.
 
-**Gate:** page audit and typography pass, with no warnings. `check_numbers.py` left one unmatched number, the licence version "4.0".
+**Gate:** page audit, interaction check and typography check pass, with no warnings. `check_numbers.py` left only the sensor counts, the year and three margins computed from the sweep table unmatched.
 
 ## Compared with no skill
+
+The baseline ran in the first evaluation round; it does not depend on the skill's version.
 
 The baseline was careful with content too: no venue, no stale numbers, no personal data. Its weaknesses were in presentation:
 

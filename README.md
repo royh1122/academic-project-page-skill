@@ -6,24 +6,48 @@ Point your coding agent at a folder of project materials (a paper or report PDF,
 
 [![CI](https://github.com/royh1122/academic-project-page-skill/actions/workflows/validate-skill.yml/badge.svg)](https://github.com/royh1122/academic-project-page-skill/actions/workflows/validate-skill.yml)
 [![Agent Skill](https://img.shields.io/badge/format-Agent_Skill-blue.svg)](https://agentskills.io)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![License: MIT and CC BY-SA 4.0](https://img.shields.io/badge/license-MIT_%2B_CC_BY--SA_4.0-green.svg)](#license)
 
-![A paper project page built by the skill](./examples/paper-full-links/hero-desktop.jpg)
+**[Live demo](https://royh1122.github.io/academic-project-page-skill/)** · demos: [paper](https://royh1122.github.io/academic-project-page-skill/paper/), [in preparation](https://royh1122.github.io/academic-project-page-skill/in-preparation/), [final year project](https://royh1122.github.io/academic-project-page-skill/final-year-project/) · [Examples](#examples) · [Install](#quick-start)
 
-## Install
+![Before and after: a plain page, then the page the skill built](./assets/readme/before-after.webp)
+
+[Watch as MP4](./assets/readme/before-after.mp4). The demos use a fictional project, so nothing real is shown.
+
+## Quick start
 
 ```bash
 npx skills add royh1122/academic-project-page-skill
 ```
 
-Or copy the skill folder into your agent's skills directory:
+1. **Install** with the command above.
+2. **Put your materials in a folder:** paper or report PDF, figures, tables, videos, poster, BibTeX.
+3. **Ask with one prompt**, and say what only you know: authors, verified links and awards, what may be public.
+
+A first prompt to try:
+
+> Make a project page for our paper "…" by …, accepted at …. Paper: <paper link>, code: <code link>. The materials are in this folder. Put the page in `docs/`.
+
+To polish or check an existing page:
+
+> Our project page in `docs/` looks a bit off. Can you polish it? Don't change the content.
+
+> Is the page in `docs/` ready to publish? Just tell me what's wrong.
+
+In Claude Code you can also install it as a plugin (Claude Code 2.1.275 or later):
+
+```
+/plugin install academic-project-page --marketplace royh1122/academic-project-page-skill
+```
+
+Or copy the skill folder into your agent's skills directory by hand:
 
 ```bash
 git clone https://github.com/royh1122/academic-project-page-skill.git
 cp -r academic-project-page-skill/skills/academic-project-page ~/.claude/skills/
 ```
 
-It works with Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, and any agent that reads `SKILL.md` skills.
+Tested with Claude Code. `npx skills add` also installs it for Cursor, Codex, Gemini CLI, GitHub Copilot and many other agents that read the `SKILL.md` format, but it has not been run in them yet. The browser checks need an agent that can run shell commands, plus the requirements below.
 
 **Requirements:**
 
@@ -31,28 +55,18 @@ It works with Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, and any ag
 - an installed Chrome, Edge, or Chromium, for the browser checks
 - ffmpeg, for converting GIFs and recordings
 
-## Use
+## Why not just the template?
 
-Ask for a page and say what only you know: authors, verified links and awards, and what may be public.
+The page builds on the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) and [Nerfies](https://nerfies.github.io/). The skill adds what a template cannot do:
 
-> Make a project page for our paper "…" by …, accepted at …. Paper: https://…, code: https://…. The materials are in this folder. Put the page in `docs/`.
-
-> Our project page in `docs/` looks a bit off. Can you polish it? Don't change the content.
-
-> Is the page in `docs/` ready to publish? Just tell me what's wrong.
+- **It does not invent.** Venues, awards, links, and metrics appear only when your sources verify them. A finalist is not an award; a target venue is not an acceptance.
+- **It checks reused claims.** Caption text from a paper is compared with the data, and claims the data contradicts are dropped.
+- **It keeps personal data off the page.** Names, IDs, and plates in raw files and video frames stay out.
+- **It checks its own work in a real browser:** a page audit, an interaction check that drives zoom, carousels, menus, and the keyboard, a check of every number against your sources, and screenshots it opens and reads.
 
 ## What it does
 
-**Build.** The agent reads the materials and fills the template with what they support:
-
-- title, authors and affiliations
-- the venue or status line, and resource buttons
-- a teaser, the abstract, and the method figure
-- results tables, image and video carousels, an embedded PDF poster
-- BibTeX with a copy button
-- search and social metadata
-
-Optional blocks the project lacks are removed rather than left as placeholders.
+**Build.** The agent reads the materials and fills the template with what they support: title, authors, venue or status line, resource buttons, teaser, abstract, method figure, results tables, carousels, an embedded poster, BibTeX with a copy button, and search and social metadata. Optional blocks the project lacks are removed, not left as placeholders.
 
 **Content rules.** The page states only what the sources verify:
 
@@ -68,23 +82,7 @@ Optional blocks the project lacks are removed rather than left as placeholders.
 - GIFs and anamorphic recordings are converted to square-pixel MP4.
 - Dense figures open in an accessible zoom viewer.
 
-**Checks.** Before reporting, the agent:
-
-- serves the page under its repository subpath, with video seeking working
-- runs a browser audit
-- checks every number on the page against the source files
-- reviews screenshots at 375, 768, and 1440 px
-
-The audit covers:
-
-- missing files and leftover placeholders
-- heading order, accessible names, and contrast
-- fonts rendered with synthesized bold
-- horizontal overflow, alignment, and letterboxed media
-- repeated images
-- video posters and seeking
-- motion under reduced-motion settings
-- the theme's typography
+**Checks.** Before reporting, the agent serves the page under its repository subpath, runs the browser audit and the interaction check, checks every number against the source files, and reviews screenshots at 375, 768, and 1440 px. The audit covers missing files and placeholders, heading order, accessible names, contrast, fonts, overflow, alignment, letterboxed media, repeated images, video posters and seeking, reduced motion, and the theme's typography.
 
 **Polish and Audit.** Polish fixes defects without changing content and reports the audit before and after. Audit reports problems by priority and edits nothing.
 
@@ -94,11 +92,39 @@ Each example was built in one run from a fictional project in the [evaluation ki
 
 | Example | Materials |
 | --- | --- |
-| [Accepted paper](./examples/paper-full-links/README.md) | Paper and poster PDFs, captioned explainer video, comparison loops, figures, tables |
-| [Research in preparation](./examples/research-in-preparation/README.md) | Summary PDF, figures, tables, a draft submission plan, raw study data with personal details |
-| [Final year project with an award](./examples/final-year-project-award/README.md) | Report PDF, award letter, explainer video, private repositories, author pages |
+| [Accepted paper](./examples/paper-full-links/README.md)<br><a href="./examples/paper-full-links/README.md"><img src="./examples/paper-full-links/hero-desktop.jpg" width="280" alt="Top of the accepted paper page"></a> | Paper and poster PDFs, captioned explainer video, comparison loops, figures, tables |
+| [Research in preparation](./examples/research-in-preparation/README.md)<br><a href="./examples/research-in-preparation/README.md"><img src="./examples/research-in-preparation/hero-desktop.jpg" width="280" alt="Top of the research in preparation page"></a> | Summary PDF, figures, tables, a draft submission plan, raw study data with personal details |
+| [Final year project with an award](./examples/final-year-project-award/README.md)<br><a href="./examples/final-year-project-award/README.md"><img src="./examples/final-year-project-award/hero-desktop.jpg" width="280" alt="Top of the final year project page"></a> | Report PDF, award letter, explainer video, private repositories, author pages |
 
-Results with and without the skill are in [eval-kit/README.md](./eval-kit/README.md#results-for-v100).
+## How it's tested
+
+The [evaluation kit](./eval-kit/) is a fictional project with planted traps: an unverified award, a target venue that is not an acceptance, personal data in raw files, a caption claim the data contradicts, superseded numbers, and duplicate images. Fresh agents got the same prompt with and without the skill, and the results were checked by hand.
+
+| Test | With the skill | Without |
+| --- | --- | --- |
+| Audit a page with 10 visual-only defects | 10 of 10 found | 5 of 10 |
+| Polish that page | 9 fixed, the 10th flagged | 6 fixed, 1 flagged |
+| Caption claim the data contradicts (earlier rounds) | removed in all 6 runs | kept in 2 of 5 runs |
+| Video showing a person's name, ID, and licence plate | none published | one baseline published it |
+| Zoomable figures per page | 8 to 9 | none |
+
+These are small samples, one run per arm. They show what the skill catches, not how often. Details are in [eval-kit/README.md](./eval-kit/README.md).
+
+## Built with this skill
+
+No pages here yet. If you built or polished a public page you own with this skill, [add it](../../issues/new?template=showcase.yml). Only pages the submitter owns are listed.
+
+## FAQ
+
+**Does it publish anything?** No. Pages are built and previewed locally. The agent publishes, pushes, or changes repository visibility only when you ask.
+
+**Does it need Chrome?** For the checks, yes: an installed Chrome, Edge, or Chromium. The skill installs nothing.
+
+**Does it work offline?** Building and previewing do. The template's CSS and scripts are bundled, but the page requests the Inter font from Google Fonts (and Academicons from jsDelivr with the arXiv button); offline it falls back to system fonts. YouTube embeds contact YouTube. There are no analytics.
+
+**Which agents?** Tested with Claude Code; other agents that read `SKILL.md` can install it, untested so far (see Quick start). Reports from other agents are welcome as issues.
+
+**Can it restyle the page?** Yes. An explicit request wins over the default theme. A dark theme or a new accent colour is a `:root` token override with no layout change.
 
 ## What's inside
 
@@ -120,10 +146,6 @@ skills/academic-project-page/
 eval-kit/                       fictional projects, generator, and a flawed-page fixture for the evals
 examples/                       example runs with screenshots
 ```
-
-## Privacy
-
-Pages are built and previewed locally. The agent publishes, pushes, or changes repository visibility only when you ask. The template loads the Inter font from Google Fonts; YouTube embeds contact YouTube. There are no analytics.
 
 ## License
 

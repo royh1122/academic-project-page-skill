@@ -2,7 +2,7 @@
 // Each feature does nothing when its markup is absent, so remove markup freely.
 //   - More Works menu      (.more-works)
 //   - Copy BibTeX          ([data-copy-target])
-//   - Back to top          (.scroll-to-top)
+//   - Contents and top     (.page-nav; the contents list is built from the page's h2 headings)
 //   - Carousels            ([data-carousel]; data-autoplay="6000" opts in to rotation)
 // Adapted from the Academic Project Page Template (CC BY-SA 4.0); jQuery and bulma-carousel removed.
 (() => {
@@ -85,13 +85,110 @@
     });
   });
 
-  // ---------- Back to top ----------
-  const toTop = document.querySelector('.scroll-to-top');
-  if (toTop) {
-    const update = () => toTop.classList.toggle('is-visible', window.scrollY > 400);
+  // ---------- Contents menu and back to top ----------
+  // The menu is built from the h2 headings in <main>, so it fits any set of sections. Delete the
+  // .page-nav block from the page to remove the feature.
+  const pageNav = document.querySelector('.page-nav');
+  if (pageNav) {
+    const menu = pageNav.querySelector('.page-nav-menu');
+    const toggle = pageNav.querySelector('.page-nav-toggle');
+    const toTop = pageNav.querySelector('.page-nav-top');
+    const list = pageNav.querySelector('.page-nav-list');
+    const close = pageNav.querySelector('.page-nav-close');
+    const header = document.querySelector('.publication-header');
+    const used = new Set([...document.querySelectorAll('[id]')].map(el => el.id));
+
+    // One entry per section heading: the link goes to the section's id, else the heading's id (made if absent).
+    const sections = [];
+    if (menu && toggle && list) {
+      document.querySelectorAll('main h2').forEach(heading => {
+        const label = heading.textContent.trim().replace(/\s+/g, ' ');
+        if (!label || heading.closest('[hidden]')) return;
+        const holder = heading.closest('section') || heading;
+        if (!holder.id && !heading.id) {
+          const base = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'section';
+          let id = base;
+          for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+          used.add(id);
+          heading.id = id;
+        }
+        const link = document.createElement('a');
+        link.href = `#${holder.id || heading.id}`;
+        link.textContent = label;
+        const item = document.createElement('li');
+        item.append(link);
+        list.append(item);
+        sections.push({ link, heading });
+      });
+    }
+    // A contents list of fewer than three entries is not worth a button; keep back to top only.
+    const hasMenu = sections.length >= 3;
+    if (!hasMenu) {
+      menu?.remove();
+      toggle?.remove();
+    }
+
+    const setOpen = (open, returnFocus) => {
+      if (!hasMenu || menu.hidden === !open) return;
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+      if (open) (list.querySelector('[aria-current]') || list.querySelector('a')).focus();
+      else if (returnFocus) toggle.focus();
+    };
+
+    // Mark the section the reader is in: the last heading above a line near the top of the screen.
+    const markCurrent = () => {
+      const line = window.innerHeight * 0.3;
+      let current = null;
+      sections.forEach(entry => { if (entry.heading.getBoundingClientRect().top <= line) current = entry; });
+      sections.forEach(entry => {
+        if (entry === current) entry.link.setAttribute('aria-current', 'location');
+        else entry.link.removeAttribute('aria-current');
+      });
+    };
+
+    // Appears once the header is scrolled past. Where the controls would sit over the text column (phones,
+    // tablets, narrow windows) they step aside while the reader scrolls down and return on any scroll up,
+    // at the end of the page, or while in use. In a wide gutter they stay.
+    const buttons = pageNav.querySelector('.page-nav-buttons') || pageNav;
+    const column = document.querySelector('main .container');
+    const overColumn = () => !column || buttons.getBoundingClientRect().left < column.getBoundingClientRect().right;
+    let lastY = window.scrollY;
+    let reading = false;
+    const update = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) > 4) {
+        reading = y > lastY;
+        lastY = y;
+      }
+      const start = header ? header.offsetTop + header.offsetHeight : 400;
+      const atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 80;
+      const inUse = (hasMenu && !menu.hidden) || pageNav.contains(document.activeElement);
+      const visible = y > start && (!reading || atEnd || inUse || !overColumn());
+      pageNav.classList.toggle('is-visible', visible);
+      if (!visible) setOpen(false, false);
+      if (hasMenu) markCurrent();
+    };
     window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
     update();
-    toTop.addEventListener('click', () => {
+
+    if (hasMenu) {
+      toggle.addEventListener('click', () => setOpen(menu.hidden));
+      close?.addEventListener('click', () => setOpen(false, true));
+      list.addEventListener('click', event => { if (event.target.closest('a')) setOpen(false); });
+      document.addEventListener('click', event => {
+        if (!menu.hidden && !pageNav.contains(event.target)) setOpen(false);
+      });
+      pageNav.addEventListener('focusout', event => {
+        if (!menu.hidden && event.relatedTarget && !pageNav.contains(event.relatedTarget)) setOpen(false);
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !menu.hidden) setOpen(false, pageNav.contains(document.activeElement));
+      });
+    }
+
+    toTop?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
       // Move focus to the top of the document so keyboard users continue from there.
       const target = document.getElementById('main-content');

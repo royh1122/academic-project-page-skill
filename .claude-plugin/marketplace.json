@@ -1,0 +1,12 @@
+{
+  "name": "royh1122-skills",
+  "description": "Agent skills by royh1122",
+  "owner": { "name": "royh1122", "url": "https://github.com/royh1122" },
+  "plugins": [
+    {
+      "name": "academic-project-page",
+      "source": "./",
+      "description": "Build, polish, or audit an academic project page for GitHub Pages, with browser checks."
+    }
+  ]
+}

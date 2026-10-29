@@ -170,8 +170,9 @@
         <p class="publication-venue">[INSERT STATUS, e.g. Preprint]</p>
         -->
 
-        <!-- Award line, only for an award verified by the user or a source.
-        <p class="publication-awards">[INSERT AWARD, e.g. Best Paper Award]</p>
+        <!-- Award line, only for an award verified by the user or a source (best paper, thesis prize,
+             department award). The icon is optional: fa-trophy or fa-award.
+        <p class="publication-awards"><i class="fas fa-trophy" aria-hidden="true"></i><span>[INSERT AWARD, e.g. Best Paper Award]</span></p>
         -->
 
         <!-- Resource buttons: one per verified resource; delete the rest. Never a "coming soon" button. -->
@@ -393,6 +394,18 @@
 </section>
 <!-- END PDF poster -->
 
+<!-- BEGIN optional: acknowledgments (advisors who are not authors, funding, data or compute providers),
+     in the user's wording. Keep the plain and tinted bands alternating with the sections around it. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Acknowledgments</h2>
+    <div class="content has-text-justified">
+      <p>[INSERT ACKNOWLEDGMENTS, e.g. We thank our supervisor, Dr. Name, for guidance throughout the project.]</p>
+    </div>
+  </div>
+</section>
+<!-- END acknowledgments -->
+
 <!-- BibTeX: visible whenever the project has a citation -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop">
@@ -410,11 +423,27 @@
 
 </main>
 
-<!-- BEGIN optional: back-to-top button; shown only on screens wide enough to keep it beside the content. -->
-<button type="button" class="scroll-to-top" aria-label="Back to top">
-  <i class="fas fa-chevron-up" aria-hidden="true"></i>
-</button>
-<!-- END back-to-top button -->
+<!-- BEGIN optional: contents menu and back to top. index.js builds the contents list from the h2 headings,
+     so there is nothing to edit: keep this block on long pages (about five or more sections), delete it whole
+     on short ones. It appears once the header is scrolled past and steps aside while reading wherever it would cover the text. -->
+<div class="page-nav">
+  <div class="page-nav-buttons">
+    <button type="button" class="page-nav-btn page-nav-toggle" aria-expanded="false" aria-controls="page-nav-menu">
+      <i class="fas fa-list-ul" aria-hidden="true"></i><span class="page-nav-label">Contents</span>
+    </button>
+    <button type="button" class="page-nav-btn page-nav-top" aria-label="Back to top">
+      <i class="fas fa-chevron-up" aria-hidden="true"></i>
+    </button>
+  </div>
+  <nav class="page-nav-menu" id="page-nav-menu" aria-label="Contents" hidden>
+    <div class="page-nav-header">
+      <span class="page-nav-title">Contents</span>
+      <button type="button" class="page-nav-close" aria-label="Close contents"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <ol class="page-nav-list"></ol>
+  </nav>
+</div>
+<!-- END contents menu and back to top -->
 
 <!-- Footer: keep both template credits and the licence link (CC BY-SA 4.0 requires attribution). -->
 <footer class="footer">
