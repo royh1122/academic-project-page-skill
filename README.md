@@ -69,7 +69,7 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 - **It does not invent.** Venues, awards, links, and metrics appear only when your sources verify them. A finalist is not an award; a target venue is not an acceptance.
 - **It checks reused claims.** Caption text from a paper is compared with the data, and claims the data contradicts are dropped.
 - **It keeps personal data off the page.** Names, IDs, and plates in raw files and video frames stay out.
-- **It checks its own work in a real browser:** a page audit, an interaction check that drives zoom, carousels, menus, and the keyboard, a check of every number against your sources, and screenshots it opens and reads.
+- **It checks its own work in a real browser:** a page audit, an interaction check that drives zoom, carousels, menus, and the keyboard, a check of every number and every external link against your sources, and screenshots it opens and reads.
 
 ## What it does
 
@@ -79,6 +79,7 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 
 - A target venue or a finalist listing does not become an acceptance or an award.
 - Draft numbers are not used.
+- Every external link (paper, code, DOI, dataset, video) comes from your materials or your request.
 - Claims in reused captions are checked against the data.
 - Personal data, unreleased data, and harmful text stay off the page, including faces, badges, and plates in video frames.
 
@@ -89,9 +90,11 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 - GIFs and anamorphic recordings are converted to square-pixel MP4.
 - Dense figures open in an accessible zoom viewer.
 
-**Checks.** Before reporting, the agent serves the page under its repository subpath, runs the browser audit and the interaction check, checks every number against the source files, and reviews screenshots at 375, 768, and 1440 px. The audit covers missing files and placeholders, heading order, accessible names, contrast, fonts, overflow, alignment, letterboxed media, repeated images, video posters and seeking, reduced motion, and the theme's typography.
+**Checks.** Before reporting, the agent serves the page under its repository subpath, runs the browser audit and the interaction check, checks every number and external link against the source files, and reviews screenshots at 375, 768, and 1440 px. The audit covers missing files and placeholders, heading order, accessible names, contrast, fonts, overflow, alignment, letterboxed media, repeated images, video posters and seeking, reduced motion, and the theme's typography.
 
-**Polish and Audit.** Polish fixes defects without changing content and reports the audit before and after. Audit reports problems by priority and edits nothing.
+**Polish and Audit.** Polish fixes defects without changing content, stays inside the part you name, checks pasted reviewer notes on the live page before acting on them, and reports the audit before and after. Audit ranks problems from P0 (blocks publishing) to P3 (cosmetic), each with a way to fix it, and edits nothing.
+
+**Honest reports.** Every report says which checks passed, which found problems, and which could not run, and why. A check that could not run is never reported as a pass.
 
 ## Examples
 
@@ -150,9 +153,10 @@ skills/academic-project-page/
 │   ├── audit.mjs               browser audit and screenshots, using the installed Chrome
 │   ├── preview_server.py       local preview under a repository subpath, with video seeking
 │   ├── check_numbers.py        numbers on the page against the source files
+│   ├── check_links.py          external links on the page against the source files
 │   └── unused_assets.py        static files the page no longer uses
-└── evals/evals.json            eight evals
-eval-kit/                       fictional projects, generator, and a flawed-page fixture for the evals
+└── evals/evals.json            twelve evals
+eval-kit/                       fictional projects, generator, and flawed-page fixtures for the evals
 examples/                       example runs with screenshots
 ```
 

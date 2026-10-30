@@ -2,6 +2,35 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.2.0
+
+**Reports you can trust**
+
+- **Every check is labelled:** the report says which checks passed, which ran with findings, and which did not run and why. A check that could not start, an empty result, or a skipped screenshot is "not run", never a pass. When the browser check cannot run at all, the report opens with `DEGRADED: <reason>`.
+- **Results go stale:** an edit after the last check run means running it again before reporting; a blank, half-loaded, or wrong-width screenshot is retaken, not counted.
+- **Unverified items are named:** a number traced to no source, a link the user did not give, or an optional block kept without matching material is reported as unverified instead of left out.
+- **Audit findings ranked P0 to P3** (blocks publishing, accessibility or interaction, layout, cosmetic), each with a way to fix it, and any question to the user last.
+
+**Polish**
+
+- **Scope:** "polish the teaser" touches only the teaser; other defects are listed, not fixed, and do not hold back the report.
+- **Pasted reviewer notes** are reproduced on the live page before any fix; notes that do not reproduce are reported with what was seen, not "fixed".
+- **Before and after:** the audit runs on the untouched page first, and the report gives both counts.
+- **Triage order:** broken content, then accessibility, then layout, then cosmetics, each fixed at the narrowest level.
+- **Before you finish:** a short final check per mode (Build: numbers and links traced, omissions named; Polish: nothing changed outside the named defects; Audit: nothing edited).
+
+**Build and content**
+
+- **External link check:** new `scripts/check_links.py` lists every external link on the page (buttons, embeds, meta tags, JSON-LD) and flags any found in none of the sources, plus empty and placeholder links. arXiv, DOI and YouTube links match on their identifier; links the user gives in the chat are passed with `--allow`. It runs in the gate beside `check_numbers.py`.
+- **Page brief:** before filling the template, the agent writes three to five lines in its working notes (audience, takeaway, first screen, section order, why this teaser), then checks the result is not what it would produce for any paper.
+- **Structure only where the content has it:** no numbered steps, eyebrow labels, badges, or "key contributions" boxes on content without that structure.
+- **Button wording:** buttons say what they do or where they go, one action keeps one name, one capitalisation style.
+
+**Repository**
+
+- **CI checks the release files agree:** the version in `SKILL.md`, the Claude Code marketplace entry and the Codex plugin must match, every manifest must point at a real `SKILL.md`, and the frontmatter must parse without duplicate keys.
+- **Evals 11 and 12:** a scoped Polish from pasted reviewer notes (one of which does not reproduce), and a build where the user asks for Paper, Code and Dataset buttons the materials cannot support. The audit and polish evals now expect P0-P3 findings, labelled checks and before/after counts.
+
 ## 1.1.1
 
 - **Smaller plugin install:** the Claude Code and Codex plugins now install only the skill folder (1.7 MB) instead of a copy of the whole repository (eval kit, examples and README media, about 26 MB). Both marketplaces point at `./skills`; the Codex manifest moved to `skills/.codex-plugin/plugin.json`, and the Claude Code plugin's details live in its marketplace entry.

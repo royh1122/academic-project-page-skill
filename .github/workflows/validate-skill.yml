@@ -18,16 +18,45 @@ jobs:
         with:
           node-version: 22
 
-      - name: SKILL.md frontmatter parses as YAML
+      - name: Frontmatter is strict YAML; versions and manifests agree
         run: |
           pip install --quiet pyyaml
           python3 - <<'PY'
-          import yaml
+          import json, os, yaml
+
+          class Strict(yaml.SafeLoader):
+              """SafeLoader that fails on duplicate keys, which plain YAML silently overwrites."""
+          def mapping(loader, node, deep=False):
+              keys = [loader.construct_object(k, deep=deep) for k, _ in node.value]
+              dupes = {k for k in keys if keys.count(k) > 1}
+              assert not dupes, f'duplicate frontmatter keys: {dupes}'
+              return yaml.SafeLoader.construct_mapping(loader, node, deep)
+          Strict.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+
           text = open('skills/academic-project-page/SKILL.md', encoding='utf-8').read()
-          meta = yaml.safe_load(text.split('---')[1])
+          assert text.startswith('---\n'), 'SKILL.md must open with the frontmatter'
+          meta = yaml.load(text.split('---\n')[1], Loader=Strict)
           assert meta['name'] == 'academic-project-page', meta.get('name')
           assert 0 < len(meta['description']) <= 1024, len(meta['description'])
-          print('frontmatter ok:', len(meta['description']), 'description chars')
+          version = meta['metadata']['version']
+          assert isinstance(version, str), 'metadata.version must be a quoted string'
+
+          claude = json.load(open('.claude-plugin/marketplace.json', encoding='utf-8'))
+          codex_market = json.load(open('.agents/plugins/marketplace.json', encoding='utf-8'))
+          versions = {'SKILL.md': version}
+          for plugin in claude['plugins']:
+              versions[f'.claude-plugin/marketplace.json ({plugin["name"]})'] = plugin.get('version')
+              for skill in plugin.get('skills', []):
+                  path = os.path.join(plugin['source'], skill, 'SKILL.md')
+                  assert os.path.isfile(path), f'Claude marketplace lists {skill}, but {path} is missing'
+          for plugin in codex_market['plugins']:
+              root = plugin['source']['path']
+              manifest = json.load(open(os.path.join(root, '.codex-plugin', 'plugin.json'), encoding='utf-8'))
+              versions[f'{root}/.codex-plugin/plugin.json'] = manifest.get('version')
+              path = os.path.join(root, manifest['skills'], 'SKILL.md')
+              assert os.path.isfile(path), f'Codex plugin lists {manifest["skills"]}, but {path} is missing'
+          assert len(set(versions.values())) == 1, 'versions differ: ' + ', '.join(f'{k} {v}' for k, v in versions.items())
+          print('frontmatter ok:', len(meta['description']), 'description chars; version', version, 'in', len(versions), 'files')
           PY
 
       - name: Validate Skill Structure & Frontmatter
@@ -54,10 +83,10 @@ jobs:
           for f in skills/academic-project-page/scripts/audit_page.js skills/academic-project-page/scripts/check_style.js; do
             node -e "new Function('return ' + require('fs').readFileSync('$f', 'utf8'))" || exit 1
           done
-          python3 -m py_compile skills/academic-project-page/scripts/preview_server.py skills/academic-project-page/scripts/unused_assets.py skills/academic-project-page/scripts/check_numbers.py
+          python3 -m py_compile skills/academic-project-page/scripts/preview_server.py skills/academic-project-page/scripts/unused_assets.py skills/academic-project-page/scripts/check_numbers.py skills/academic-project-page/scripts/check_links.py
 
           echo "Checking referenced bundle files exist..."
-          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs evals/evals.json; do
+          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs scripts/check_numbers.py scripts/check_links.py evals/evals.json; do
             test -f "skills/academic-project-page/$f" || (echo "Missing $f" && exit 1)
           done
 

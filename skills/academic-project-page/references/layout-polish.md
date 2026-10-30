@@ -72,6 +72,7 @@ Read this before arranging media. Part 1 applies to any academic project page, w
 - **Venue and awards** appear only when verified by the user or a source. The awarding body saying the work received, won, or was selected for the award verifies it; a finalist, shortlist, nomination, candidacy, or someone's hope does not (when the wording is ambiguous, show nothing and ask, quoting it). Mention a finalist or nomination only in the user's words if they ask.
 - **Author links** go to verified personal pages; otherwise plain text.
 - **Resource buttons:** one per verified resource. Private repositories and unreleased data get no button.
+- **Button and link wording:** say what it does or where it goes ("Paper", "Code", "Download poster (PDF, 2.4 MB)", "Copy"), never "Click here" or "Learn more". One action keeps one name across the page, every button uses one capitalisation style, and each label fits one line at 360 px.
 
 ### Colour and contrast
 
@@ -143,3 +144,4 @@ Run `node scripts/audit.mjs <url>` and fix every failure. Then confirm on the sc
 - [ ] No personal data, unreleased data, or harmful text in text, images, or video frames.
 - [ ] `scripts/unused_assets.py` reports nothing to remove.
 - [ ] `scripts/check_numbers.py` reports no unmatched numbers, or each one is traced to a stated derivation.
+- [ ] `scripts/check_links.py` reports no link outside the materials (or each one came from the user and is passed with `--allow`) and no empty or placeholder link.
