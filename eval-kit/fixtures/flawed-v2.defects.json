@@ -6,7 +6,8 @@
       "id": "V1",
       "defect": "Teaser image sits centred in a fixed 560 px tall grey box (max-height 100%, auto width), so empty bars show around the diagram (a large empty area around the diagram, worst at 375 px)",
       "detected_by": "audit: warning 'Teaser media letterboxed' at 375, 1024 and 1440 px; also visible in the screenshots (375 px worst)",
-      "fix": "Remove the wrapper box and the inline sizing so the teaser fills the content width at its natural aspect ratio"
+      "fix": "Remove the wrapper box and the inline sizing so the teaser fills the content width at its natural aspect ratio",
+      "audit_match": "Teaser media letterboxed"
     },
     {
       "id": "V2",
@@ -17,8 +18,9 @@
     {
       "id": "V3",
       "defect": "A hand-inserted <br> in the title before the last word, so the title wraps with the single word 'Fields' alone on the last line (and a short line above it)",
-      "detected_by": "looking: 1440 px, header",
-      "fix": "Remove the <br> so the title wraps freely and balances"
+      "detected_by": "audit: warning 'Title ends with a single word' at every width; also visible at 1440 px, header",
+      "fix": "Remove the <br> so the title wraps freely and balances",
+      "audit_match": "alone on its last line"
     },
     {
       "id": "V4",
@@ -35,8 +37,9 @@
     {
       "id": "V6",
       "defect": "Table 2 stretched to the full column width with numeric columns left-aligned (is-numeric removed), so numbers sit far from their headers and decimals do not line up",
-      "detected_by": "looking: 1440 px, Results",
-      "fix": "Let the table take its natural width and restore the is-numeric class so number columns are right-aligned"
+      "detected_by": "audit: warning 'numbers are left-aligned' per column; also visible at 1440 px, Results",
+      "fix": "Let the table take its natural width and restore the is-numeric class so number columns are right-aligned",
+      "audit_match": "numbers are left-aligned"
     },
     {
       "id": "V7",
@@ -47,8 +50,9 @@
     {
       "id": "V8",
       "defect": "The explainer video's poster is a black frame, so the Video section shows a black rectangle before play",
-      "detected_by": "looking: 1440 px and 375 px, Video",
-      "fix": "Extract a representative frame from the MP4 (for example at 0:20, when the decoder is explained) and use it as the poster"
+      "detected_by": "audit: warning 'Video poster is a blank or near-black frame'; also visible at 1440 and 375 px, Video",
+      "fix": "Extract a representative frame from the MP4 (for example at 0:20, when the decoder is explained) and use it as the poster",
+      "audit_match": "blank or near-black frame"
     },
     {
       "id": "V9",

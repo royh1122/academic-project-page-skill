@@ -102,3 +102,23 @@ jobs:
           done
 
           echo "Validation passed successfully!"
+
+  audit-fixtures:
+    # The audit must report every planted flaw in eval-kit/fixtures (evals/check_fixtures.py).
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Let Chrome start its own sandbox
+        # Ubuntu 24.04 blocks the unprivileged user namespaces Chrome's sandbox uses; allow them
+        # instead of turning the sandbox off.
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+
+      - name: Audit reports every planted flaw
+        run: python3 evals/check_fixtures.py

@@ -156,7 +156,7 @@ skills/academic-project-page/
 │   ├── check_numbers.py        numbers on the page against the source files
 │   ├── check_links.py          external links on the page against the source files
 │   └── unused_assets.py        static files the page no longer uses
-evals/evals.json                thirteen evals
+evals/                          agent evals (7 core, 2 topic, 4 retired) and check_fixtures.py, which tests the audit on planted flaws
 eval-kit/                       fictional projects, generator, and flawed-page fixtures for the evals
 examples/                       example runs with screenshots
 MAINTAINING.md                  notes for changing the skill: size budget, icons, the typography check

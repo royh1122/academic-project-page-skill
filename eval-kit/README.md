@@ -10,7 +10,7 @@ Everything here is invented. People, the institution, venues, data, and results 
 | `kits/V2` | Research in preparation with no paper and no public links: summary PDF, a target-venue author kit, raw user-study data with personal details, a GIF, an anamorphic screen capture |
 | `kits/V3` | A completed final-year project: report PDF, a verified award letter, a "finalist" short paper, private repository READMEs, `authors.json` |
 | `generator/` | Deterministic builder (`build.py`) and checker (`verify.py`); `expected/` holds the answer files |
-| `fixtures/make_flawed_page.py` | Builds `flawed-v1/`, a clean page with 10 injected defects, for the Polish and Audit evals |
+| `fixtures/make_flawed_page.py` | Builds `flawed-v1/`, a clean page with 10 injected defects, all caught by the audit script (`evals/check_fixtures.py`; formerly evals 4 and 5) |
 | `fixtures/make_flawed_page_v2.py` | Builds `flawed-v2/`, the same clean page with 10 visual and judgement defects (letterboxed teaser, dense figure as teaser, orphaned title word, adjacent tinted bands, carousel gap, stretched table, wrong caption order, black poster, uneven padding, blurry figure) that the audit mostly does not flag; for evals 9 and 10 |
 
 Each kit hides traps whose correct handling is recorded in `generator/expected/<variant>.json`:
@@ -33,10 +33,14 @@ Each kit hides traps whose correct handling is recorded in `generator/expected/<
 
 ## Running the evals
 
-The prompts and expectations are in [`skills/academic-project-page/evals/evals.json`](../skills/academic-project-page/evals/evals.json).
+The prompts and expectations are in [`evals/evals.json`](../evals/evals.json). Each eval has a tier: run every **core** eval for a release that changes the skill's behaviour, a **topic** eval only when its area changes, and none of the **retired** ones (each says why).
+
+Planted flaws that the audit script should catch are tested without an agent: `python evals/check_fixtures.py` serves each fixture and checks that the audit reports every defect with an `audit_match`. CI runs it on every push.
+
+For an agent eval:
 
 1. Copy one kit (or the fixture) into an empty folder and give the prompt to a fresh agent with the skill installed. The agent must not see `generator/expected/` or the fixture's defect list.
-2. Give the same prompt to a fresh agent without the skill.
+2. For a new eval or a new rule, give the same prompt to a fresh agent without the skill.
 3. Grade both:
    - serve the page with `preview_server.py` and run `audit.mjs`
    - run `check_numbers.py` against the kit's sources
@@ -44,7 +48,7 @@ The prompts and expectations are in [`skills/academic-project-page/evals/evals.j
    - check each trap in the answer file
    - look at the screenshots
 
-Rebuild the kits with `python generator/build.py`; the output is byte-identical on the same toolchain. Build the award variant for eval 7 with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`; the defect lists are written beside them.
+Rebuild the kits with `python generator/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`; the defect lists are written beside them.
 
 ## Results for v1.1.0
 

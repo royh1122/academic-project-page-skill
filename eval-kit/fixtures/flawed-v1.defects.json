@@ -1,56 +1,66 @@
 {
-  "_comment": "FICTIONAL fixture. Grading notes for evals 4 and 5; keep outside the agent's working folder.",
+  "_comment": "FICTIONAL fixture. Planted flaws the audit script must report (evals/check_fixtures.py, run in CI); formerly the answers for evals 4 and 5. Keep outside any agent's working folder.",
   "serve": "preview_server.py --root docs --base quillwave",
   "defects": [
     {
       "id": "D1",
       "defect": "Font request loads Inter at 400 only, so headings, buttons and the title render synthesized bold",
-      "detected_by": "audit: synthesized bold"
+      "detected_by": "audit: synthesized bold",
+      "audit_match": "synthesized bold"
     },
     {
       "id": "D2",
       "defect": "Method paragraph indented 2.5rem under the full-width figure (two left edges)",
-      "detected_by": "audit: left edges"
+      "detected_by": "audit: left edges",
+      "audit_match": "left edges"
     },
     {
       "id": "D3",
       "defect": "Results panel image has square corners while other media are rounded",
-      "detected_by": "audit: corner radii"
+      "detected_by": "audit: corner radii",
+      "audit_match": "different corner radii"
     },
     {
       "id": "D4",
       "defect": "Results panel image uses a root-absolute path (/static/...), which breaks under a repository subpath",
-      "detected_by": "audit: missing resource (same edit as D3)"
+      "detected_by": "audit: missing resource (same edit as D3)",
+      "audit_match": "results_panels.png (404)"
     },
     {
       "id": "D5",
       "defect": "Footer Nerfies link in a light blue that fails contrast",
-      "detected_by": "audit: contrast"
+      "detected_by": "audit: contrast",
+      "audit_match": "Contrast"
     },
     {
       "id": "D6",
       "defect": "Qualitative grid image has no alt text",
-      "detected_by": "audit: image without alt"
+      "detected_by": "audit: image without alt",
+      "audit_match": "Image without alt"
     },
     {
       "id": "D7",
       "defect": "Teaser loop lost playsinline and its poster frame",
-      "detected_by": "audit: video warnings"
+      "detected_by": "audit: video warnings",
+      "audit_match": "without playsinline"
     },
     {
       "id": "D8",
       "defect": "Placeholder Data button left from the template",
-      "detected_by": "audit: placeholder"
+      "detected_by": "audit: placeholder",
+      "audit_match": "Template placeholder remains"
     },
     {
       "id": "D9",
       "defect": "The pipeline figure appears a second time in Comparison Clips",
-      "detected_by": "audit: repeated image"
+      "detected_by": "audit: repeated image",
+      "audit_match": "Same image shown more than once"
     },
     {
       "id": "D10",
       "defect": "Limitations heading demoted to h4 (skips heading levels)",
-      "detected_by": "audit: heading order"
+      "detected_by": "audit: heading order",
+      "audit_match": "Heading level skipped"
     }
   ],
   "content_must_stay": [
