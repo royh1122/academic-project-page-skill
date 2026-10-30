@@ -47,9 +47,13 @@ export async function launch({ profileRoot = tmpdir() } = {}) {
   const executable = findChrome();
   if (!executable) throw new Error('No Chrome, Edge, or Chromium found. Install one or set CHROME_PATH.');
   const profile = mkdtempSync(join(profileRoot, 'page-audit-'));
+  // The user may set PAGE_AUDIT_NO_SANDBOX=1 when their agent's own sandbox stops Chrome's (see the error below).
+  const optOut = process.env.PAGE_AUDIT_NO_SANDBOX === '1';
+  if (optOut) console.error('note: PAGE_AUDIT_NO_SANDBOX=1 is set, so Chrome runs without its own sandbox.');
   const chrome = spawn(executable, [
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
-    '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--mute-audio', 'about:blank',
+    '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--mute-audio',
+    ...(optOut ? ['--no-sandbox'] : []), 'about:blank',
   ], { stdio: 'ignore' });
 
   // Chrome writes the port it picked to DevToolsActivePort in the profile.
@@ -82,7 +86,22 @@ export async function launch({ profileRoot = tmpdir() } = {}) {
     listeners.set(method, [...(listeners.get(method) || []), callback]);
   });
 
-  await send('Page.enable');
+  // Inside an agent's own sandbox (Codex's, for one) Chrome may not be able to set up its sandbox, so its tab
+  // never answers; without this timeout Node exits with only "unsettled top-level await".
+  let timer;
+  const answered = await Promise.race([
+    send('Page.enable').then(() => true),
+    new Promise(resolve => { timer = setTimeout(() => resolve(false), 10000); }),
+  ]);
+  clearTimeout(timer);
+  if (!answered) {
+    try { socket.close(); } catch {}
+    chrome.kill();
+    throw new Error('The browser started but its tab never answered. This happens when the agent itself runs in a '
+      + 'sandbox that stops Chrome from starting its own (Codex, for one). Run the audit outside the '
+      + "agent's sandbox: approve the command when the agent asks, or run it yourself. For unattended runs the user "
+      + 'can instead set PAGE_AUDIT_NO_SANDBOX=1, which runs Chrome without its own sandbox.');
+  }
   await send('Runtime.enable');
   const page = createPage(send, once);
   const close = async () => {

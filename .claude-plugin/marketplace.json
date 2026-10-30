@@ -1,12 +1,34 @@
 {
   "name": "royh1122-skills",
   "description": "Agent skills by royh1122",
-  "owner": { "name": "royh1122", "url": "https://github.com/royh1122" },
+  "owner": {
+    "name": "royh1122",
+    "url": "https://github.com/royh1122"
+  },
   "plugins": [
     {
       "name": "academic-project-page",
-      "source": "./",
-      "description": "Build, polish, or audit an academic project page for GitHub Pages, with browser checks."
+      "source": "./skills",
+      "strict": false,
+      "version": "1.1.1",
+      "description": "Build, polish, or audit an academic project page for GitHub Pages, then check it in a real browser.",
+      "author": {
+        "name": "royh1122",
+        "url": "https://github.com/royh1122"
+      },
+      "homepage": "https://royh1122.github.io/academic-project-page-skill/",
+      "repository": "https://github.com/royh1122/academic-project-page-skill",
+      "license": "MIT AND CC-BY-SA-4.0",
+      "keywords": [
+        "academic",
+        "project-page",
+        "github-pages",
+        "research",
+        "paper"
+      ],
+      "skills": [
+        "./academic-project-page"
+      ]
     }
   ]
 }

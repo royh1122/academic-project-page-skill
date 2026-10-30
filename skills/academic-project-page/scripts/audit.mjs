@@ -116,7 +116,7 @@ try {
         .filter(el => el.getBoundingClientRect().height > 0).length);
       for (let i = 0; i < frames; i++) {
         await page.evaluate(index => document.querySelectorAll('object[type="application/pdf"], embed[type="application/pdf"]')[index]
-          .scrollIntoView({ block: 'center' }), i);
+          .scrollIntoView({ block: 'center', behavior: 'instant' }), i);
         await new Promise(resolve => setTimeout(resolve, 3000));
         const pdfPath = join(out, `page-${width}-pdf${i + 1}.png`);
         await page.screenshot({ path: pdfPath });

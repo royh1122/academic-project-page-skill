@@ -1,0 +1,34 @@
+{
+  "name": "academic-project-page",
+  "version": "1.1.1",
+  "description": "Build, polish, or audit an academic project page for GitHub Pages, then check it in a real browser.",
+  "author": {
+    "name": "royh1122",
+    "url": "https://github.com/royh1122"
+  },
+  "homepage": "https://royh1122.github.io/academic-project-page-skill/",
+  "repository": "https://github.com/royh1122/academic-project-page-skill",
+  "license": "MIT AND CC-BY-SA-4.0",
+  "keywords": [
+    "academic",
+    "project-page",
+    "github-pages",
+    "research",
+    "paper"
+  ],
+  "skills": "./academic-project-page",
+  "interface": {
+    "displayName": "Academic Project Page",
+    "shortDescription": "Turn a paper, figures and videos into a checked project page.",
+    "longDescription": "Builds a responsive project page for a paper, thesis or project from a folder of materials, in the style of the Academic Project Page Template and Nerfies, then checks it in a real browser. Also polishes or audits an existing page.",
+    "developerName": "royh1122",
+    "category": "Design",
+    "capabilities": [],
+    "websiteURL": "https://royh1122.github.io/academic-project-page-skill/",
+    "defaultPrompt": [
+      "Make a project page for our paper from the materials in this folder.",
+      "Polish the project page in docs/ without changing the content.",
+      "Is the project page in docs/ ready to publish? Just tell me what's wrong."
+    ]
+  }
+}

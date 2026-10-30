@@ -76,7 +76,8 @@ async (page) => {
           const trigger = document.querySelectorAll('.figure-zoom-trigger')[index];
           const { label, shown, dead } = window.__ip;
           if (!shown(trigger) || dead(trigger)) return null;
-          trigger.scrollIntoView({ block: 'center' });
+          // Instant: with smooth scrolling (the template's default) the page is still moving when the click lands.
+          trigger.scrollIntoView({ block: 'center', behavior: 'instant' });
           const r = trigger.getBoundingClientRect();
           const x = r.left + r.width / 2, y = r.top + r.height / 2;
           const top = document.elementFromPoint(x, y);
@@ -93,7 +94,7 @@ async (page) => {
             // Scroll again: a close handler may have moved the page.
             const at = await page.evaluate(index => {
               const trigger = document.querySelectorAll('.figure-zoom-trigger')[index];
-              trigger.scrollIntoView({ block: 'center' });
+              trigger.scrollIntoView({ block: 'center', behavior: 'instant' });
               const r = trigger.getBoundingClientRect();
               return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
             }, i);
@@ -164,7 +165,7 @@ async (page) => {
         if (!s.ready) { failures.push(`${s.name}: the carousel did not initialise (is-ready missing; is index.js loaded?).`); continue; }
         if (s.n < 2 || !s.hasControls) continue;
         evidence.tested.push(`carousel "${s.name}"`);
-        await page.evaluate(index => document.querySelectorAll('[data-carousel]')[index].scrollIntoView({ block: 'center' }), c);
+        await page.evaluate(index => document.querySelectorAll('[data-carousel]')[index].scrollIntoView({ block: 'center', behavior: 'instant' }), c);
         if (s.current.length !== 1) failures.push(`${s.name}: ${s.current.length} slides are exposed at once; exactly one should be (the others inert).`);
         else if (s.leaky.length > 1) failures.push(`${s.name}: off-screen slides ${s.leaky.filter(i => i !== s.current[0]).map(i => i + 1).join(', ')} are neither inert nor hidden from keyboard and screen readers.`);
         const focusButton = cls => page.evaluate(({ index, cls }) => document.querySelectorAll('[data-carousel]')[index].querySelector(cls).focus({ preventScroll: true }), { index: c, cls });
@@ -203,7 +204,7 @@ async (page) => {
         const before = await page.evaluate(index => {
           const button = document.querySelectorAll('[data-copy-target]')[index];
           const status = document.getElementById(button.dataset.copyStatus || '');
-          button.scrollIntoView({ block: 'center' });
+          button.scrollIntoView({ block: 'center', behavior: 'instant' });
           button.focus({ preventScroll: true });
           return { name: window.__ip.label(button), label: button.textContent.trim(), status: status ? status.textContent : null,
             live: status ? status.getAttribute('aria-live') || status.getAttribute('role') : null, sourceMissing: !document.getElementById(button.dataset.copyTarget) };
@@ -285,7 +286,7 @@ async (page) => {
       const found = await page.evaluate(() => !!document.querySelector('.more-works-btn'));
       if (!found) return;
       evidence.tested.push('more works menu');
-      await page.evaluate(() => { const b = document.querySelector('.more-works-btn'); b.scrollIntoView({ block: 'center' }); b.focus({ preventScroll: true }); });
+      await page.evaluate(() => { const b = document.querySelector('.more-works-btn'); b.scrollIntoView({ block: 'center', behavior: 'instant' }); b.focus({ preventScroll: true }); });
       await press('Enter');
       const open = await until(() => {
         const b = document.querySelector('.more-works-btn');

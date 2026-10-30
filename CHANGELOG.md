@@ -2,6 +2,13 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.1.1
+
+- **Smaller plugin install:** the Claude Code and Codex plugins now install only the skill folder (1.7 MB) instead of a copy of the whole repository (eval kit, examples and README media, about 26 MB). Both marketplaces point at `./skills`; the Codex manifest moved to `skills/.codex-plugin/plugin.json`, and the Claude Code plugin's details live in its marketplace entry.
+- **Codex plugin:** `skills/.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`, so Codex installs it with `codex plugin marketplace add royh1122/academic-project-page-skill` and `codex plugin add academic-project-page@royh1122-skills`. **Tested with Codex:** the skill triggered on its own, Codex asked to run the browser audit outside its sandbox, fixed the contrast issue and missing video posters the audit found, and passed it on the rerun. Unattended runs (`codex exec`) cannot ask, so the browser check does not run there unless the user opts in (below).
+- **Clear error inside an agent's sandbox:** when Chrome starts but its tab never answers (Chrome cannot start its own sandbox inside the agent's), the audit stops after 10 seconds and says to run it outside the sandbox, instead of exiting with only "unsettled top-level await". `SKILL.md` tells the agent to ask for that permission instead of skipping the check. A user running an agent unattended can set `PAGE_AUDIT_NO_SANDBOX=1` to run Chrome without its sandbox; the agent never sets it.
+- **Interaction check no longer fails working zoom buttons:** it scrolled smoothly (the template's default) and could click before the page stopped moving, reporting "a click does not open the figure viewer" for figures further down the page. It now scrolls instantly.
+
 ## 1.1.0
 
 **Page and template**
