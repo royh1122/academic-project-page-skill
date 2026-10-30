@@ -2,6 +2,27 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.3.0
+
+**Lighter pages and a leaner skill**
+
+- **Icons are inline SVG:** the template no longer loads Font Awesome's 1.2 MB script (or the Academicons stylesheet from a CDN). Its icons are inline SVG from Font Awesome Free 6.7.2 and Academicons, about 0.5 KB each, so a built page loads 36 KB of JavaScript instead of about 1.2 MB, and icons appear without waiting for a script. The look is unchanged apart from Font Awesome 6's PDF icon. `references/icons.md` lists 35 icons for academic pages, one small file each, and explains how to take any other Font Awesome Free icon. The full library is still available when the user asks for it.
+- **The audit fails icons that draw nothing:** `<i class="fa-...">` or Academicons markup with no icon font loaded is now a failure that names the icon. Existing pages that load Font Awesome are not affected, and Polish keeps them as they are.
+- **SKILL.md is 28% shorter** (2,807 to 2,013 words; its longest line is 514 characters instead of 1,390). Each rule now has one home: content truth and reporting in SKILL.md, layout and media in `layout-polish.md`, theme values in `style-fidelity.md`. Repeated rules, the list of every audit check, and rows that repeated the references are gone; no behaviour was dropped.
+- **The skill folder is 73% smaller** (1.64 MB to 445 KB). Maintainer material moved out: the typography-check internals and the list of defects fixed relative to APT are in `MAINTAINING.md`, and the evals moved to `evals/` at the repository root.
+
+**Behaviour**
+
+- **Coverage starts with a list of the work's main parts**, and a part whose code is private is still shown from the report.
+- **Every screenshot slice at both widths** is opened before a Build or Polish is reported; "not run" is only for a slice the audit could not make.
+- **`check_links.py` works on a page alone:** with no source files it lists the links as unverified and fails only on placeholder or empty links, so Polish and Audit can use it.
+- Helper scripts and temporary files the agent made are deleted before reporting.
+
+**Repository**
+
+- **CI enforces a size budget:** a warning when the SKILL.md body passes 2,200 words, a failure at 2,500 words or for any line over 700 characters. It also fails on icon-font markup in the template.
+- **Eval 13:** add a button with an icon to a finished page. Eval round 10 reran evals 1-3 and 9-13 on the new skill against earlier rounds; it found two regressions from the shortening (coverage and screenshot completeness), which were fixed and confirmed in reruns.
+
 ## 1.2.0
 
 **Reports you can trust**

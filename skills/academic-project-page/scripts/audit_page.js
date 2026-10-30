@@ -36,6 +36,12 @@ async (page) => {
       }, 1);
 
       document.querySelectorAll('img:not([alt])').forEach(img => out.failures.push(`Image without alt: ${img.getAttribute('src')}`));
+      // Icon-font markup (Font Awesome, Academicons) draws nothing when no icon font or script is loaded.
+      document.querySelectorAll('i[class*="fa-"], i[class*="ai-"], span[class*="fa-"]').forEach(el => {
+        const before = getComputedStyle(el, '::before').content;
+        if (['none', 'normal', '""'].includes(before) && !el.querySelector('svg') && el.getBoundingClientRect().width < 1)
+          out.failures.push(`Icon draws nothing (no icon font loaded): <${el.tagName.toLowerCase()} class="${el.className}">; paste its inline SVG instead (references/icons.md)`);
+      });
       document.querySelectorAll('a, button').forEach(el => {
         if (!el.closest('dialog') && !(el.getAttribute('aria-label') || el.textContent.trim() || el.querySelector('img[alt]:not([alt=""])')))
           out.failures.push(`Control without an accessible name: ${el.outerHTML.slice(0, 80)}`);

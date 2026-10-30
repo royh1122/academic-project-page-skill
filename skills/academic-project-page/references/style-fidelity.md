@@ -1,6 +1,6 @@
 # Theme baseline
 
-The bundled template uses one theme: the modern look of the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (APT, checked at commit `d38af1c`), which was itself adapted from [Nerfies](https://github.com/nerfies/nerfies.github.io). Both are CC BY-SA 4.0; the footer credits both. This bundle keeps APT's typography, palette, cards, and accents, and fixes APT's accessibility and motion defects (listed at the end). Values below were measured in Chrome at 1440 × 1000 on the template filled with sample content, on 2026-10-28. `references/theme-profile.json` holds the same values for the automated check.
+The bundled template uses one theme: the modern look of the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (APT), which was itself adapted from [Nerfies](https://github.com/nerfies/nerfies.github.io). Both are CC BY-SA 4.0; the footer credits both. This bundle keeps APT's typography, palette, cards, and accents, and fixes APT's accessibility and motion defects. Values below were measured in Chrome at 1440 × 1000 on the filled template.
 
 ## Typography
 
@@ -94,28 +94,6 @@ Every text/background pair must still pass 4.5:1, and focus rings and the dot an
 - **Focus.** 3 px `--primary-color` (`#2563eb`) ring with 2 px offset on `:focus-visible` for links, buttons, and focusable regions.
 - **Copy button.** The label changes in JavaScript ("Copied" / "Copy failed") and a visually hidden `role="status"` region announces the result.
 
-## Automated check
+## Typography check
 
-`scripts/check_style.js` compares computed styles with `references/theme-profile.json` and inspects the face Chromium actually rendered (`CSS.getPlatformFontsForNode`) for the title, authors, and body, because a declared family can silently fall back to Arial. `node scripts/audit.mjs <url>` runs it; it finds the profile next to the skill, or at `$THEME_PROFILE`, or takes a parsed profile as its second argument.
-
-Profile format: `tolerances` (`px` for lengths and line heights, `weight` for font weights, `color` per RGB channel), then `rules`, each `{ "selector", "expect": { property: value }, "optional" }`. Numbers are pixels or weights; `#rrggbb` values are colours; `fontFamily` matches the first family in the computed list; anything else must match exactly. A single value can carry its own tolerance as `{ "value": 48, "tolerance": 1 }`. `renderedFonts` lists `{ selector, family }` pairs for the rendered-face check.
-
-To change the theme deliberately, change the CSS, re-measure on a filled page, update the profile and this file together, and confirm the check still fails when the fonts are forced to Arial. For a one-off requested redesign, pass `--skip-style` and state the changed expectations.
-
-Under `playwright-cli run-code --filename scripts/check_style.js`, set `THEME_PROFILE` to the profile's path. If fonts cannot load or the browser cannot report the rendered face, report the check as incomplete; a CSS family name is not proof.
-
-## Defects fixed relative to APT
-
-| APT | This bundle |
-| --- | --- |
-| `<main>` never closed; two `id="results-carousel"`; `h4`/`h5` in the More Works menu before the `h1`; captions as `h2.subtitle` | `<main>` closed before the footer; class-based carousels; menu and captions use non-heading markup |
-| Icon-only close button without a label; menu toggle without `aria-expanded`; iframe and PDF iframe without `title` | Labels on every icon-only control; `aria-expanded`/`aria-controls`; titled embeds |
-| `--text-light #94a3b8`, `--text-secondary #64748b` on tints, green "Copied" `#10b981`, award `#ef4444` (alarm-red on pink) | AA colours above |
-| Accent bar fixed at `left: 50%` under left-aligned headings | Bar follows the heading's alignment |
-| Fixed More Works button and scroll-to-top button stacked over content at the bottom right on phones | Menu in the page flow; one optional contents pill that hides while reading down wherever it would cover the column |
-| bulma-carousel autoplay every 5 s with no pause control; cloned slides exposed; carousel videos played regardless of motion preference | Rotation off by default, opt-in with a pause control; no clones, hidden slides inert; video play gated on visibility, current slide, and motion preference |
-| Entrance animation and smooth scrolling for everyone | Only under `prefers-reduced-motion: no-preference` |
-| "Cop" + CSS `::after` "ied!" with no announcement | Label set in JavaScript and announced in a live region |
-| Videos without `playsinline`, poster, or dimensions | All three, plus a download fallback |
-| jQuery, Adobe View SDK, bulma-slider, bulma-carousel, Font Awesome loaded twice (CSS without its webfonts, and JS) | Plain JavaScript; Font Awesome SVG JavaScript only; Bulma kept |
-| JSON-LD declared CC BY 4.0 for the paper | No licence claimed; add the paper's own licence if it has one |
+`audit.mjs` compares the rendered page with these values (`references/theme-profile.json`) and checks the font face the browser actually drew, since a declared family can silently fall back to Arial. For a requested redesign, pass `--skip-style` and state the changed expectations. If the browser cannot report the rendered face, report the typography check as not run.

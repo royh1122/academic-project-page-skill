@@ -130,7 +130,7 @@ No pages here yet. If you built or polished a public page you own with this skil
 
 **Does it need Chrome?** For the checks, yes: an installed Chrome, Edge, or Chromium. The skill installs nothing.
 
-**Does it work offline?** Building and previewing do. The template's CSS and scripts are bundled, but the page requests the Inter font from Google Fonts (and Academicons from jsDelivr with the arXiv button); offline it falls back to system fonts. YouTube embeds contact YouTube. There are no analytics.
+**Does it work offline?** Building and previewing do. The template's CSS, scripts and icons are bundled (icons are inline SVG), but the page requests the Inter font from Google Fonts; offline it falls back to system fonts. YouTube embeds contact YouTube. There are no analytics.
 
 **Which agents?** Tested with Claude Code and Codex. In Codex the skill triggered on its own, asked to run the browser audit outside its sandbox, fixed what the audit found, and passed it once approved. Unattended Codex runs (`codex exec`) cannot ask, so there the browser check does not run unless you opt in (below). Other agents that read `SKILL.md` can install it, untested so far (see Quick start). Reports from other agents are welcome as issues.
 
@@ -146,18 +146,20 @@ skills/academic-project-page/
 ├── references/
 │   ├── layout-polish.md        layout rules and the pre-delivery checklist
 │   ├── style-fidelity.md       theme: type scale, palette, spacing, components
+│   ├── icons.md, icons/        inline SVG icons, one file each
 │   └── theme-profile.json      expected rendered values for the typography check
 ├── template/index.html         page template with optional blocks
-├── static/                     Bulma, Font Awesome, theme CSS, carousel, figure viewer, reduced-motion script
+├── static/                     Bulma, theme CSS, carousel, figure viewer, reduced-motion script
 ├── scripts/
 │   ├── audit.mjs               browser audit and screenshots, using the installed Chrome
 │   ├── preview_server.py       local preview under a repository subpath, with video seeking
 │   ├── check_numbers.py        numbers on the page against the source files
 │   ├── check_links.py          external links on the page against the source files
 │   └── unused_assets.py        static files the page no longer uses
-└── evals/evals.json            twelve evals
+evals/evals.json                thirteen evals
 eval-kit/                       fictional projects, generator, and flawed-page fixtures for the evals
 examples/                       example runs with screenshots
+MAINTAINING.md                  notes for changing the skill: size budget, icons, the typography check
 ```
 
 ## License

@@ -2,103 +2,104 @@
 name: academic-project-page
 description: Use when building, polishing, or auditing an academic project website - a research paper page, thesis or final-year project page, course project page, or demo page hosted on GitHub Pages, including pages based on the Academic Project Page Template or Nerfies. Also use when the user asks to "make a website for my paper", "create a project page", put a paper or project online with its figures, videos, poster, and BibTeX, or says an existing project page looks off, unpolished, or broken (fonts, alignment, videos that will not seek, carousels, images, links).
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   author: "Roy Huang"
   license: "MIT AND CC-BY-SA-4.0"
 ---
 
 # Academic Project Page
 
-Turn a project's materials into a polished, accurate project page built on the bundled template: the look of the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (itself adapted from [Nerfies](https://nerfies.github.io/)) with its accessibility, motion, and layout defects fixed. **Keep the bundled theme by default.** A request for a project page authorizes adapting content and arranging media; it does not imply a new visual identity. The user's explicit design requests always win. A requested re-theme (dark, a custom accent) is a `:root` token override block only; see "Re-theming" in style-fidelity.md.
+Turn a project's materials into an accurate, polished project page on the bundled template: the look of the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) (adapted from [Nerfies](https://nerfies.github.io/)) with its accessibility, motion, and layout defects fixed. **Keep the bundled theme** unless the user asks for another look; their explicit design requests always win, and a re-theme is a `:root` token block ("Re-theming" in style-fidelity.md).
 
-## Choose the path first
+## Choose the path
 
 | The request | Path |
 | --- | --- |
-| A new page from papers, reports, repositories, or media | **Build** (all sections below) |
-| An existing project page that looks off or needs finishing | **Polish**: run the gate first, fix defects only, keep copy, sections, links, and look (even when it is not the bundled theme); name every change. Polish never becomes an unrequested redesign. See "Polish and Audit". |
-| "Is it ready?", "check it", "review it", no edits wanted | **Audit**: serve, run the gate, look at the screenshots, report findings by priority (P0 to P3). Edit nothing. See "Polish and Audit". |
+| A new page from papers, reports, repositories, or media | **Build** |
+| An existing page that looks off or needs finishing | **Polish**: fix defects only; keep copy, sections, links, and look, whatever its theme; name every change |
+| "Is it ready?", "check it", "review it", no edits wanted | **Audit**: run the gate, look, report findings by priority; edit nothing |
 
-## Files
+## Tools
 
 `<skill>` is this skill's folder. Run scripts as black boxes; read their source only if one fails in a way its output does not explain.
 
-| File | Read or run it when |
+| Read or run | When |
 | --- | --- |
-| `template/index.html`, `static/` | Build: copy them, then adapt. The template's opening comment explains its optional blocks. |
-| [references/layout-polish.md](references/layout-polish.md) | Before arranging media, and for every Polish: alignment, teaser, figures, video, carousels, poster, header, the pre-delivery checklist. |
-| [references/style-fidelity.md](references/style-fidelity.md) | Before changing any CSS: the theme's typography, palette, spacing, and component rules. |
-| `python <skill>/scripts/preview_server.py --root <site> --base <repo-name>` | Every path: serves the page under its repository subpath with working video seeking. Omit `--base` for a user or organization site. |
-| `node <skill>/scripts/audit.mjs <url>` | The gate. Node 22+ and an installed Chrome/Edge/Chromium; installs nothing. `--help` for options. |
+| `template/index.html`, `static/` | Build: copy, then adapt. The template's opening comment lists its optional blocks. |
+| [references/layout-polish.md](references/layout-polish.md) | Before arranging media, and in every Polish: alignment, teaser, figures, video, carousels, header, the pre-delivery checklist |
+| [references/style-fidelity.md](references/style-fidelity.md) | Before changing any CSS |
+| [references/icons.md](references/icons.md) | Before adding or changing an icon |
+| `python <skill>/scripts/preview_server.py --root <site> --base <repo-name>` | Every path: serves the page under its repository subpath, with video seeking. Omit `--base` for a user or organization site. |
+| `node <skill>/scripts/audit.mjs <url>` | The gate. Needs Node 22+ and an installed Chrome, Edge, or Chromium; `--help` for options. |
+| `python <skill>/scripts/check_numbers.py <site>/index.html <sources>` | Any page that states results. Pass the files the numbers came from, not the whole repository: a large pool matches wrong numbers by coincidence. |
+| `python <skill>/scripts/check_links.py <site>/index.html <sources> [--allow <url>]` | Every page. Pass all the materials (with none, it lists the links as unverified), and `--allow` each link the user gave in the chat. |
 | `python <skill>/scripts/unused_assets.py <site>` | Before reporting a Build or Polish. |
-| `python <skill>/scripts/check_numbers.py <site>/index.html <source files>` | Before reporting any page that states results. Pass the specific files the numbers came from (tables, logs, the paper), not the whole repository: a large pool matches wrong numbers by coincidence. PDFs are read with PyMuPDF or, failing that, `pdftotext`; if it notes neither is available, numbers found only in a PDF went unchecked. |
-| `python <skill>/scripts/check_links.py <site>/index.html <source files> [--allow <url>]` | Before reporting any page. Pass all the materials (here the whole folder is fine); add `--allow` for each link the user gave in the request or chat. It flags every external link found in no source, and empty or placeholder links. |
-| `scripts/audit_page.js`, `scripts/check_style.js` | Only when using Playwright directly: `playwright-cli run-code --filename <file>`. `audit.mjs` already runs both. |
-| `static/js/figure-viewer.js` + `static/css/figure-viewer.css` | When figures need close inspection: add `data-zoom` to the `<img>`. Never write another lightbox. |
-| `evals/evals.json` | When changing this skill: rerun the evals and a no-skill baseline. |
 
-## Build from supported project details
+## Build
 
-1. Inspect READMEs, reports, paper drafts, citation files, figures, posters, and recordings. Extract title, authors and affiliations, abstract, verified links, visuals, and citation metadata. Distinguish reported results and intended capabilities from demonstrated deployment. When numbers disagree between sources, use the latest final run and say which source you followed. Check every claim you reuse from captions, notes, or drafts against the data (a trend's direction, "best", "grows with"); correct or drop a claim the data contradicts and say so. `check_numbers.py` checks values, not claims. Then write a page brief of three to five lines in your working notes, never on the page: the audience, the one-sentence takeaway, what the first screen must show, the section order, and why this teaser.
-2. Ask only for essential missing details that cannot be inferred. Omit unavailable optional resources and state the omission; do not invent arXiv links, dataset releases, venues, awards, or metrics. Every external link (paper, code, DOI, arXiv, dataset, video, personal page) comes from the materials or the user; never complete one from a pattern such as a likely repository name. Render authors as plain text when no verified personal URL exists. A target venue, LaTeX template, author kit, or "potential submission" in the materials is not a venue; use the user's own status wording instead. The awarding body saying the work received, won, or was selected for an award verifies it; a finalist, shortlist, nomination, candidacy, or a team member's hope does not. When the wording is genuinely ambiguous, show nothing and ask, quoting the sentence. Honor an existing plan or review boundary without asking again.
-3. Keep sensitive data off the page even when the materials contain it: personal information (names, e-mails, phone numbers, faces, badges, plates in images and video frames), private or unreleased data, and harmful or protected text (toxic examples, attack strings that work, credentials). Describe such examples in aggregate or by reference instead; crop or omit media that show them.
-4. Copy the template and needed static assets. Keep the theme: Inter from the template's font request (it loads the 400 to 800 weights the CSS uses), the palette tokens in `index.css`, the 960 px column, and the section rhythm. Keep the bundle's accessible colours; check any new colour against `#f1f5f9`. Use ordinary figures and captions; see Common mistakes for what not to invent.
-5. Populate the template: the centered title, authors, affiliations, and resource buttons; a teaser with a short caption; a readable abstract; and sections chosen by the project's material. Delete each `BEGIN optional` block the project lacks as a whole rather than leaving placeholders. Arrange media by the layout contract. When the page is filled, compare it with the brief and ask: is this what I would produce for any paper? If it is, the teaser, first screen, or section order is not following this project's material yet.
-   - **Coverage.** List the work's main parts (each main chapter, system component, experiment, or study) from the sources and give each comparable depth, in proportion to the sources. Do not reduce one major part to a sentence while another gets a full section.
-   - **People.** The byline lists authors only. An advisor or supervisor who is not an author goes in the template's Acknowledgments block by default, or on a clearly labelled line when the user asks for one, credited in the user's own wording. A co-author is an author.
-   - **Contents menu.** Keep the template's contents block (a floating Contents and back-to-top pill that builds itself from the `h2` headings) on long pages with many sections; delete it whole on short pages.
-6. Fill the head: title, description, Open Graph and Twitter text, `citation_*` tags, and JSON-LD, all matching the visible page. Use the page URL (canonical, `og:url`, JSON-LD `url`) only when it is known, for example from the user or the repository's Pages settings; otherwise delete those lines and say so. Add a social preview image only when a real 1200 × 630 image exists.
-7. Use document-relative paths (`./static/...`), including video posters. Keep external links absolute. Keep the Font Awesome SVG JavaScript. Delete the figure viewer files when no image uses `data-zoom`, `reduced-motion.js` when nothing autoplays (no `video[autoplay]`, no `data-autoplay` carousel), and the Academicons stylesheet with the arXiv button.
-8. Set video behaviour by content: short silent loops autoplay muted; videos with speech or audio, or longer than about 30 s, get controls, `preload="none"`, captions, and a transcript. Convert GIFs and re-encode recordings as the contract's Video section shows (square pixels). Pick each local poster frame by looking at candidates.
-9. Remove every `[INSERT ...]` token, placeholder link, and unreferenced static file. Keep the footer crediting both the Academic Project Page Template and Nerfies with the CC BY-SA 4.0 link. Keep analytics off unless explicitly requested.
+1. **Read the materials:** READMEs, reports, drafts, citation files, figures, posters, recordings. Extract title, authors and affiliations, abstract, links, visuals, and citation metadata. Separate reported results and intended capabilities from demonstrated deployment. When numbers disagree, use the latest final run and say which source you followed. Check each claim you reuse from captions, notes, or drafts against the data (a trend's direction, "best"); correct or drop one the data contradicts, and say so.
+2. **Show only what the sources verify.**
+   - Every external link (paper, code, DOI, arXiv, dataset, video, personal page) comes from the materials or the user; never complete one from a pattern such as a likely repository name. Authors without a verified personal URL are plain text.
+   - A target venue, LaTeX template, author kit, or "potential submission" is not a venue; use the user's own status wording.
+   - An award is verified when the awarding body says the work received, won, or was selected for it; a finalist, shortlist, nomination, candidacy, or someone's hope is not. When the wording is ambiguous, show nothing and ask, quoting it.
+   - Omit what is unavailable and say so; never invent arXiv links, dataset releases, venues, awards, or metrics. Ask only for essential details that cannot be inferred, and honor an existing plan or review boundary without asking again.
+3. **Keep sensitive data off the page**, even when the materials hold it: personal information (names, e-mails, phone numbers, faces, badges, plates, in images and video frames too), private or unreleased data, and harmful text (toxic examples, working attack strings, credentials). Describe such material in aggregate; crop or omit media that show it.
+4. **Write a page brief** in your working notes, never on the page: the audience, the one-sentence takeaway, what the first screen must show, the section order, and why this teaser.
+5. **Fill the template.** Copy `template/` and the `static/` files the page needs, keeping the theme (style-fidelity.md). Fill the title, authors, affiliations, resource buttons, a teaser with a short caption, the abstract, and sections chosen by the material; arrange media by layout-polish.md. Delete each `BEGIN optional` block the project lacks, whole.
+   - **Coverage:** first list the work's main parts from the sources (each main chapter, system component, experiment, or study), then give each depth in proportion to the sources: never one in a sentence while another gets a section. A part whose code is private is still part of the work; show it from the report.
+   - **People:** the byline lists authors only. A supervisor or advisor who is not an author goes in Acknowledgments, in the user's wording, unless the user asks for a labelled line.
+   - **Contents menu:** keep it on long pages with many sections; delete it whole on short ones.
+   - **Then compare the page with the brief:** is this what you would produce for any paper? If so, the teaser, first screen, or section order is not yet following this project.
+6. **Fill the head** to match the page: title, description, Open Graph and Twitter text, `citation_*` tags, JSON-LD. Use the page URL (canonical, `og:url`, JSON-LD `url`) only when it is known, from the user or the repository's Pages settings; otherwise delete those lines and say so. Add a social image only when a real 1200 × 630 image exists.
+7. **Finish the files.**
+   - Paths are document-relative (`./static/...`), external links absolute.
+   - Video by content: short silent loops autoplay muted; anything with audio or longer than about 30 s gets controls, `preload="none"`, captions, and a transcript (layout-polish.md, Video).
+   - Delete the figure viewer files when no image uses `data-zoom`, and `reduced-motion.js` when nothing autoplays.
+   - Remove every `[INSERT ...]` token and unused static file, and delete your own helper scripts and temporary files.
+   - Keep the footer credit to both templates with the CC BY-SA 4.0 link. No analytics unless asked.
 
 ## Gate, look, report
 
-Passing the gate means nothing measurable is wrong; it does not mean the page is good. Do all of these.
+Passing the gate means nothing measurable is wrong, not that the page is good. Do every step.
 
-1. **Gate.** Serve with `preview_server.py` and run `node <skill>/scripts/audit.mjs <url>` from the project folder (screenshots go to `.page-audit/` there; never point `--out` at a folder another run may share, and delete it before reporting), then `check_numbers.py` against the result sources and `check_links.py` against the materials. If the agent runs in a sandbox that stops the browser from starting, the audit says so: request permission to run that command outside the sandbox (the user approves it) instead of skipping the gate. Never set `PAGE_AUDIT_NO_SANDBOX` yourself; it turns off Chrome's sandbox and is the user's choice. The audit checks resources, ids, headings, names, placeholders, contrast, synthesized bold, overflow, alignment, media, video seeking, embeds, and a reduced-motion pass. It then drives the page with real key presses and clicks (`Interaction check`): each zoomable figure, carousel, BibTeX copy button, contents menu, and More Works menu the page has, then one Tab pass for visible focus and traps; a page without these parts has nothing to check there. Fix every failure. Treat every warning as a defect unless you can defend it to the user in one sentence, and put that sentence in the report. Re-run until there are no failures. For a requested redesign or a Polish of a page in another theme, pass `--skip-style` and state the changed expectations.
-2. **Look.** Open every screenshot `audit.mjs` saved and work through the contract's pre-delivery checklist. If a problem is visible in a screenshot, it is real, whatever the code says. The `page-<width>-NN.png` slices (1440 and 375 px, one screen each) are what is legible: open them in order, since a full-page shot shrinks until orphaned words and repeated bands vanish; the full-page shots (and 768 px) show overall rhythm. A page longer than the slice cap says so; rerun with `--max-slices`. Batch fixes from one look before looking again; three rounds at most. Headless screenshots leave YouTube embeds blank; check those in the live preview. Embedded PDFs are blank in the full-page shots, so `audit.mjs` also saves `page-<width>-pdf<N>.png` for each; open it too.
-3. **Interact.** The audit has already done the mechanics (open, close and focus return of figures; carousel buttons, arrow keys, inert slides; copy status; menus; Tab pass), so only look at what it cannot judge: open one zoomed figure and check the enlarged image is sharp and readable, watch a carousel video play, and check that focus rings are visible against the page in the screenshots. Fix every Interaction failure and treat its warnings like the audit's. If the audit could not run, do the whole list by hand: open each zoomable figure, step through each carousel, press the BibTeX copy button, and tab through the page once.
-4. **Report.** In Build and Polish, report only when the last gate run has no failures (in a scoped Polish, none in the named part) and you have opened every one of its screenshots and done step 3's looks; name any you skipped and why. Tell the user: the preview URL, the gate result and any defended warnings, what you checked by looking, omitted resources, sample content still to replace, and anything you could not check (no browser, no network). Never claim a check you did not run:
-   - Label each check (the audit, its interaction check, `check_numbers.py`, `check_links.py`, `unused_assets.py`, the looks) as passed, ran with findings (name them), or not run (say why). A gate that could not start, an empty result, or a skipped slice is "not run", never a pass.
-   - When the gate could not run at all, open the report with `DEGRADED: <reason>`, then the hand checks from step 3.
+1. **Gate.** From the project folder, serve with `preview_server.py` and run `audit.mjs`, then `check_numbers.py` and `check_links.py`.
+   - Screenshots go to `.page-audit/`. Never share an `--out` folder with another run, and delete the folder before reporting.
+   - Fix every failure. Treat every warning as a defect unless you can defend it in one sentence, which goes in the report. Rerun until nothing fails.
+   - For a requested redesign, or a Polish of a page in another theme, pass `--skip-style` and say so.
+   - If a sandbox stops the browser from starting, the audit says so: ask the user to approve running it outside the sandbox instead of skipping the gate. Never set `PAGE_AUDIT_NO_SANDBOX` yourself; turning off Chrome's sandbox is the user's choice.
+2. **Look.** Open every screenshot the audit saved, every slice at both widths, and work through the pre-delivery checklist; a problem visible in a screenshot is real, whatever the code says. Labelling a slice "not run" is for one the audit could not make, not one you skipped.
+   - Read the screen-height slices (`page-<width>-NN.png`, 1440 and 375 px) in order: only they are legible. The full-page shots and 768 px show rhythm.
+   - Embedded PDFs are blank in full-page shots, so open each `page-<width>-pdf<N>.png`; check YouTube embeds in the live preview.
+   - Batch the fixes from one look before looking again; three rounds at most.
+3. **Interact.** The audit drives figures, carousels, the copy button, menus, and a Tab pass. Judge what it cannot: a zoomed figure is sharp and readable, a carousel video plays, focus rings are visible. If the audit could not run, do those mechanics by hand.
+4. **Report.** In Build and Polish, report only after a gate run with no failures (in a scoped Polish, none in the named part) and after opening every one of its screenshots (in a scoped Polish, those showing the named part). Give the preview URL, the gate result with any defended warnings, what you checked by looking, omitted resources, sample content still to replace, and what you could not check. Never claim a check you did not run:
+   - Label each check (audit, interaction check, `check_numbers.py`, `check_links.py`, `unused_assets.py`, each set of screenshots) as passed, ran with findings (name them), or not run (say why). A gate that could not start, an empty result, or a screenshot you did not open is "not run", never a pass.
+   - When the gate could not run at all, open the report with `DEGRADED: <reason>`, then the hand checks.
    - Results go stale: any edit after the last gate run invalidates it, so rerun before reporting. A blank, half-loaded, or wrong-width screenshot is not evidence; retake it.
-   - Label anything you could not verify as unverified rather than leaving it out of the report: a number traced to no source, a link the user did not give, an optional block kept without matching material.
+   - Label what you could not verify as unverified instead of leaving it out: a number traced to no source, a link the user did not give, an optional block kept without matching material.
 
    Preview approval does not authorize a push, publication, or repository visibility change.
 
 ## Polish and Audit
 
-- **Before.** Run the gate on the untouched page with `--out .page-audit/before` and keep its failure and warning counts; the report gives them beside the final run's.
-- **Scope.** When the user names a part ("polish the teaser", "fix the videos"), touch only that part, and list other defects you saw instead of fixing them; gate failures outside that part are reported, not fixed, and do not hold back the report. Otherwise fix the gate's findings and what the screenshots show, nothing else.
-- **Pasted feedback.** When the user pastes reviewer or colleague feedback, reproduce each item on the live page first (a screenshot or an interaction). Fix what reproduces; report what does not, with what you saw, instead of changing code for it. Then still run the whole gate.
-- **Triage order.** Broken or blocked content first (dead links, missing media, unreadable text), then accessibility, then layout and consistency, then cosmetics. Fix at the narrowest level: an attribute or one rule, not a restyle.
-- **Audit findings.** Rank each P0 (blocks publishing: broken or missing content, a false or unverified claim, private data), P1 (accessibility or interaction failure), P2 (visible layout or consistency defect), or P3 (cosmetic). Give each its fix path: Polish (can be fixed in place), ask the user (needs a fact, file, or decision), or a template block (a bundled component would replace it). Put any question to the user last.
+- **Before:** run the gate on the untouched page with `--out .page-audit/before`; the report gives its failure and warning counts beside the final run's.
+- **Scope:** when the user names a part ("polish the teaser", "fix the videos"), touch only that part and list other defects instead of fixing them; failures outside it do not hold back the report. Otherwise fix the gate's findings and what the screenshots show, nothing more.
+- **Pasted feedback:** reproduce each item on the live page (a screenshot or an interaction) before fixing it. Fix what reproduces; report what does not, with what you saw. Still run the whole gate.
+- **Triage:** broken or blocked content (dead links, missing media, unreadable text), then accessibility, then layout and consistency, then cosmetics. Fix at the narrowest level: an attribute or one rule, not a restyle.
+- **Audit findings:** rank each P0 (blocks publishing: broken or missing content, a false or unverified claim, private data), P1 (accessibility or interaction), P2 (visible layout or consistency), or P3 (cosmetic), and give its fix path: Polish, ask the user (needs a fact, file, or decision), or a template block. Questions to the user go last.
 
-**Before you finish**, check the mode's own promise:
-- Build: every number traces to a source or a stated derivation, every external link to the materials or the user, and every omitted resource is named.
-- Polish: a diff of the page shows nothing changed outside the defects you name: copy, links, sections, and look stay as they were.
-- Audit: no project file was edited, and `.page-audit/` is deleted.
+**Before you finish**, check the mode's promise. Build: every number traces to a source or a stated derivation, every external link to the materials or the user, and every omitted resource is named. Polish: a diff shows nothing changed outside the defects you name. Audit: no project file was edited, and `.page-audit/` is deleted.
 
 ## Common mistakes
 
 | Mistake | Instead |
 | --- | --- |
-| Hero metric counters, icon "contribution" cards, numbered step boxes, new accent colours | The template's sections, figures, captions, and paragraphs |
-| Numbered steps, eyebrow labels, badges, or a "key contributions" box on content without that structure | Structure only where the content has it: numbers for a real sequence, a list for parallel items, otherwise paragraphs |
-| Venue, award, dataset, or code link inferred from hopes, drafts, a finalist listing, or a likely URL | Only verified items; say what was omitted (`check_links.py` flags links found in no source) |
-| An advisor or supervisor who is not an author listed in the byline | Authors only in the byline; the advisor in Acknowledgments in the user's wording |
-| One major part of the work in a sentence while another gets a full section | A comparable share of the page for each main part, in proportion to the sources |
-| Two teaser media in fixed-height boxes with `object-fit: contain` | Grid columns proportional to aspect ratios (contract, Teaser) |
-| A paragraph or sub-heading indented under a full-width grid | One left edge per section column |
-| Method figure hidden in a disclosure or a carousel; the same image in two sections | Method figure inline; each image once |
-| The key result only on slide 3 of a carousel | The key result inline; carousels for sets of comparable results |
-| Carousel rotation on by default, or a custom slider library | The bundled carousel; `data-autoplay` only when asked, which adds a pause button |
-| A PDF poster in a bare iframe | The template's poster block: titled embed, download button, link-only on phones |
-| Inter requested at 400 only; text in the decorative accent colours | The template's font request; text colours from the palette |
-| `python -m http.server` preview, then "videos can't seek" | `preview_server.py` (range requests) |
-| A custom lightbox with fit/actual-size buttons | `data-zoom` and the bundled figure viewer |
-| Polishing by restyling the whole page | Defect fixes only; redesign only on request |
-| "Coming soon" buttons for a paper or code that does not exist | No button; a status line if the user gave one |
+| Metric counters, icon "contribution" cards, numbered steps, eyebrow labels, badges, or a "key contributions" box on content without that structure; new accent colours | The template's sections, figures, and paragraphs; numbers only for a real sequence |
+| A dense multi-panel figure or the method diagram as the teaser when a legible outcome visual exists | The main finding as the teaser (layout-polish.md, Teaser) |
+| Teaser media in fixed-height boxes with `object-fit: contain` | Grid columns proportional to the media's aspect ratios |
+| The method figure or the key result hidden in a disclosure or on a later carousel slide; one image in two sections | Both inline; each image once |
+| "Coming soon" or greyed-out buttons for a paper, code, or dataset that does not exist | No button; a status line if the user gave one |
 | More Works filled with guesses | Only the user's verified projects, or delete the menu |
-| No teaser, a dense multi-panel figure as the teaser, or the method diagram as the teaser when a legible outcome visual exists | A teaser showing the main finding in whatever form the project has it; the method diagram only when the method is the contribution or nothing else reads; dense figures in their results section |
+| In a page you build: `<i class="fa-...">` icons, a custom lightbox, or a slider library | The SVG icons in icons.md, `data-zoom` with the bundled viewer, the bundled carousel. An existing page's working icon font or library is not a defect |
+| `python -m http.server`, then "videos can't seek" | `preview_server.py` |
+| Polishing by restyling the page | Defect fixes only; a redesign only on request |

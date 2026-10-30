@@ -68,9 +68,7 @@ Read this before arranging media. Part 1 applies to any academic project page, w
 
 ### Header
 
-- **Status line:** when there is no verified venue, the user's own description of the status (Preprint, Research in preparation) may take the venue line. A target venue, author kit, or template found in the materials is not a venue.
-- **Venue and awards** appear only when verified by the user or a source. The awarding body saying the work received, won, or was selected for the award verifies it; a finalist, shortlist, nomination, candidacy, or someone's hope does not (when the wording is ambiguous, show nothing and ask, quoting it). Mention a finalist or nomination only in the user's words if they ask.
-- **Author links** go to verified personal pages; otherwise plain text.
+- **Venue, status, awards, author links:** only what SKILL.md's Build step 2 verifies. Without a verified venue, the user's own status wording (Preprint, Research in preparation) may take the venue line. Mention a finalist or nomination only in the user's words if they ask.
 - **Resource buttons:** one per verified resource. Private repositories and unreleased data get no button.
 - **Button and link wording:** say what it does or where it goes ("Paper", "Code", "Download poster (PDF, 2.4 MB)", "Copy"), never "Click here" or "Learn more". One action keeps one name across the page, every button uses one capitalisation style, and each label fits one line at 360 px.
 
@@ -90,9 +88,9 @@ Class names and values are in [style-fidelity.md](style-fidelity.md). The templa
 
 ### Header
 
-- Venue or status: `.publication-venue` (a pill). Award: the commented `.publication-awards` line, used only for a verified award of any kind (best paper, thesis prize, department award). It is a quiet warm pill in the venue pill's shape with an optional trophy icon; keep the text short enough for one line at 360 px, and put the details in the abstract or a sentence below, not in the pill. Re-theming overrides `--award-color`, `--award-background`, `--award-border`, keeping 4.5:1. A full re-theme (dark, a custom accent) is a token override block only; see "Re-theming" in style-fidelity.md.
+- Venue or status: `.publication-venue` (a pill). Award: the commented `.publication-awards` line, used only for a verified award of any kind (best paper, thesis prize, department award). It is a quiet warm pill in the venue pill's shape with an optional trophy, award, or medal icon; keep the text short enough for one line at 360 px, and put the details in the abstract or a sentence below, not in the pill. Re-theming overrides `--award-color`, `--award-background`, `--award-border`, keeping 4.5:1. A full re-theme (dark, a custom accent) is a token override block only; see "Re-theming" in style-fidelity.md.
 - Equal contribution: `*` marks after the names and the `.eql-cntrb` note; delete both together.
-- The resource buttons' arXiv icon comes from Academicons; delete its stylesheet when there is no arXiv button.
+- Button icons are inline SVG from [icons.md](icons.md); a button deleted takes its icon with it.
 - **More Works** (optional) sits in the page flow above the title. List only the user's own verified projects; delete the block otherwise.
 
 ### Carousels

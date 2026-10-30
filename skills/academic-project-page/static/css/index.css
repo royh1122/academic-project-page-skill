@@ -355,7 +355,7 @@ summary:focus-visible {
 }
 
 /* Same pill shape as the venue line, in a warm tone so it reads as recognition, not an alert.
-   An optional <i class="fas fa-trophy"> (or fa-award) before the text takes the text colour. */
+   An optional trophy, award or medal icon before the text takes the text colour. */
 .publication-awards {
   display: flex;
   align-items: center;
@@ -367,7 +367,7 @@ summary:focus-visible {
   font-weight: 600;
 }
 
-.publication-awards .fas {
+.publication-awards .icon-svg {
   flex: none;
   font-size: .9em;
 }
@@ -1175,4 +1175,13 @@ details.figure-details[open] {
     background: transparent !important;
     box-shadow: none !important;
   }
+}
+
+/* Inline SVG icons (the skill's references/icons.md): one em tall, width from the viewBox, coloured by the text. */
+.icon-svg {
+  display: inline-block;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
+  fill: currentColor;
 }

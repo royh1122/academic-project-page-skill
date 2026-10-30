@@ -41,6 +41,14 @@ jobs:
           version = meta['metadata']['version']
           assert isinstance(version, str), 'metadata.version must be a quoted string'
 
+          # Size budget (MAINTAINING.md): SKILL.md loads on every trigger, so it stays short.
+          body = text.split('---\n', 2)[2]
+          words, longest = len(body.split()), max(len(line) for line in body.splitlines())
+          assert words <= 2500, f'SKILL.md body is {words} words; the budget is 2500 (move detail to a reference)'
+          assert longest <= 700, f'a SKILL.md line is {longest} characters; split it (limit 700)'
+          if words > 2200:
+              print(f'::warning file=skills/academic-project-page/SKILL.md::SKILL.md body is {words} words, near the 2500 budget')
+
           claude = json.load(open('.claude-plugin/marketplace.json', encoding='utf-8'))
           codex_market = json.load(open('.agents/plugins/marketplace.json', encoding='utf-8'))
           versions = {'SKILL.md': version}
@@ -56,7 +64,7 @@ jobs:
               path = os.path.join(root, manifest['skills'], 'SKILL.md')
               assert os.path.isfile(path), f'Codex plugin lists {manifest["skills"]}, but {path} is missing'
           assert len(set(versions.values())) == 1, 'versions differ: ' + ', '.join(f'{k} {v}' for k, v in versions.items())
-          print('frontmatter ok:', len(meta['description']), 'description chars; version', version, 'in', len(versions), 'files')
+          print('frontmatter ok:', len(meta['description']), 'description chars; version', version, 'in', len(versions), 'files;', words, 'words in SKILL.md')
           PY
 
       - name: Validate Skill Structure & Frontmatter
@@ -76,9 +84,12 @@ jobs:
           echo "Verifying no root-absolute URLs in template..."
           ! grep -E 'href="/static|src="/static' skills/academic-project-page/template/index.html || (echo "Found root-absolute static path in template" && exit 1)
 
+          echo "Verifying the template uses inline SVG icons, not icon-font markup..."
+          ! grep -nE '<i class="(fas|fab|far|ai) ' skills/academic-project-page/template/index.html skills/academic-project-page/static/js/*.js || (echo "Icon-font markup found; use references/icons.md" && exit 1)
+
           echo "Checking bundled scripts parse..."
           for f in skills/academic-project-page/static/js/index.js skills/academic-project-page/static/js/figure-viewer.js skills/academic-project-page/static/js/reduced-motion.js skills/academic-project-page/scripts/audit.mjs skills/academic-project-page/scripts/lib/chrome.mjs; do node --check "$f" || exit 1; done
-          python3 -c "import json; d = json.load(open('skills/academic-project-page/evals/evals.json')); assert d['evals'], 'no evals'"
+          python3 -c "import json; d = json.load(open('evals/evals.json')); assert d['evals'], 'no evals'"
           # audit_page.js and check_style.js are Playwright function expressions, not modules.
           for f in skills/academic-project-page/scripts/audit_page.js skills/academic-project-page/scripts/check_style.js; do
             node -e "new Function('return ' + require('fs').readFileSync('$f', 'utf8'))" || exit 1
@@ -86,7 +97,7 @@ jobs:
           python3 -m py_compile skills/academic-project-page/scripts/preview_server.py skills/academic-project-page/scripts/unused_assets.py skills/academic-project-page/scripts/check_numbers.py skills/academic-project-page/scripts/check_links.py
 
           echo "Checking referenced bundle files exist..."
-          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs scripts/check_numbers.py scripts/check_links.py evals/evals.json; do
+          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs scripts/check_numbers.py scripts/check_links.py references/icons.md; do
             test -f "skills/academic-project-page/$f" || (echo "Missing $f" && exit 1)
           done
 

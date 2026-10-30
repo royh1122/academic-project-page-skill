@@ -8,7 +8,8 @@ links match on their identifier, so an abs link to a paper the sources cite as "
 passes; other links match their address, or a deeper page of a source address. The template's own
 links (fonts, icon styles, the template credits, the licence) are skipped. Pass --allow for each
 link the user gave you outside the files (in the request or the chat). Exit code 1 when any are
-flagged. PDF sources are read with PyMuPDF (text and link targets) when installed, else with the
+flagged. With no source files (a Polish or Audit of a page alone), the links are listed as
+unverified, and only empty and placeholder links fail. PDF sources are read with PyMuPDF (text and link targets) when installed, else with the
 pdftotext command (text only); the extractor used is named in the output.
 """
 import html
@@ -88,7 +89,7 @@ def source_text(path, explicit, extractors):
 
 def main():
     args = sys.argv[1:]
-    if len(args) < 2 or args[0] in ('-h', '--help'):
+    if not args or args[0] in ('-h', '--help'):
         print(__doc__)
         sys.exit(0 if args else 2)
     allowed = [args[i + 1] for i, a in enumerate(args) if a == '--allow' and i + 1 < len(args)]
@@ -135,12 +136,19 @@ def main():
         if not verified(url):
             (placeholders if PLACEHOLDER.search(url) else flagged).append(url)
 
-    print(f'{checked} external links checked against {len(files)} source file(s) and {len(allowed)} allowed; '
-          f'{len(flagged)} not found, {len(placeholders) + empty} placeholder or empty.')
+    sources = len([f for f, _ in files if f.resolve() != page.resolve()])
+    if not sources and not allowed:
+        print(f'{checked} external links listed; no source files given, so none could be verified. '
+              f'{len(placeholders) + empty} placeholder or empty.')
+    else:
+        print(f'{checked} external links checked against {sources} source file(s) and {len(allowed)} allowed; '
+              f'{len(flagged)} not found, {len(placeholders) + empty} placeholder or empty.')
     if extractors:
         print(f'PDFs read with {" and ".join(sorted(extractors))}.')
     for url in flagged:
-        print(f'  not in sources: {url}')
+        print(f'  {"unverified:    " if not sources and not allowed else "not in sources:"} {url}')
+    if not sources and not allowed:
+        flagged = []
     for url in placeholders:
         print(f'  placeholder:    {url}')
     if empty:
