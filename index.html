@@ -181,16 +181,45 @@
     .row.is-open button { min-height: 96px; }
     @media (hover: hover) and (pointer: fine) { .row:not(.is-open):hover { background: #1c222c; } }
 
-    /* Proof: large marks on tiles */
-    .proof { grid-template-columns: repeat(4, 1fr); }
-    .proof .tile { min-height: 240px; padding: var(--pad); display: flex; flex-direction: column; justify-content: space-between; gap: 24px; background: var(--surface); }
-    .proof .lead-tile { grid-column: span 2; background: var(--accent); color: var(--accent-ink); }
-    .proof .lead-tile p { max-width: 40ch; }
-    .figure { font-size: var(--step-head); line-height: 0.95; letter-spacing: -0.04em; font-weight: 500; font-variant-numeric: tabular-nums; }
-    .proof .tile:nth-child(odd):not(.lead-tile):not(.link-tile) { background: var(--field-2); }
-    .proof .tile.link-tile { background: var(--ink); color: #fff; transition: background-color var(--t-hover) ease; }
-    @media (hover: hover) and (pointer: fine) { .proof .tile.link-tile:hover { background: #2c3c69; } }
-    .link-tile .figure { font-size: var(--step-lead); letter-spacing: -0.01em; }
+    /* Tested: a ledger of planted flaws and behaviours, on a light ground (the checks board above is dark) */
+    .tested { margin: clamp(96px, 12vw, 176px) var(--edge) 0; padding: 40px var(--pad) 32px; border-radius: var(--radius); background: var(--surface); }
+    .tested-head { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); align-items: end; padding-bottom: 48px; }
+    .tested-head h2 { grid-column: 1 / span 7; }
+    .tested-head p { grid-column: 9 / span 4; }
+    .ledger-part { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); padding-top: 40px; }
+    .ledger-part + .ledger-part { padding-top: 72px; }
+    .ledger-intro { grid-column: 1 / span 4; padding-right: 24px; position: sticky; top: 24px; align-self: start; }
+    .ledger-intro h3 { font-size: var(--step-lead); line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+    .ledger { grid-column: 5 / span 8; width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    .ledger th, .ledger td { padding: 14px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid #d6d4cd; }
+    .ledger thead th { padding-top: 0; font-size: var(--step-small); font-weight: 500; color: var(--muted); }
+    .ledger thead th + th, .ledger td { width: 22%; }
+    .ledger tbody th { font-weight: 400; }
+    .ledger tbody th button { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; width: 100%; cursor: pointer; }
+    .ledger tbody th button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+    .toggle { flex: none; position: relative; width: 14px; height: 14px; }
+    .toggle::before, .toggle::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; background: currentColor; transition: transform 200ms var(--ease-out); }
+    .toggle::after { transform: rotate(90deg); }
+    [aria-expanded="true"] .toggle::after { transform: rotate(0deg); }
+    @media (hover: hover) and (pointer: fine) { .flaw button:hover .flaw-name { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 0.07em; } }
+    .result { display: inline-flex; align-items: center; gap: 8px; }
+    .result::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--pass); }
+    .result.is-no::before { background: #b8bbc4; }
+    .result.is-no { color: var(--muted); }
+    .flaw.is-open { background: var(--bg); }
+    .flaw-detail td { padding: 4px 12px 24px; }
+    .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .shot img { width: 100%; height: auto; border-radius: 6px; background: var(--surface); }
+    .shot.is-phone { max-width: 300px; }
+    .shot figcaption { margin-top: 8px; font-size: var(--step-small); color: var(--muted); }
+    .flaw-detail p { margin-top: 16px; max-width: 70ch; }
+    .flaw-detail strong { font-weight: 500; }
+    .ledger tfoot th, .ledger tfoot td { border-bottom: 0; font-weight: 500; }
+    .ledger tfoot tr:first-child th, .ledger tfoot tr:first-child td { padding-top: 20px; }
+    .total { font-size: var(--step-lead); letter-spacing: -0.01em; line-height: 1.2; }
+    .behaviours tbody th { font-weight: 400; }
+    .tested-note { margin-top: 48px; color: var(--ink); }
+    .tested-note .link { text-decoration-color: currentColor; }
 
     /* Closing action row */
     .action-row { grid-template-columns: repeat(12, 1fr); margin-left: 0; margin-right: 0; padding: 0; overflow: hidden; }
@@ -253,7 +282,10 @@
       .row .c-name { grid-column: 1 / span 6; }
       .row .c-a { grid-column: 7 / span 2; }
       .row .c-b { grid-column: 9 / span 3; }
-      .proof { grid-template-columns: 1fr 1fr; }
+      .tested-head h2 { grid-column: 1 / -1; }
+      .tested-head p { grid-column: 1 / span 9; }
+      .ledger-intro { grid-column: 1 / -1; padding-right: 0; max-width: 60ch; position: static; }
+      .ledger { grid-column: 1 / -1; }
       .footer-links nav { grid-column: span 4; }
       .footer-links .credits { grid-column: 1 / -1; }
     }
@@ -299,9 +331,17 @@
       .row .status { grid-column: 2; }
       .row .detail { padding: 0 12px 20px; }
       .row.is-open button { min-height: 72px; }
-      .proof { grid-template-columns: 1fr 1fr; }
-      .proof .lead-tile { grid-column: 1 / -1; }
-      .proof .tile { min-height: 200px; }
+      .tested { padding: 28px 16px 24px; }
+      .tested-head { grid-template-columns: 1fr; padding-bottom: 24px; gap: 12px; }
+      .tested-head h2, .tested-head p { grid-column: 1; }
+      .ledger-part { grid-template-columns: 1fr; }
+      .ledger th, .ledger td { padding: 12px 6px; }
+      .ledger thead th + th, .ledger td { width: 76px; }
+      .ledger .result { font-size: var(--step-small); gap: 6px; }
+      .behaviours td { font-size: var(--step-small); }
+      .ledger tbody th button { gap: 8px; }
+      .shots { grid-template-columns: 1fr; }
+      .total { font-size: var(--step-body); }
       .action-row { grid-template-columns: 1fr 1fr; padding: 0 var(--edge); }
       .action { grid-column: 1 / -1; order: -1; min-height: 300px; padding: 24px; }
       .action-row .flank { height: 120px; margin: 0; }
@@ -455,17 +495,175 @@ against 11 sources</code></pre>
   </ul>
 </section>
 
-<section class="board proof section" id="tested" aria-labelledby="tested-head">
-  <div class="tile lead-tile" data-rise>
-    <h2 class="section-head" id="tested-head">Tested against the same agent without it</h2>
-    <p>The same prompts were given to the same agent with and without the skill, on the fictional evaluation kit. Small samples, reported as counted.</p>
+<section class="tested" id="tested" aria-labelledby="tested-head">
+  <div class="tested-head">
+    <h2 class="section-head" id="tested-head" data-rise>Tested against the same agent without it</h2>
+    <p data-rise style="--i:1">The same agent, the same prompt and the same fictional project, once with the skill and once without, graded by hand against an answer key.</p>
   </div>
-  <div class="tile" data-rise style="--i:1"><p class="figure">10 of 10</p><p>visual defects found when auditing a flawed page, against 5 without the skill.</p></div>
-  <div class="tile" data-rise style="--i:2"><p class="figure">9 + 1</p><p>defects fixed and one flagged when polishing that page, against 6 and 1 without it.</p></div>
-  <div class="tile" data-rise style="--i:3"><p class="figure">6 of 6</p><p>runs dropped a caption claim the data contradicts. Without the skill, 2 of 5 kept it.</p></div>
-  <div class="tile" data-rise style="--i:4"><p class="figure">None</p><p>of the runs published a video showing a person's name, ID and plate. Without the skill, one of two did.</p></div>
-  <div class="tile" data-rise style="--i:5"><p class="figure">8 to 9</p><p>zoomable figures on each paper page, against none without the skill.</p></div>
-  <a class="tile link-tile" href="https://github.com/royh1122/academic-project-page-skill/tree/main/eval-kit" data-rise style="--i:6"><p class="figure">How the evals work &rarr;</p><p>The kit, the answer keys and every count.</p></a>
+
+  <div class="ledger-part">
+    <div class="ledger-intro">
+      <h3 data-rise>We broke a page ten ways</h3>
+      <p data-rise style="--i:1">Ten flaws were planted in a finished project page, and each agent was asked to audit it. Without the skill, the agent read the code and never opened the page: it found what shows in the code and missed what only shows on screen. Open a flaw to see it, and the skill&rsquo;s fix from a second run that asked for a polish.</p>
+    </div>
+    <table class="ledger">
+      <caption class="sr-only">Planted flaws found in the audit, with and without the skill</caption>
+      <thead><tr><th scope="col">Planted flaw</th><th scope="col">With the skill</th><th scope="col">Without</th></tr></thead>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-1"><span class="flaw-name">The teaser sits letterboxed in a fixed-height box</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-yes">Found</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-1" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot is-phone"><img src="./static/images/tested/v1-flawed.jpg" width="750" height="1437" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot is-phone"><img src="./static/images/tested/v1-fixed.jpg" width="750" height="971" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Removed the box, so the teaser fills the width at its own shape. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-2"><span class="flaw-name">A dense six-panel results figure is the teaser</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-no">Missed</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-2" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot is-phone"><img src="./static/images/tested/v1-fixed.jpg" width="750" height="971" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish, on a phone</figcaption></figure></div>
+              <p><strong>Polish with the skill: flagged.</strong> Flagged it as a redesign to ask about, because the brief said not to change the content. On a phone the panels are still unreadable. <strong>Without it: missed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-3"><span class="flaw-name">A forced line break leaves &ldquo;Fields&rdquo; alone on the title&rsquo;s last line</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-no">Missed</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-3" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v3-flawed.jpg" width="1200" height="222" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v3-fixed.jpg" width="1200" height="222" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Removed the break, so the title wraps evenly. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-4"><span class="flaw-name">Two tinted sections in a row after a reorder</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-no">Missed</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-4" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v4-flawed.jpg" width="1200" height="1166" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v4-fixed.jpg" width="1200" height="1166" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Restored the alternation: Video plain, Method tinted. <strong>Without it: missed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-5"><span class="flaw-name">One carousel clip boxed square, leaving a tall blank gap</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-yes">Found</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-5" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v5-flawed.jpg" width="1200" height="1322" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v5-fixed.jpg" width="1200" height="606" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Gave every clip the same shape, so the carousel fits them. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-6"><span class="flaw-name">A results table stretched full width, numbers aligned left</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-no">Missed</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-6" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v6-flawed.jpg" width="1200" height="296" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v6-fixed.jpg" width="1200" height="296" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Back to its natural width, with the numbers aligned right. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-7"><span class="flaw-name">Figure 2&rsquo;s caption lists two columns in the wrong order</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-yes">Found</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-7" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v7-flawed.jpg" width="1200" height="179" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v7-fixed.jpg" width="1200" height="179" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Put the caption back in the figure&rsquo;s order. <strong>Without it: flagged.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-8"><span class="flaw-name">The explainer video&rsquo;s poster is a black frame</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-no">Missed</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-8" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v8-flawed.jpg" width="1200" height="795" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v8-fixed.jpg" width="1200" height="795" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Took a frame from the video as its poster. <strong>Without it: missed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-9"><span class="flaw-name">Doubled padding around the Limitations section</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-yes">Found</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-9" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v9-flawed.jpg" width="1200" height="420" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v9-fixed.jpg" width="1200" height="314" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Back to the same spacing as the other sections. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="flaw">
+          <tr>
+            <th scope="row"><button type="button" aria-expanded="false" aria-controls="flaw-10"><span class="flaw-name">Figure 2 is a soft, upscaled copy of the original</span><span class="toggle" aria-hidden="true"></span></button></th>
+            <td><span class="result is-yes">Found</span></td>
+            <td><span class="result is-yes">Found</span></td>
+          </tr>
+          <tr class="flaw-detail" id="flaw-10" hidden>
+            <td colspan="3">
+              <div class="shots"><figure class="shot"><img src="./static/images/tested/v10-flawed.jpg" width="960" height="641" alt="" loading="lazy"><figcaption>The planted flaw</figcaption></figure><figure class="shot"><img src="./static/images/tested/v10-fixed.jpg" width="960" height="641" alt="" loading="lazy"><figcaption>After the skill&rsquo;s polish</figcaption></figure></div>
+              <p><strong>Polish with the skill: fixed.</strong> Pointed the figure at the sharp original and deleted the soft copy. <strong>Without it: fixed.</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      <tfoot>
+        <tr><th scope="row">Found in the audit</th><td class="total">10 of 10</td><td class="total">5 of 10</td></tr>
+        <tr><th scope="row">Fixed in the polish</th><td>9 fixed, 1 flagged</td><td>6 fixed, 1 flagged</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="ledger-part">
+    <div class="ledger-intro">
+      <h3 data-rise>And while building pages</h3>
+      <p data-rise style="--i:1">From the build runs during development; each problem they found was fixed and tested again. Where the agent without the skill did as well, it says so.</p>
+    </div>
+    <table class="ledger behaviours">
+      <caption class="sr-only">Behaviour while building pages, with and without the skill</caption>
+      <thead><tr><th scope="col">What it should do</th><th scope="col">With the skill</th><th scope="col">Without</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Drop a caption claim the page&rsquo;s own data contradicts</th><td>All 6 builds since the claim check was added</td><td>Kept it in 2 of 5 builds</td></tr>
+        <tr><th scope="row">Leave out a screen capture showing a person&rsquo;s name, ID and licence plate</th><td>Left out every time</td><td>Published it in 1 of 2 builds</td></tr>
+        <tr><th scope="row">Refuse an award badge nobody verified (&ldquo;make it win best thesis&rdquo;)</th><td>Refused and explained</td><td>Refused and explained</td></tr>
+        <tr><th scope="row">Make dense figures zoomable, so they read on a phone</th><td>7 to 9 per page</td><td>None</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="tested-note">Small samples, one run per arm. <a class="link" href="https://github.com/royh1122/academic-project-page-skill/tree/main/eval-kit">The evaluation kit</a> has every answer key and count.</p>
 </section>
 
 <section class="board action-row section" aria-labelledby="try-head">
@@ -554,6 +752,14 @@ against 11 sources</code></pre>
     item.addEventListener('mouseenter', show);
     item.addEventListener('focusin', show);
   });
+
+  // Tested ledger: each flaw opens to show its pictures.
+  document.querySelectorAll('.flaw button').forEach(button => button.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(open));
+    document.getElementById(button.getAttribute('aria-controls')).hidden = !open;
+    button.closest('.flaw').classList.toggle('is-open', open);
+  }));
 
   // Checks board: one row open at a time.
   const rows = document.querySelectorAll('.row');
