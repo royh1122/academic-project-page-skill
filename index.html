@@ -97,6 +97,7 @@
     .name-tile .name-rest { display: block; margin-top: 14px; font-size: var(--step-lead); line-height: 1.2; letter-spacing: -0.01em; }
     .picture-tile img, .picture-tile video { width: 100%; height: 100%; object-fit: cover; }
     .picture-clip { background: #f6f8fc; }
+    .picture-clip video { object-fit: contain; }  /* the clip's ground is this colour, so it fits whole with no visible bands */
     .picture-page { background: var(--surface); padding: 24px 24px 0; }
     .picture-page img { border-radius: 6px 6px 0 0; }
     .picture-tile img { object-position: 50% 0; }
@@ -131,7 +132,7 @@
     .demo-what { display: block; margin-top: 8px; max-width: 46ch; color: var(--ink); }
     .demo.is-active .demo-name { color: var(--ink); }
     @media (hover: hover) and (pointer: fine) { .demo a:hover .demo-name { transform: translateX(8px); } }
-    .demo-arrow { display: inline-block; margin-left: .3em; }
+    .demo-arrow { display: inline; }
     .demo-thumb { display: none; }
     .demos-note { max-width: 52ch; }
     .preview { grid-column: 8 / span 5; background: var(--field-2); min-height: 560px; }
@@ -376,21 +377,21 @@
     <h2 class="section-head" id="demos-head" data-rise>Three live demos</h2>
     <ol>
       <li class="demo is-active" data-preview="paper" data-rise style="--i:1">
-        <a href="./paper/"><span class="demo-name">Accepted paper<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">Paper, code, video, poster and results, with the venue taken from the acceptance email.</span><img class="demo-thumb" src="./static/images/preview-paper.jpg" width="1200" height="890" alt="" loading="lazy"></a>
+        <a href="./paper/"><span class="demo-name">Accepted paper&nbsp;<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">Paper, code, video, poster and results, with the venue taken from the acceptance email.</span><img class="demo-thumb" src="./static/images/preview-paper.jpg" width="1600" height="2720" alt="" loading="lazy"></a>
       </li>
       <li class="demo" data-preview="in-preparation" data-rise style="--i:2">
-        <a href="./in-preparation/"><span class="demo-name">Research in preparation<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">No public links yet, nothing invented to fill the gap, and the study's personal data left out.</span><img class="demo-thumb" src="./static/images/preview-in-preparation.jpg" width="1200" height="860" alt="" loading="lazy"></a>
+        <a href="./in-preparation/"><span class="demo-name">Research in preparation&nbsp;<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">No public links yet, nothing invented to fill the gap, and the study's personal data left out.</span><img class="demo-thumb" src="./static/images/preview-in-preparation.jpg" width="1600" height="2720" alt="" loading="lazy"></a>
       </li>
       <li class="demo" data-preview="final-year-project" data-rise style="--i:3">
-        <a href="./final-year-project/"><span class="demo-name">Final-year project<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">A student project with the award its letter confirms, a report and an explainer video.</span><img class="demo-thumb" src="./static/images/preview-final-year-project.jpg" width="1200" height="970" alt="" loading="lazy"></a>
+        <a href="./final-year-project/"><span class="demo-name">Final-year project&nbsp;<span class="demo-arrow" aria-hidden="true">&rarr;</span></span><span class="demo-what">A student project with the award its letter confirms, a report and an explainer video.</span><img class="demo-thumb" src="./static/images/preview-final-year-project.jpg" width="1600" height="2720" alt="" loading="lazy"></a>
       </li>
     </ol>
     <p class="demos-note" data-rise style="--i:4">All three use the fictional Quillwave project from the skill's evaluation kit, so nothing real is shown. Each page is exactly what one run produced.</p>
   </div>
   <div class="tile preview" aria-hidden="true">
-    <img class="is-shown" data-for="paper" src="./static/images/preview-paper.jpg" width="1200" height="890" alt="">
-    <img data-for="in-preparation" src="./static/images/preview-in-preparation.jpg" width="1200" height="860" alt="" loading="lazy">
-    <img data-for="final-year-project" src="./static/images/preview-final-year-project.jpg" width="1200" height="970" alt="" loading="lazy">
+    <img class="is-shown" data-for="paper" src="./static/images/preview-paper.jpg" width="1600" height="2720" alt="">
+    <img data-for="in-preparation" src="./static/images/preview-in-preparation.jpg" width="1600" height="2720" alt="" loading="lazy">
+    <img data-for="final-year-project" src="./static/images/preview-final-year-project.jpg" width="1600" height="2720" alt="" loading="lazy">
   </div>
 </section>
 
@@ -420,7 +421,7 @@
   <div class="field">
     <div class="card" data-ui data-rise style="--i:1">
       <div class="card-head">docs/index.html</div>
-      <img src="./static/images/preview-paper.jpg" width="1200" height="890" alt="The built page: title, authors, venue, buttons and the comparison video." loading="lazy">
+      <img src="./static/images/hero-page.jpg" width="1600" height="909" alt="The built page: title, authors, venue, buttons and the comparison video." loading="lazy">
     </div>
     <p class="clause" data-rise style="--i:2">It builds the page from what the folder verifies.</p>
   </div>
