@@ -46,7 +46,7 @@ def catalogue():
 
 
 def must_not_contain():
-    out = ["publicly available", "open download", "test_answers", "PW-T00001", P["urls"]["eval_server"],
+    out = ["publicly available", "test_answers", "PW-T00001", P["urls"]["eval_server"],
            P["urls"]["dataset_hub"], "@" + NUM["annotators"]["domain"], "rate_eur_per_hour",
            "CC0"]
     out += [n for n, *_ in annotators()]

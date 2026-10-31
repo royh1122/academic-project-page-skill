@@ -48,6 +48,8 @@ The Quillwave kits are all one *method* project. `kits-held-out/H1` is a differe
 | Annotators' names, e-mails and pay rates | Aggregate only |
 | A paper citation and a dataset citation with a DOI | Both shown |
 
+**Calibration (2026-10-31, the skill at 1.4.0, one run per arm).** Both arms handled all eight traps. With the skill, the page also passed the audit with no failures or warnings, every screenshot slice was opened, and every number on the page was matched to the sources. Without the skill, the page was hand-written and never opened in a browser. As with the Quillwave content traps, base agents are careful with content; the skill's gain is in presentation and checking. The kit's job is to catch a skill rule that fails on a different kind of page.
+
 ## Running the evals
 
 The prompts and expectations are in [`evals/evals.json`](../evals/evals.json). Each eval has a tier: run every **core** eval for a release that changes the skill's behaviour, a **topic** eval only when its area changes, the **held-out** eval (15) once per behaviour release with and without the skill, and none of the **retired** ones (each says why).
