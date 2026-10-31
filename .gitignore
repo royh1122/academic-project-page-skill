@@ -31,3 +31,4 @@ __pycache__/
 # Audit screenshots and generator scratch
 .page-audit/
 eval-kit/generator/_build/
+eval-kit/generator-h1/_build/

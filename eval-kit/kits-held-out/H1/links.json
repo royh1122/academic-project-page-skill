@@ -1,0 +1,14 @@
+{
+  "project_page": "https://paperwren.example.org/",
+  "paper_pdf": "https://paperwren.example.org/paperwren_fdbt2026.pdf",
+  "code": "https://code.example.org/paperwren",
+  "access_request_form": "https://paperwren.example.org/request-access",
+  "evaluation_server": {
+    "url": "https://eval.paperwren.example.org/",
+    "status": "TODO: not created yet"
+  },
+  "dataset_hub_page": {
+    "url": "https://hub.example.org/datasets/paperwren",
+    "status": "TODO: not created yet"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "_note": "Author order as in the paper. Equal contribution: the first two authors.",
+  "authors": [
+    {
+      "name": "Mirela Exemplu",
+      "affiliations": [
+        "Example Institute of Technology (fictional)"
+      ],
+      "equal_contribution": true
+    },
+    {
+      "name": "Jürgen Beispiel",
+      "affiliations": [
+        "Placeholder University (fictional)"
+      ],
+      "equal_contribution": true
+    },
+    {
+      "name": "Sofía Ejemplo",
+      "affiliations": [
+        "Example Institute of Technology (fictional)"
+      ]
+    },
+    {
+      "name": "Taro Reidai",
+      "native_name": "例題 太郎",
+      "affiliations": [
+        "Sample Research Lab (fictional)"
+      ]
+    },
+    {
+      "name": "Noor Mithal",
+      "affiliations": [
+        "Placeholder University (fictional)",
+        "Sample Research Lab (fictional)"
+      ]
+    },
+    {
+      "name": "Pieter Voorbeeld",
+      "affiliations": [
+        "Testbridge College (fictional)"
+      ]
+    },
+    {
+      "name": "Inês Exemplo",
+      "affiliations": [
+        "Sample Research Lab (fictional)"
+      ]
+    },
+    {
+      "name": "Oskar Esimerkki",
+      "affiliations": [
+        "Testbridge College (fictional)"
+      ],
+      "corresponding": true,
+      "email": "oskar.esimerkki@example.invalid"
+    }
+  ]
+}

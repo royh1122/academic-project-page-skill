@@ -10,6 +10,7 @@ Everything here is invented. People, the institution, venues, data, and results 
 | `kits/V2` | Research in preparation with no paper and no public links: summary PDF, a target-venue author kit, raw user-study data with personal details, a GIF, an anamorphic screen capture |
 | `kits/V3` | A completed final-year project: report PDF, a verified award letter, a "finalist" short paper, private repository READMEs, `authors.json` |
 | `generator/` | Deterministic builder (`build.py`) and checker (`verify.py`); `expected/` holds the answer files |
+| `kits-held-out/H1` | **Held out.** A gated dataset with a benchmark leaderboard (Paperwren): two releases, eight authors, a paper, a datasheet, a leaderboard export, access and licence notes. Built by `generator-h1/`; answers in `generator-h1/expected/H1.json`. See [Held-out kit](#held-out-kit-h1) |
 | `fixtures/make_flawed_page.py` | Builds `flawed-v1/`, a clean page with 10 injected defects, all caught by the audit script (`evals/check_fixtures.py`; formerly evals 4 and 5) |
 | `fixtures/make_flawed_page_v3.py` | Builds `flawed-v3/`, a clean page with 10 defects that show only when the page is scrolled, tabbed through, tapped or viewed with reduced motion (a fixed header over jumped-to headings, a cut-off abstract, a reveal that never fires, focus under a fixed banner, tiny dots, a blank band, an off-centre section, a dev-server script, a doubled `<body>`, a logo over a heading); all caught by the audit, and Polished in eval 14 |
 | `fixtures/make_flawed_page_v2.py` | Builds `flawed-v2/`, the same clean page with 10 visual and judgement defects (letterboxed teaser, dense figure as teaser, orphaned title word, adjacent tinted bands, carousel gap, stretched table, wrong caption order, black poster, uneven padding, blurry figure) that the audit mostly does not flag; for evals 9 and 10 |
@@ -32,15 +33,30 @@ Each kit hides traps whose correct handling is recorded in `generator/expected/<
 | A caption claim that the data contradicts | Dropped or corrected |
 | Caveats | Kept |
 
+## Held-out kit H1
+
+The Quillwave kits are all one *method* project. `kits-held-out/H1` is a different kind of project, a gated dataset with a benchmark, used to check that the skill's rules generalise. Eval 15 runs it once per behaviour release, with and without the skill. Never tune the skill to it: when it shows a failure, fix the general rule and confirm the fix on the core evals. It is built by its own generator, [`generator-h1/`](./generator-h1/README.md), so the Quillwave kits stay byte-identical.
+
+| Trap | Correct handling |
+| --- | --- |
+| A newsletter blurb calls the gated data "publicly available" | Access described as a request; no download button |
+| A code licence (MIT) but data terms still marked TBD | No licence named for the data, not even the page's own website licence |
+| The paper gives v1.0 counts; the datasheet gives v1.1 | One release throughout, or every count labelled |
+| Leaderboard rows scored on the old test split, one above the best current row | Dated as a snapshot; old rows left out or marked; no "best" claim from them |
+| Evaluation server and dataset-hub links marked TODO | Not linked |
+| The maintainers' copy of the held-out test labels | Not copied, linked or shown |
+| Annotators' names, e-mails and pay rates | Aggregate only |
+| A paper citation and a dataset citation with a DOI | Both shown |
+
 ## Running the evals
 
-The prompts and expectations are in [`evals/evals.json`](../evals/evals.json). Each eval has a tier: run every **core** eval for a release that changes the skill's behaviour, a **topic** eval only when its area changes, and none of the **retired** ones (each says why).
+The prompts and expectations are in [`evals/evals.json`](../evals/evals.json). Each eval has a tier: run every **core** eval for a release that changes the skill's behaviour, a **topic** eval only when its area changes, the **held-out** eval (15) once per behaviour release with and without the skill, and none of the **retired** ones (each says why).
 
 Planted flaws that the audit script should catch are tested without an agent: `python evals/check_fixtures.py` serves each fixture and checks that the audit reports every defect with an `audit_match`. CI runs it on every push.
 
 For an agent eval:
 
-1. Copy one kit (or the fixture) into an empty folder and give the prompt to a fresh agent with the skill installed. The agent must not see `generator/expected/` or the fixture's defect list.
+1. Copy one kit (or the fixture) into an empty folder and give the prompt to a fresh agent with the skill installed. The agent must not see `generator/expected/`, `generator-h1/expected/` or the fixture's defect list.
 2. For a new eval or a new rule, give the same prompt to a fresh agent without the skill.
 3. Grade both:
    - serve the page with `preview_server.py` and run `audit.mjs`
@@ -49,7 +65,7 @@ For an agent eval:
    - check each trap in the answer file
    - look at the screenshots
 
-Rebuild the kits with `python generator/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`, and `python fixtures/make_flawed_page_v3.py <clean docs folder made with the 1.3.0+ template>`; the defect lists are written beside them, with the `audit_id` the audit must report for each defect it can catch.
+Rebuild the kits with `python generator/build.py`, and the held-out kit with `python generator-h1/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`, and `python fixtures/make_flawed_page_v3.py <clean docs folder made with the 1.3.0+ template>`; the defect lists are written beside them, with the `audit_id` the audit must report for each defect it can catch.
 
 ## Results for v1.1.0
 

@@ -2,7 +2,7 @@
 
 Notes for people changing the skill itself. The agent using the skill never needs them, so they live outside `skills/academic-project-page/`.
 
-- **Release:** bump the version in `skills/academic-project-page/SKILL.md`, `.claude-plugin/marketplace.json` and `skills/.codex-plugin/plugin.json` (CI fails when they differ), add a CHANGELOG entry, and rerun the core evals in `evals/evals.json` for any change in behaviour (topic evals only when their area changes; a no-skill baseline only for a new eval or rule).
+- **Release:** bump the version in `skills/academic-project-page/SKILL.md`, `.claude-plugin/marketplace.json` and `skills/.codex-plugin/plugin.json` (CI fails when they differ), add a CHANGELOG entry, and rerun the core evals in `evals/evals.json` for any change in behaviour (topic evals only when their area changes; the held-out eval 15, with and without the skill, once per behaviour release and never tuned to; a no-skill baseline only for a new eval or rule).
 - **Finding ids:** every audit message gets a stable id from the pattern table in `scripts/lib/findings.mjs` (the first match wins; unmatched messages fall back to their check's name). Give a new check's message a distinctive start and add its id there.
 - **Planted flaws:** `python evals/check_fixtures.py` serves each fixture in `eval-kit/fixtures/` and checks that the audit reports every defect's `audit_id` (CI runs it). `--coverage` (no browser; CI runs it too) fails when an id in `findings.mjs` has no planted flaw and no entry in the script's `UNTESTED` list, so a new check ships with a fixture.
 - **False positives:** before releasing a new check, run the full audit on clean built pages (the current and the previous template, and a hand-written page) and expect no new findings.

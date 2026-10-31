@@ -1,0 +1,75 @@
+{
+  "_comment": "FICTIONAL. Single source of truth for every number and name in the held-out Paperwren kit (H1). Values are invented. The only deliberate disagreements are the v1.0 total and test split (paper) versus v1.1 (datasheet), and the v1.0 leaderboard rows.",
+  "project": {
+    "short_name": "Paperwren",
+    "title": "Paperwren: A Gated Benchmark for Reading Synthetic Handwritten Forms Across Twelve Layout Families",
+    "fictional_marker": "Synthetic test material. All people, institutions, venues, datasets and results are fictional.",
+    "kit_licence": "CC0 1.0 Universal",
+    "venue": {"short": "FDBT 2026", "full": "Fictional Datasets and Benchmarks Track 2026"},
+    "urls": {
+      "project": "https://paperwren.example.org/",
+      "paper": "https://paperwren.example.org/paperwren_fdbt2026.pdf",
+      "code": "https://code.example.org/paperwren",
+      "access_form": "https://paperwren.example.org/request-access",
+      "eval_server": "https://eval.paperwren.example.org/",
+      "dataset_hub": "https://hub.example.org/datasets/paperwren"
+    },
+    "dataset_doi": "10.5555/paperwren.v1.1",
+    "corresponding": "oskar"
+  },
+  "institutions": {
+    "eit": "Example Institute of Technology (fictional)",
+    "pu": "Placeholder University (fictional)",
+    "srl": "Sample Research Lab (fictional)",
+    "tbc": "Testbridge College (fictional)"
+  },
+  "people": [
+    {"key": "mirela", "name": "Mirela Exemplu", "inst": ["eit"], "equal": true},
+    {"key": "jurgen", "name": "Jürgen Beispiel", "inst": ["pu"], "equal": true},
+    {"key": "sofia", "name": "Sofía Ejemplo", "inst": ["eit"]},
+    {"key": "taro", "name": "Taro Reidai", "native_name": "例題 太郎", "inst": ["srl"]},
+    {"key": "noor", "name": "Noor Mithal", "inst": ["pu", "srl"]},
+    {"key": "pieter", "name": "Pieter Voorbeeld", "inst": ["tbc"]},
+    {"key": "ines", "name": "Inês Exemplo", "inst": ["srl"]},
+    {"key": "oskar", "name": "Oskar Esimerkki", "inst": ["tbc"], "email": "oskar.esimerkki@example.invalid"}
+  ],
+  "dates": {
+    "v1_0": "2026-05-15",
+    "acceptance": "2026-06-20",
+    "v1_1": "2026-08-04",
+    "leaderboard_snapshot": "2026-09-10"
+  },
+  "splits": {
+    "v1_0": {"train": 8640, "val": 1200, "test": 2560, "total": 12400},
+    "v1_1": {"train": 8640, "val": 1200, "test": 2544, "total": 12384},
+    "removed_near_duplicates": 16
+  },
+  "families": [
+    ["Delivery note", 1180], ["Library card", 960], ["Field survey", 1240], ["Lab request", 1010],
+    ["Membership form", 1100], ["Equipment loan", 990], ["Visitor log", 1060], ["Recipe card", 880],
+    ["Garden plot application", 1020], ["Bike registration", 1000], ["Pet adoption", 980], ["Weather log", 964]
+  ],
+  "fields_per_form": {"min": 6, "max": 19, "mean": 11.4},
+  "annotators": {"count": 37, "countries": 3, "seed": 1187, "domain": "annotators.example.invalid"},
+  "leaderboard": {
+    "metric": "Field-level F1 (%)",
+    "rows": [
+      ["Paperwren-Ref (ours)", "v1.1", 84.1, "2026-08-04"],
+      ["InkTagger (fictional)", "v1.1", 82.7, "2026-08-21"],
+      ["FormLM-Base (fictional)", "v1.1", 80.2, "2026-08-12"],
+      ["LayoutReader-S (fictional)", "v1.1", 76.9, "2026-08-30"],
+      ["OCR + rules baseline", "v1.1", 71.4, "2026-08-04"],
+      ["QuillScan (fictional)", "v1.0", 86.3, "2026-07-02"],
+      ["FormLM-Large (fictional)", "v1.0", 85.0, "2026-06-11"],
+      ["Paperwren-Ref (ours)", "v1.0", 84.6, "2026-05-15"],
+      ["OldLayout-v2 (fictional)", "v1.0", 78.8, "2026-06-03"],
+      ["OCR + rules baseline", "v1.0", 71.9, "2026-05-15"],
+      ["TinyForms (fictional)", "v1.0", 69.5, "2026-05-28"]
+    ]
+  },
+  "limitations": [
+    ["English only", "Every form is in English; scores do not transfer to other languages or scripts."],
+    ["Synthetic layouts", "The twelve layout families are designed, not collected; real forms are messier."],
+    ["Small annotator pool", "37 annotators from 3 countries wrote all forms, so handwriting styles are limited."]
+  ]
+}

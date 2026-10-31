@@ -1,0 +1,13 @@
+From: chairs@fdbt2026.example.org
+To: oskar.esimerkki@example.invalid
+Date: 2026-06-20
+Subject: FDBT 2026 decision: Paperwren
+
+Dear Oskar Esimerkki,
+
+We are pleased to tell you that your submission "Paperwren: A Gated Benchmark for Reading Synthetic Handwritten Forms Across Twelve Layout Families" has been accepted to the Fictional Datasets and Benchmarks Track 2026 (FDBT 2026).
+
+Best regards,
+The programme chairs
+
+Synthetic test material. All people, institutions, venues, datasets and results are fictional.

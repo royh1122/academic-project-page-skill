@@ -1,0 +1,13 @@
+# snapshot exported 2026-09-10; metric: Field-level F1 (%)
+model,test_split,f1,submitted
+Paperwren-Ref (ours),v1.1,84.1,2026-08-04
+InkTagger (fictional),v1.1,82.7,2026-08-21
+FormLM-Base (fictional),v1.1,80.2,2026-08-12
+LayoutReader-S (fictional),v1.1,76.9,2026-08-30
+OCR + rules baseline,v1.1,71.4,2026-08-04
+QuillScan (fictional),v1.0,86.3,2026-07-02
+FormLM-Large (fictional),v1.0,85.0,2026-06-11
+Paperwren-Ref (ours),v1.0,84.6,2026-05-15
+OldLayout-v2 (fictional),v1.0,78.8,2026-06-03
+OCR + rules baseline,v1.0,71.9,2026-05-15
+TinyForms (fictional),v1.0,69.5,2026-05-28
