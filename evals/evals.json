@@ -270,6 +270,22 @@
         "check_numbers.py against datasheet/, leaderboard/ and paper/: every unmatched number traced",
         "The agent's report states the preview URL, the gate result, the missing data licence as an open question, omitted resources, and checks it could not run"
       ]
+    },
+    {
+      "id": 16,
+      "name": "polish-css-and-script-defects",
+      "tier": "core",
+      "fixture": "eval-kit/fixtures/flawed-v4",
+      "answers": "eval-kit/fixtures/flawed-v4.defects.json",
+      "prompt": "Our project page in docs/ looks off in a few places, and a couple of visitors said it was hard to use. Can you polish it? Don't change the content.",
+      "expected_output": "Every defect in the defects file fixed at its root in static/css/index.css or static/js/index.js (index.html has none): the injected lab bar removed or matched by scroll-padding-top, the abstract fold removed, the focus-ring override deleted, the 11px authors and the one-line title rules removed, the timed carousel clicks and the endless venue pulse removed, the Results margin removed, the Limitations reveal shown under reduced motion, the caption colour restored, the teaser's squashing override removed, and the Results figures' grayscale filter removed; each change named; content unchanged; the gate run before and after with the counts, cited by finding id.",
+      "expectations": [
+        "Each defect in the defects file fixed, or reported with a reason if the fix would change the content or the look",
+        "Fixes in the stylesheet or script where the defect lives, at the narrowest level, not a restyle",
+        "The grayscale Results figures (no audit id) found by looking at the screenshots",
+        "audit.mjs before and after with the counts; remaining warnings defended by id",
+        "Screenshots at both widths opened, every slice"
+      ]
     }
   ]
 }

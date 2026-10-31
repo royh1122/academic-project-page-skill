@@ -1,0 +1,89 @@
+{
+  "_comment": "FICTIONAL fixture. Defects planted in static/css/index.css and static/js/index.js only; index.html is unchanged. evals/check_fixtures.py checks that the audit reports each audit_id (run in CI); eval 16 (Polish) is graded against the fixes. Keep outside any agent's working folder.",
+  "serve": "preview_server.py --root docs --base quillwave",
+  "defects": [
+    {
+      "id": "X1",
+      "defect": "index.js injects a fixed 56 px lab bar at the top of the screen and pads the body, so every Contents jump lands its heading under the bar",
+      "detected_by": "audit: [anchor-covered]",
+      "audit_id": "anchor-covered",
+      "fix": "Remove the injected bar, or add html { scroll-padding-top } equal to its height"
+    },
+    {
+      "id": "X2",
+      "defect": "index.css folds the abstract into a box with max-height: 7.5rem and overflow: hidden, so most of it is cut off",
+      "detected_by": "audit: [text-clipped]",
+      "audit_id": "text-clipped",
+      "fix": "Remove the max-height and overflow rule"
+    },
+    {
+      "id": "X3",
+      "defect": "index.css's :focus-visible rule sets outline: none instead of the focus ring, so keyboard users cannot see where they are",
+      "detected_by": "audit: [focus-indicator]",
+      "audit_id": "focus-indicator",
+      "fix": "Restore outline: var(--focus-ring) in that rule"
+    },
+    {
+      "id": "X4",
+      "defect": "index.css sets the author names to 11px",
+      "detected_by": "audit: [text-small]",
+      "audit_id": "text-small",
+      "fix": "Remove the font-size override"
+    },
+    {
+      "id": "X5",
+      "defect": "index.css sets the title to white-space: nowrap, so on a phone it runs off the screen and the page scrolls sideways",
+      "detected_by": "audit: [overflow]",
+      "audit_id": "overflow",
+      "fix": "Remove the white-space rule"
+    },
+    {
+      "id": "X6",
+      "defect": "index.js advances the carousel every 4 seconds by clicking Next, also for visitors who prefer reduced motion",
+      "detected_by": "audit: [motion-carousel]",
+      "audit_id": "motion-carousel",
+      "fix": "Remove the timer, or use the template's data-autoplay option, which respects the preference"
+    },
+    {
+      "id": "X7",
+      "defect": "index.js pulses the venue pill with an endless Web Animations API animation, which the template's reduced-motion CSS cannot stop",
+      "detected_by": "audit: [motion-endless]",
+      "audit_id": "motion-endless",
+      "fix": "Remove the animation, or start it only when prefers-reduced-motion is not set"
+    },
+    {
+      "id": "X8",
+      "defect": "index.css gives the Results container margin-left: 3rem, so the section sits off-centre",
+      "detected_by": "audit: [margin-uneven]",
+      "audit_id": "margin-uneven",
+      "fix": "Remove the margin-left"
+    },
+    {
+      "id": "X9",
+      "defect": "index.js hides Limitations until a scroll-reveal runs, and the reveal is skipped under reduced motion, so those visitors never see the limitations",
+      "detected_by": "audit: [hidden-reduced-motion]",
+      "audit_id": "hidden-reduced-motion",
+      "fix": "Show the section by default and fade it only under prefers-reduced-motion: no-preference, or remove the reveal"
+    },
+    {
+      "id": "X10",
+      "defect": "index.css lightens figure captions to #a3acb9, below 4.5:1 contrast on white",
+      "detected_by": "audit: [contrast]",
+      "audit_id": "contrast",
+      "fix": "Restore the caption colour token (or any colour with at least 4.5:1)"
+    },
+    {
+      "id": "X11",
+      "defect": "index.css squashes the teaser video to height: 220px with object-fit: fill, so the ripple fields are distorted",
+      "detected_by": "audit: [teaser-letterbox]",
+      "audit_id": "teaser-letterbox",
+      "fix": "Remove the height and object-fit override so the video keeps its 960x360 aspect"
+    },
+    {
+      "id": "X12",
+      "defect": "index.css turns the Results figures grey (filter: grayscale(1)), so the colour-coded methods in the panels can no longer be told apart",
+      "detected_by": "looking at the screenshots",
+      "fix": "Remove the filter"
+    }
+  ]
+}

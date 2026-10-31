@@ -13,6 +13,7 @@ Everything here is invented. People, the institution, venues, data, and results 
 | `kits-held-out/H1` | **Held out.** A gated dataset with a benchmark leaderboard (Paperwren): two releases, eight authors, a paper, a datasheet, a leaderboard export, access and licence notes. Built by `generator-h1/`; answers in `generator-h1/expected/H1.json`. See [Held-out kit](#held-out-kit-h1) |
 | `fixtures/make_flawed_page.py` | Builds `flawed-v1/`, a clean page with 10 injected defects, all caught by the audit script (`evals/check_fixtures.py`; formerly evals 4 and 5) |
 | `fixtures/make_flawed_page_v3.py` | Builds `flawed-v3/`, a clean page with 10 defects that show only when the page is scrolled, tabbed through, tapped or viewed with reduced motion (a fixed header over jumped-to headings, a cut-off abstract, a reveal that never fires, focus under a fixed banner, tiny dots, a blank band, an off-centre section, a dev-server script, a doubled `<body>`, a logo over a heading); all caught by the audit, and Polished in eval 14 |
+| `fixtures/make_flawed_page_v4.py` | Builds `flawed-v4/` from the public paper demo (the `gh-pages` branch, `paper/`): 12 defects placed only in `static/css/index.css` and `static/js/index.js`, with `index.html` unchanged byte for byte. They include an injected fixed bar, a folded abstract, removed focus rings, 11px authors, a one-line title, a timed carousel, an endless pulse, an off-centre section, a reveal hidden under reduced motion, pale captions, a squashed teaser and grey Results figures. The audit catches 11; the grey figures are found by looking. Polished in eval 16 |
 | `fixtures/make_flawed_page_v2.py` | Builds `flawed-v2/`, the same clean page with 10 visual and judgement defects (letterboxed teaser, dense figure as teaser, orphaned title word, adjacent tinted bands, carousel gap, stretched table, wrong caption order, black poster, uneven padding, blurry figure) that the audit mostly does not flag; for evals 9 and 10 |
 
 Each kit hides traps whose correct handling is recorded in `generator/expected/<variant>.json`:
@@ -56,6 +57,8 @@ The prompts and expectations are in [`evals/evals.json`](../evals/evals.json). E
 
 Planted flaws that the audit script should catch are tested without an agent: `python evals/check_fixtures.py` serves each fixture and checks that the audit reports every defect with an `audit_match`. CI runs it on every push.
 
+Whether the skill loads for the right requests is tested by `python evals/check_activation.py`. It runs the queries in `evals/activation.json` (18 that should load the skill, and 18 near misses such as a personal homepage, a lab site, a poster or a README) through `claude -p` with a probe copy of the skill, and reports each query's trigger rate. Run it when the description in SKILL.md changes; pass `--description` to compare a variant first. It uses your account's quota (about 108 short calls) and is not run in CI.
+
 For an agent eval:
 
 1. Copy one kit (or the fixture) into an empty folder and give the prompt to a fresh agent with the skill installed. The agent must not see `generator/expected/`, `generator-h1/expected/` or the fixture's defect list.
@@ -67,7 +70,7 @@ For an agent eval:
    - check each trap in the answer file
    - look at the screenshots
 
-Rebuild the kits with `python generator/build.py`, and the held-out kit with `python generator-h1/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`, and `python fixtures/make_flawed_page_v3.py <clean docs folder made with the 1.3.0+ template>`; the defect lists are written beside them, with the `audit_id` the audit must report for each defect it can catch.
+Rebuild the kits with `python generator/build.py`, and the held-out kit with `python generator-h1/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`, and `python fixtures/make_flawed_page_v3.py <clean docs folder made with the 1.3.0+ template>`, and `python fixtures/make_flawed_page_v4.py <the paper/ folder of the gh-pages branch>`; the defect lists are written beside them, with the `audit_id` the audit must report for each defect it can catch.
 
 ## Results for v1.1.0
 
