@@ -2,6 +2,31 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.4.0
+
+**The audit scrolls, tabs and taps through the page.** New checks, all warnings, each ending with its fix:
+
+- **Covered or cut-off text:** a heading or caption with another element on top of it (`text-covered`); an in-page jump (the Contents menu, a skip link) that lands its heading under a fixed bar because `scroll-padding-top` is missing (`anchor-covered`); text cut off by a box with a fixed height and hidden overflow, such as an abstract squeezed into a "read more" box with no button (`text-clipped`).
+- **Text hidden under reduced motion:** content a scroll-reveal animation never shows to visitors who prefer reduced motion (`hidden-reduced-motion`).
+- **Focus under a fixed bar:** a control that keyboard focus moves to ends up mostly covered by a fixed or sticky header or banner (`focus-covered`, WCAG 2.4.11). The audit replays Tab down and Shift+Tab up the page with the least scrolling, as most browsers do.
+- **Small tap targets:** links and buttons under 24 x 24 px with other targets within reach (`target-small`, WCAG 2.5.8); inline links in running text are exempt.
+- **Blank bands and uneven margins:** an empty stretch taller than half a screen, such as a video wrapper left after its embed was removed (`blank-band`); a section whose column sits off-centre (`margin-uneven`).
+- **Serving problems:** dev-server markup such as a Vite client script left in the page (`dev-server`); a page audited at `/` whose canonical URL names a repository subpath (`wrong-base`); a doubled `<body>` or `<head>` in the source, which browsers merge silently, so a second skip link shows (`malformed-source`).
+
+**Easier to act on and compare**
+
+- **Finding ids and a summary line:** every finding prints as `FAIL [id]` or `WARN [id]`, and the run ends with `Summary: FAIL n / WARN m: ids`. A report cites a defended warning by its id.
+- **Slice guide:** the screenshot list names the sections each slice shows (`page-1440-03.png: Video (cont.), Method`), so a finding can be matched to the slice that shows it.
+- **Screenshots after scrolling:** the audit scrolls through the page once before each set of screenshots, so scroll-revealed content is not blank in them.
+- **`check_links.py --allow`** is for links the user gave in the chat only, never to quiet the check.
+
+**Tested**
+
+- **flawed-v3 fixture:** ten planted defects, one or more per new check, built by `eval-kit/fixtures/make_flawed_page_v3.py`. The audit reports all ten. flawed-v2's carousel gap is now caught too (5 of its 10 defects by the audit; the rest still need looking).
+- **Coverage in CI:** `evals/check_fixtures.py --coverage` fails when an audit finding id has no planted flaw and no stated reason, so new checks ship with a fixture.
+- **No false alarms:** the full audit gives no findings on nine clean built pages from earlier eval rounds (current and previous template).
+- **Eval round 11** (core evals plus the new eval 14, Polish of flawed-v3): builds unchanged or better; scoped Polish now gives before and after counts with ids. Two problems found in the new checks during the round, a false focus warning on rounded controls and blank scroll-revealed content in screenshots, were fixed and rechecked.
+
 ## 1.3.0
 
 **Lighter pages and a leaner skill**

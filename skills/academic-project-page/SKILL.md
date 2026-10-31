@@ -2,7 +2,7 @@
 name: academic-project-page
 description: Use when building, polishing, or auditing an academic project website - a research paper page, thesis or final-year project page, course project page, or demo page hosted on GitHub Pages, including pages based on the Academic Project Page Template or Nerfies. Also use when the user asks to "make a website for my paper", "create a project page", put a paper or project online with its figures, videos, poster, and BibTeX, or says an existing project page looks off, unpolished, or broken (fonts, alignment, videos that will not seek, carousels, images, links).
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   author: "Roy Huang"
   license: "MIT AND CC-BY-SA-4.0"
 ---
@@ -32,7 +32,7 @@ Turn a project's materials into an accurate, polished project page on the bundle
 | `python <skill>/scripts/preview_server.py --root <site> --base <repo-name>` | Every path: serves the page under its repository subpath, with video seeking. Omit `--base` for a user or organization site. |
 | `node <skill>/scripts/audit.mjs <url>` | The gate. Needs Node 22+ and an installed Chrome, Edge, or Chromium; `--help` for options. |
 | `python <skill>/scripts/check_numbers.py <site>/index.html <sources>` | Any page that states results. Pass the files the numbers came from, not the whole repository: a large pool matches wrong numbers by coincidence. |
-| `python <skill>/scripts/check_links.py <site>/index.html <sources> [--allow <url>]` | Every page. Pass all the materials (with none, it lists the links as unverified), and `--allow` each link the user gave in the chat. |
+| `python <skill>/scripts/check_links.py <site>/index.html <sources> [--allow <url>]` | Every page. Pass all the materials (with none, it lists the links as unverified), and `--allow` only links the user gave in the chat, never one to quiet the check. |
 | `python <skill>/scripts/unused_assets.py <site>` | Before reporting a Build or Polish. |
 
 ## Build
@@ -72,7 +72,7 @@ Passing the gate means nothing measurable is wrong, not that the page is good. D
    - Embedded PDFs are blank in full-page shots, so open each `page-<width>-pdf<N>.png`; check YouTube embeds in the live preview.
    - Batch the fixes from one look before looking again; three rounds at most.
 3. **Interact.** The audit drives figures, carousels, the copy button, menus, and a Tab pass. Judge what it cannot: a zoomed figure is sharp and readable, a carousel video plays, focus rings are visible. If the audit could not run, do those mechanics by hand.
-4. **Report.** In Build and Polish, report only after a gate run with no failures (in a scoped Polish, none in the named part) and after opening every one of its screenshots (in a scoped Polish, those showing the named part). Give the preview URL, the gate result with any defended warnings, what you checked by looking, omitted resources, sample content still to replace, and what you could not check. Never claim a check you did not run:
+4. **Report.** In Build and Polish, report only after a gate run with no failures (in a scoped Polish, none in the named part) and after opening every one of its screenshots (in a scoped Polish, those showing the named part). Give the preview URL, the gate result with any defended warnings (each cited by its `[id]`), what you checked by looking, omitted resources, sample content still to replace, and what you could not check. Never claim a check you did not run:
    - Label each check (audit, interaction check, `check_numbers.py`, `check_links.py`, `unused_assets.py`, each set of screenshots) as passed, ran with findings (name them), or not run (say why). A gate that could not start, an empty result, or a screenshot you did not open is "not run", never a pass.
    - When the gate could not run at all, open the report with `DEGRADED: <reason>`, then the hand checks.
    - Results go stale: any edit after the last gate run invalidates it, so rerun before reporting. A blank, half-loaded, or wrong-width screenshot is not evidence; retake it.

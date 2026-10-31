@@ -6,61 +6,61 @@
       "id": "D1",
       "defect": "Font request loads Inter at 400 only, so headings, buttons and the title render synthesized bold",
       "detected_by": "audit: synthesized bold",
-      "audit_match": "synthesized bold"
+      "audit_id": "synthesized-bold"
     },
     {
       "id": "D2",
       "defect": "Method paragraph indented 2.5rem under the full-width figure (two left edges)",
       "detected_by": "audit: left edges",
-      "audit_match": "left edges"
+      "audit_id": "left-edges"
     },
     {
       "id": "D3",
       "defect": "Results panel image has square corners while other media are rounded",
       "detected_by": "audit: corner radii",
-      "audit_match": "different corner radii"
+      "audit_id": "corner-radii"
     },
     {
       "id": "D4",
       "defect": "Results panel image uses a root-absolute path (/static/...), which breaks under a repository subpath",
       "detected_by": "audit: missing resource (same edit as D3)",
-      "audit_match": "results_panels.png (404)"
+      "audit_id": "resource-missing"
     },
     {
       "id": "D5",
       "defect": "Footer Nerfies link in a light blue that fails contrast",
       "detected_by": "audit: contrast",
-      "audit_match": "Contrast"
+      "audit_id": "contrast"
     },
     {
       "id": "D6",
       "defect": "Qualitative grid image has no alt text",
       "detected_by": "audit: image without alt",
-      "audit_match": "Image without alt"
+      "audit_id": "img-alt"
     },
     {
       "id": "D7",
       "defect": "Teaser loop lost playsinline and its poster frame",
       "detected_by": "audit: video warnings",
-      "audit_match": "without playsinline"
+      "audit_id": "video-playsinline"
     },
     {
       "id": "D8",
       "defect": "Placeholder Data button left from the template",
       "detected_by": "audit: placeholder",
-      "audit_match": "Template placeholder remains"
+      "audit_id": "placeholder"
     },
     {
       "id": "D9",
       "defect": "The pipeline figure appears a second time in Comparison Clips",
       "detected_by": "audit: repeated image",
-      "audit_match": "Same image shown more than once"
+      "audit_id": "image-repeat"
     },
     {
       "id": "D10",
       "defect": "Limitations heading demoted to h4 (skips heading levels)",
       "detected_by": "audit: heading order",
-      "audit_match": "Heading level skipped"
+      "audit_id": "heading-skip"
     }
   ],
   "content_must_stay": [

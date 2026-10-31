@@ -197,6 +197,22 @@ async (page) => {
 
     // Root-relative paths only break when the page is served beneath a repository subpath.
     if (new URL(page.url()).pathname !== '/' && report.localRefs.some(ref => ref.startsWith('/'))) failures.push('Root-relative paths (/static/...) break repository-subpath hosting; use ./static/...');
+    // A dev server injects its client and serves source files; GitHub Pages serves only the built site.
+    // The browser silently merges a second <body> or <head> (a pasted or doubled template), so read the source as served.
+    const serving = await page.evaluate(async () => ({
+      dev: [...document.querySelectorAll('script[src], link[href]')].map(el => el.getAttribute('src') || el.getAttribute('href'))
+        .filter(src => /\/@vite\/client|\/@react-refresh|webpack-dev-server|livereload\.js|\/_next\/static\/development/.test(src)),
+      canonical: document.querySelector('link[rel="canonical"]')?.href || document.querySelector('meta[property="og:url"]')?.content || '',
+      doubled: await fetch(location.href).then(r => r.text()).then(source => {
+        const bare = source.replace(/<!--[\s\S]*?-->/g, '').replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, '');
+        return ['html', 'head', 'body'].filter(tag => (bare.match(new RegExp(`<${tag}[\\s>]`, 'gi')) || []).length > 1);
+      }).catch(() => []),
+    }));
+    if (serving.doubled.length) warnings.push(`Malformed page source: more than one <${serving.doubled.join('>, <')}> tag (a doubled template block); browsers merge them, so repeated content such as a second skip link shows. Keep one of each.`);
+    if (serving.dev.length) warnings.push(`Dev server markup in the page: ${serving.dev.slice(0, 2).join(', ')}. Audit the built site served with preview_server.py, not the dev server.`);
+    const named = serving.canonical ? new URL(serving.canonical, page.url()).pathname.replace(/[^/]*$/, '').replace(/^\/|\/$/g, '') : '';
+    if (new URL(page.url()).pathname === '/' && named)
+      warnings.push(`Served at / but the page's canonical URL is under /${named}/; serve with preview_server.py --base ${named} to test it as GitHub Pages will serve it.`);
     for (const ref of report.localRefs) {
       const response = await page.request.get(new URL(ref, page.url()).href);
       if (!response.ok()) failures.push(`Missing local resource ${ref} (${response.status()})`);
@@ -274,6 +290,33 @@ async (page) => {
       evidence[`titleLines@${width}`] = layout.titleLines;
     }
 
+    // Text a scroll-reveal never shows: scroll through the page, then list text still at opacity ~0.
+    // Floating controls and deliberately hidden panels (visibility: hidden) are not content.
+    const hiddenText = () => page.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += innerHeight * 0.8) {
+        window.scrollTo(0, y);
+        await new Promise(resolve => setTimeout(resolve, 120));
+      }
+      await new Promise(resolve => setTimeout(resolve, 600));
+      const found = [];
+      for (const el of document.querySelectorAll('body *')) {
+        if (![...el.childNodes].some(node => node.nodeType === 3 && node.data.trim())) continue;
+        if (el.closest('[inert], [aria-hidden="true"], dialog, details:not([open]), script, style, noscript, template')) continue;
+        if (!el.checkVisibility() || getComputedStyle(el).visibility === 'hidden') continue;
+        let opacity = 1, pinned = false;
+        for (let a = el; a && a !== document.documentElement; a = a.parentElement) {
+          const cs = getComputedStyle(a);
+          opacity *= parseFloat(cs.opacity);
+          if (/fixed|sticky/.test(cs.position)) pinned = true;
+        }
+        if (opacity < 0.1 && !pinned) found.push(`${el.tagName.toLowerCase()} "${el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40)}"`);
+      }
+      window.scrollTo(0, 0);
+      return found;
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const hiddenNormally = await hiddenText();
+
     // Motion the page starts by itself must stop for visitors who prefer reduced motion.
     // Scripts often read the preference at load, so the page is reloaded with the preference emulated.
     const cdp = await page.context().newCDPSession(page);
@@ -297,6 +340,8 @@ async (page) => {
       if (motion.playing.length) failures.push(`Videos keep playing under prefers-reduced-motion: ${motion.playing.join(', ')}. Use static/js/reduced-motion.js.`);
       if (motion.carouselMoved) failures.push('A carousel keeps advancing under prefers-reduced-motion. Disable autoplay when the preference is set.');
       if (motion.endless) warnings.push(`${motion.endless} endless CSS animation(s) keep running under prefers-reduced-motion.`);
+      const hiddenReduced = (await hiddenText()).filter(text => !hiddenNormally.includes(text));
+      if (hiddenReduced.length) warnings.push(`Text hidden under reduced motion: ${hiddenReduced.length} element(s) stay invisible, e.g. ${hiddenReduced.slice(0, 3).join('; ')}. Show content by default and animate it only under prefers-reduced-motion: no-preference.`);
     } finally {
       await cdp.send('Emulation.setEmulatedMedia', { features: [] });
       await page.goto(page.url());

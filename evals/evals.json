@@ -238,6 +238,22 @@
         "audit.mjs passes after the edit; each check labelled",
         "No other change to the page"
       ]
+    },
+    {
+      "id": 14,
+      "name": "polish-scroll-and-keyboard-defects",
+      "tier": "core",
+      "fixture": "eval-kit/fixtures/flawed-v3",
+      "answers": "eval-kit/fixtures/flawed-v3.defects.json",
+      "prompt": "Our project page in docs/ has some problems when you scroll around or use it on a phone or with the keyboard. Can you polish it? Don't change the content.",
+      "expected_output": "Every defect in the defects file fixed at its root (scroll-padding for the fixed header and banner, the abstract's max-height removed, the reveal shown under reduced motion, the dots' hit area restored, the empty wrapper deleted, the container centred, the Vite script and the doubled <body> removed, the logo moved off the heading), each change named; copy, sections and links unchanged; the gate run before and after with the counts, cited by finding id.",
+      "expectations": [
+        "Each defect in the defects file fixed, or reported with a reason if the fix would change the content or the look",
+        "Fixes at the narrowest level (one rule or attribute each), not a restyle",
+        "Text content unchanged apart from defect fixes; the lab header and banner text kept unless the user is asked",
+        "audit.mjs before and after with the counts; remaining warnings defended by id",
+        "Screenshots at both widths opened, every slice"
+      ]
     }
   ]
 }

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields | A. Placeholder et al.</title>
+  <meta name="description" content="Quillwave reconstructs a 256x256 ripple field from 64 point sensors: 29.46 dB PSNR on synthetic fields, 5.41 dB above radial-basis interpolation.">
+  <meta name="keywords" content="sparse sensing, field reconstruction, ripple fields, latent field code, coordinate-based decoder, synthetic data">
+  <meta name="author" content="Ada Placeholder, Ben Example, Cleo Sample">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2563eb">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Quillwave">
+  <meta property="og:title" content="Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields">
+  <meta property="og:description" content="Quillwave reconstructs a 256x256 ripple field from 64 point sensors: 29.46 dB PSNR on synthetic fields, 5.41 dB above radial-basis interpolation.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields">
+  <meta name="twitter:description" content="Quillwave reconstructs a 256x256 ripple field from 64 point sensors: 29.46 dB PSNR on synthetic fields, 5.41 dB above radial-basis interpolation.">
+
+  <meta name="citation_title" content="Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields">
+  <meta name="citation_author" content="Placeholder, Ada">
+  <meta name="citation_author" content="Example, Ben">
+  <meta name="citation_author" content="Sample, Cleo">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="FCSV 2026 (Fictional Conference on Synthetic Vision)">
+  <meta name="citation_pdf_url" content="https://quillwave.example.org/quillwave_fcsv2026.pdf">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields",
+    "description": "Quillwave reconstructs a 256x256 ripple field from 64 point sensors: 29.46 dB PSNR on synthetic fields, 5.41 dB above radial-basis interpolation.",
+    "author": [
+      { "@type": "Person", "name": "Ada Placeholder", "affiliation": { "@type": "Organization", "name": "Example University (fictional), Department of Imaginary Sciences" } },
+      { "@type": "Person", "name": "Ben Example", "affiliation": { "@type": "Organization", "name": "Example University (fictional), Department of Imaginary Sciences" } },
+      { "@type": "Person", "name": "Cleo Sample", "affiliation": { "@type": "Organization", "name": "Example University (fictional), Department of Imaginary Sciences" } }
+    ],
+    "datePublished": "2026",
+    "keywords": ["sparse sensing", "field reconstruction", "ripple fields", "latent field code"],
+    "abstract": "Quillwave reconstructs a full 256x256 ripple field from 64 point sensors. Ripple fields are procedurally generated sums of interfering circular waves: cheap to synthesise, but hard to interpolate, because the wave fronts between sensors are lost by smooth interpolation. Quillwave encodes the sensor readings into a 128-dimensional latent field code and decodes it with a coordinate-based field decoder. On RippleBench-Synthetic, a benchmark of 500 synthetic test fields generated for this work, Quillwave reaches 29.46 dB PSNR and 0.887 SSIM, 5.41 dB above radial-basis interpolation (the best baseline), which is a 71.2% lower mean squared error. It is also 1.36x faster than radial-basis interpolation at inference. All results are on synthetic fields only.",
+    "isAccessibleForFree": true
+  }
+  </script>
+
+  <!-- Inter at every weight the CSS uses: 400 body, 500 authors, 600 buttons and links, 700 headings, 800 title. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+
+  <!-- Relative paths keep GitHub Pages repository subpaths working. -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/figure-viewer.css">
+  <link rel="icon" href="./static/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Icons are inline SVG: Font Awesome Free 6.7.2 (CC BY 4.0, https://fontawesome.com/license/free); the arXiv icon is from Academicons (SIL OFL 1.1). -->
+  <script defer src="./static/js/index.js"></script>
+  <script defer src="./static/js/figure-viewer.js"></script>
+  <!-- Pauses <video autoplay> loops for reduced-motion visitors; delete when no video autoplays. -->
+  <script defer src="./static/js/reduced-motion.js"></script>
+  <script type="module" src="/@vite/client"></script>
+  <style>
+    body { padding-top: 56px; }
+    .lab-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 20; height: 56px; display: flex; align-items: center;
+      padding: 0 1.5rem; background: #1e293b; color: #f8fafc; font-weight: 600; }
+    .announce { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; padding: .75rem 1.5rem; text-align: center;
+      background: #fef3c7; color: #7c4a03; font-weight: 600; }
+    .reveal { opacity: 0; transition: opacity .6s ease; }
+    .reveal.is-visible { opacity: 1; }
+    .carousel-dot { width: 8px; height: 8px; margin: 0 2px; }
+    .carousel-dot::before { width: 8px; height: 8px; }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="lab-bar">Example University (fictional) · Imaginary Sciences Lab</header>
+<div class="announce">Accepted at FCSV 2026 (fictional).</div>
+
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<main id="main-content" tabindex="-1">
+
+<section class="hero publication-header">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h1 class="title is-1 publication-title">Quillwave: <span class="nowrap">Sparse-Sensor</span> Reconstruction of Synthetic Ripple Fields</h1>
+
+        <p class="is-size-5 publication-authors">
+          <span class="author-block">Ada Placeholder<sup>1</sup>,</span>
+          <span class="author-block">Ben Example<sup>1</sup>,</span>
+          <span class="author-block">Cleo Sample<sup>1</sup></span>
+        </p>
+
+        <p class="is-size-5 publication-affiliations">
+          <span class="author-block"><sup>1</sup>Example University (fictional), Department of Imaginary Sciences</span>
+        </p>
+
+        <p class="publication-venue">Accepted at FCSV 2026</p>
+
+        <div class="publication-links">
+          <a href="https://quillwave.example.org/quillwave_fcsv2026.pdf" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 144-208 0c-35.3 0-64 28.7-64 64l0 144-48 0c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM176 352l32 0c30.9 0 56 25.1 56 56s-25.1 56-56 56l-16 0 0 32c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48 0-80c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24l-16 0 0 48 16 0zm96-80l32 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-32 0c-8.8 0-16-7.2-16-16l0-128c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16l0-64c0-8.8-7.2-16-16-16l-16 0 0 96 16 0zm80-112c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 32 32 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-64 0-64z"/></svg></span>
+            <span>Paper</span>
+          </a>
+          <a href="https://code.example.org/quillwave" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 496 512" aria-hidden="true"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+            <span>Code</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <figure>
+        <video autoplay muted loop playsinline controls preload="metadata"
+               width="960" height="360"
+               poster="./static/images/loop1-poster.jpg"
+               aria-label="Silent loop comparing linear interpolation of 64 sensors with the Quillwave reconstruction">
+          <source src="./static/videos/scene_01_compare.mp4" type="video/mp4">
+          <a href="./static/videos/scene_01_compare.mp4">Download the comparison clip (MP4)</a>
+        </video>
+        <figcaption class="teaser-caption">Linear interpolation of 64 point sensors beside the Quillwave reconstruction of the same field.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified" style="max-height: 180px; overflow: hidden">
+          <p>Quillwave reconstructs a full 256x256 ripple field from 64 point sensors. Ripple fields are procedurally generated sums of interfering circular waves: cheap to synthesise, but hard to interpolate, because the wave fronts between sensors are lost by smooth interpolation. Quillwave encodes the sensor readings into a 128-dimensional latent field code and decodes it with a coordinate-based field decoder. On RippleBench-Synthetic, a benchmark of 500 synthetic test fields generated for this work, Quillwave reaches 29.46 dB PSNR and 0.887 SSIM, 5.41 dB above radial-basis interpolation (the best baseline), which is a 71.2% lower mean squared error. It is also 1.36x faster than radial-basis interpolation at inference. All results are on synthetic fields only.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <video controls playsinline preload="none" width="854" height="480"
+                 poster="./static/images/overview_poster.jpg" aria-label="Quillwave explainer video, 45 seconds, with on-screen captions">
+            <source src="./static/videos/overview_explainer.mp4" type="video/mp4">
+            <track kind="captions" src="./static/videos/overview_explainer.en.vtt" srclang="en" label="English" default>
+            <a href="./static/videos/overview_explainer.mp4">Download the explainer video (MP4)</a>
+          </video>
+        </div>
+        <details class="has-text-left video-transcript" style="margin-top: 1rem;">
+          <summary>Transcript of on-screen captions</summary>
+          <p>The video has no speech; these are its on-screen captions.</p>
+          <ul>
+            <li><span class="nowrap">[0:01]</span> Quillwave is a fictional project, made as synthetic test material.</li>
+            <li><span class="nowrap">[0:06]</span> The task: recover a full 256x256 ripple field from only 64 point sensors.</li>
+            <li><span class="nowrap">[0:10]</span> Simple interpolation blurs the wave fronts between the sensors.</li>
+            <li><span class="nowrap">[0:14]</span> Quillwave encodes the sensor readings into a compact latent field code.</li>
+            <li><span class="nowrap">[0:19]</span> A field decoder then predicts a value and a confidence at every pixel.</li>
+            <li><span class="nowrap">[0:24]</span> Left: linear interpolation of the sensors. Right: Quillwave.</li>
+            <li><span class="nowrap">[0:28]</span> The wave fronts stay sharp as the sources move.</li>
+            <li><span class="nowrap">[0:32]</span> On RippleBench-Synthetic, Quillwave reaches 29.46 dB PSNR.</li>
+            <li><span class="nowrap">[0:35]</span> That is 5.41 dB above radial-basis interpolation.</li>
+            <li><span class="nowrap">[0:39]</span> Limitations: all results are on synthetic fields only.</li>
+            <li><span class="nowrap">[0:42]</span> The baselines are not compute-matched, and the confidence map is not calibrated.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light">
+  <div class="container is-max-desktop" style="position: relative">
+    <img class="lab-logo" src="./static/images/favicon.svg" alt="" width="72" height="72" style="position: absolute; top: 0; left: 0; z-index: 2; background: #fff; border-radius: 12px">
+    <h2 class="title is-3">Method</h2>
+    <div class="content" data-zoom-context>
+      <figure class="figure-block">
+        <img src="./static/images/method.png" alt="Pipeline: 64 point sensors feed a sensor encoder, which produces a 128-dimensional latent field code; a field decoder, given a pixel position, outputs a value and a confidence for the reconstructed 256 by 256 field."
+             width="1552" height="472"
+             data-zoom data-zoom-title="Quillwave pipeline">
+        <figcaption><strong>Figure 1.</strong> Quillwave pipeline: the 64 point sensors, the sensor encoder, the 128-dimensional latent field code, the field decoder, and the reconstructed 256x256 field.</figcaption>
+      </figure>
+      <p class="measure">The 64 sensors sit on a regular 8x8 grid. A sensor encoder maps their readings to a 128-dimensional latent field code, and a coordinate-based field decoder predicts the field value (and a confidence) at every pixel. Quillwave-Lite is the ablation without the latent code: its decoder is conditioned on the raw readings instead. The model has 1.2M parameters and is trained on 2000 synthetic fields for 200 epochs.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Qualitative comparison</h2>
+    <div class="content" data-zoom-context>
+      <figure class="figure-block">
+        <img src="./static/images/qualitative_grid.jpg" alt="Four test scenes in rows; columns show the 64-sensor map, linear interpolation, radial-basis interpolation, Quillwave and ground truth. Quillwave's wave fronts match the ground truth; the interpolations are blurred."
+             width="1640" height="1304" loading="lazy"
+             data-zoom data-zoom-title="Qualitative comparison on four test scenes">
+        <figcaption>Qualitative comparison on four test scenes. Columns: sensor map, linear interpolation, radial-basis interpolation, Quillwave (ours), ground truth. The wave fronts in the Quillwave column stay sharp.</figcaption>
+      </figure>
+    </div>
+    <div class="video-wrapper" style="position: relative; padding-top: 56.25%"></div>
+  </div>
+</section>
+
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Comparison clips</h2>
+    <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Comparison clips">
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <video muted loop playsinline controls preload="metadata" width="960" height="360"
+                     poster="./static/images/loop2-poster.jpg" aria-label="Silent clip of scene 2 comparing linear interpolation of the sensors with Quillwave">
+                <source src="./static/videos/scene_02_compare.mp4" type="video/mp4">
+                <a href="./static/videos/scene_02_compare.mp4">Download scene 2 clip (MP4)</a>
+              </video>
+              <figcaption>Scene 2: linear interpolation of the 64 sensors beside Quillwave.</figcaption>
+            </figure>
+          </div>
+          <div class="carousel-slide">
+            <figure class="carousel-card">
+              <video muted loop playsinline controls preload="metadata" width="960" height="360"
+                     poster="./static/images/loop3-poster.jpg" aria-label="Silent clip of scene 3 comparing linear interpolation of the sensors with Quillwave">
+                <source src="./static/videos/scene_03_compare.mp4" type="video/mp4">
+                <a href="./static/videos/scene_03_compare.mp4">Download scene 3 clip (MP4)</a>
+              </video>
+              <figcaption>Scene 3: linear interpolation of the 64 sensors beside Quillwave.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop" style="margin-left: 3rem">
+    <h2 class="title is-3">Results</h2>
+    <div class="content">
+      <p class="measure">On RippleBench-Synthetic with 64 sensors, Quillwave reaches 29.46 dB PSNR and 0.887 SSIM. That is 5.41 dB above radial-basis interpolation, the best baseline, a 71.2% reduction in mean squared error, and it runs 1.36x faster than that baseline. Linear interpolation is the fastest method. Quillwave also has the highest PSNR at every sensor count tested.</p>
+    </div>
+    <div class="table-figure">
+      <p class="table-caption" id="table-1-caption"><strong>Table 1.</strong> Reconstruction quality on RippleBench-Synthetic (64 sensors, 256x256 fields, mean over 5 training runs). Higher PSNR and SSIM are better; lower runtime is better.</p>
+      <div class="table-container" role="region" aria-labelledby="table-1-caption" tabindex="0">
+        <table class="table is-narrow is-numeric">
+          <thead>
+            <tr><th scope="col">Method</th><th scope="col">PSNR (dB)</th><th scope="col">SSIM</th><th scope="col">Runtime (ms)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Linear interpolation</th><td>21.37</td><td>0.612</td><td><strong>0.8</strong></td></tr>
+            <tr><th scope="row">Radial-basis interpolation</th><td>24.05</td><td>0.701</td><td>6.4</td></tr>
+            <tr><th scope="row">Quillwave-Lite (ablation)</th><td>27.82</td><td>0.834</td><td>3.1</td></tr>
+            <tr><th scope="row">Quillwave (ours)</th><td><strong>29.46</strong></td><td><strong>0.887</strong></td><td>4.7</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="table-figure">
+      <p class="table-caption" id="table-2-caption"><strong>Table 2.</strong> PSNR (dB) against the number of sensors on RippleBench-Synthetic.</p>
+      <div class="table-container" role="region" aria-labelledby="table-2-caption" tabindex="0">
+        <table class="table is-narrow is-numeric">
+          <thead>
+            <tr><th scope="col">Method</th><th scope="col">16 sensors</th><th scope="col">32 sensors</th><th scope="col">64 sensors</th><th scope="col">128 sensors</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Linear interpolation</th><td>16.92</td><td>19.10</td><td>21.37</td><td>23.88</td></tr>
+            <tr><th scope="row">Radial-basis interpolation</th><td>18.44</td><td>21.26</td><td>24.05</td><td>26.71</td></tr>
+            <tr><th scope="row">Quillwave-Lite (ablation)</th><td>21.03</td><td>24.67</td><td>27.82</td><td>30.15</td></tr>
+            <tr><th scope="row">Quillwave (ours)</th><td>22.58</td><td>26.31</td><td>29.46</td><td>31.94</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="content" data-zoom-context>
+      <figure class="figure-block">
+        <img src="./static/images/results_panels.png" alt="Six panels: PSNR and SSIM against number of sensors, runtime per field, histogram of absolute per-pixel error, per-scene PSNR of Quillwave against radial-basis interpolation, and validation PSNR during training."
+             width="2330" height="1260" loading="lazy"
+             data-zoom data-zoom-title="Results on RippleBench-Synthetic">
+        <figcaption><strong>Figure 2.</strong> Results on RippleBench-Synthetic. Top row: (a) PSNR and (b) SSIM against the number of sensors (16, 32, 64, 128), and (c) runtime per field. Bottom row: (d) histogram of absolute per-pixel error, (e) per-scene PSNR of Quillwave against radial-basis interpolation (points above the diagonal favour Quillwave), and (f) validation PSNR during training.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Limitations</h2>
+    <div class="content reveal">
+      <ul class="measure">
+        <li><strong>Synthetic fields only.</strong> Every result is on RippleBench-Synthetic; no real sensor data was used, and behaviour on real measurements is unknown.</li>
+        <li><strong>Baselines are not compute-matched.</strong> Quillwave is trained for 3.5 GPU-hours, while the interpolation baselines need no training at all.</li>
+        <li><strong>Confidence is not calibration.</strong> The per-pixel confidence map has not been checked against observed error rates, so it should not be read as a calibrated probability.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Poster</h2>
+    <object class="poster-embed" data="./static/pdfs/poster.pdf" type="application/pdf"
+            title="Quillwave conference poster (PDF)">
+      <p><a href="./static/pdfs/poster.pdf">Open the poster (PDF)</a></p>
+    </object>
+    <p class="poster-links">
+      <a class="button is-dark" href="./static/pdfs/poster.pdf" download>
+        <span class="icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg></span>
+        <span>Download poster (PDF, 420 KB)</span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<section class="section is-light" id="BibTeX">
+  <div class="container is-max-desktop">
+    <div class="bibtex-header">
+      <h2 class="title is-3" id="bibtex-heading">BibTeX</h2>
+      <button type="button" class="copy-bibtex-btn" data-copy-target="bibtex-code" data-copy-status="bibtex-copy-status">
+        <span class="icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 448 512" aria-hidden="true"><path d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"/></svg></span>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <div class="sr-only" id="bibtex-copy-status" role="status" aria-live="polite"></div>
+    <pre tabindex="0" role="region" aria-labelledby="bibtex-heading"><code id="bibtex-code">@inproceedings{placeholder2026quillwave,
+  title     = {Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields},
+  author    = {Ada Placeholder and Ben Example and Cleo Sample},
+  booktitle = {Proc. FCSV 2026 (Fictional Conference on Synthetic Vision)},
+  year      = {2026},
+  url       = {https://quillwave.example.org/},
+  note      = {Fictional entry for testing}
+}</code></pre>
+  </div>
+</section>
+
+</main>
+
+<div class="page-nav">
+  <div class="page-nav-buttons">
+    <button type="button" class="page-nav-btn page-nav-toggle" aria-expanded="false" aria-controls="page-nav-menu">
+      <svg class="icon-svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 64zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"/></svg><span class="page-nav-label">Contents</span>
+    </button>
+    <button type="button" class="page-nav-btn page-nav-top" aria-label="Back to top">
+      <svg class="icon-svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
+    </button>
+  </div>
+  <nav class="page-nav-menu" id="page-nav-menu" aria-label="Contents" hidden>
+    <div class="page-nav-header">
+      <span class="page-nav-title">Contents</span>
+      <button type="button" class="page-nav-close" aria-label="Close contents"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <ol class="page-nav-list"></ol>
+  </nav>
+</div>
+<!-- END contents menu and back to top -->
+
+<!-- Footer: keep both template credits and the licence link (CC BY-SA 4.0 requires attribution). -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered">
+      <p>
+        This page was built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>,
+        which was adapted from the <a href="https://nerfies.github.io">Nerfies</a> project page.
+        It is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Fade sections in as they scroll into view.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }));
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+</script>
+</body>
+</html>

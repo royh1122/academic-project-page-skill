@@ -6,6 +6,7 @@ import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launch } from './lib/chrome.mjs';
+import { findingId } from './lib/findings.mjs';
 
 const usage = `Usage: node audit.mjs <url> [--out <dir>] [--no-screenshots] [--skip-style]
 
@@ -15,7 +16,8 @@ const usage = `Usage: node audit.mjs <url> [--out <dir>] [--no-screenshots] [--s
   --no-screenshots  Run the checks only
   --skip-style      Skip check_style.js (for an explicitly requested redesign with different typography)
 
-Prints failures (fix all) and warnings (fix, or defend each in one sentence), then the screenshot paths.`;
+Prints failures (fix all) and warnings (fix, or defend each in one sentence), each with an [id], then the
+screenshot paths and a summary line.`;
 
 // Piping into a pager or `head` closes stdout early; that is not a failure of the checks.
 // Keep running so Chrome is still closed and its profile removed.
@@ -52,39 +54,39 @@ if (!response.ok) {
 mkdirSync(out, { recursive: true });
 const { page, close } = await launch({ profileRoot: out });
 let failed = false;
+const findings = [];
 try {
   await page.goto(url);
   // Name the page so screenshots are never mistaken for another run's.
   console.log(`Audited ${url} (title: "${await page.evaluate(() => document.title)}")`);
 
-  try {
-    const audit = await load('audit_page.js')(page);
-    console.log('Page audit: pass');
-    audit.warnings.forEach(warning => console.log(`  WARN ${warning}`));
-  } catch (error) {
-    failed = true;
-    console.log(error.message.replace(/^Page audit failed:/, 'Page audit: FAIL').replace(/\n- /g, '\n  - '));
-  }
-
-  // Real key and mouse events against whatever interactive parts the page has; reloads the page afterwards.
-  try {
-    const interaction = await load('interact_page.js')(page);
-    console.log('Interaction check: pass');
-    interaction.warnings.forEach(warning => console.log(`  WARN ${warning}`));
-  } catch (error) {
-    failed = true;
-    console.log(error.message.replace(/^Interaction check failed:/, 'Interaction check: FAIL').replace(/\n- /g, '\n  - '));
-  }
-
-  if (!args.includes('--skip-style')) {
-    try {
-      await load('check_style.js')(page);
-      console.log('Typography check: pass');
-    } catch (error) {
-      failed = true;
-      console.log(`Typography check: FAIL\n  ${error.message.split('\nEvidence:')[0].replace(/\n/g, '\n  ')}`);
+  // Each check either returns { warnings } or throws "<check> failed:\n- a\n- b\nWarnings:\n- c".
+  const run = async (title, files, fallback) => {
+    const fails = [], warns = [];
+    for (const file of files) {
+      try {
+        warns.push(...((await load(file)(page))?.warnings || []));
+      } catch (error) {
+        const [head, tail = ''] = error.message.split('\nEvidence:')[0].split('\nWarnings:\n');
+        const listed = head.split('\n').slice(1).map(line => line.replace(/^- /, '')).filter(Boolean);
+        fails.push(...(listed.length ? listed : [head]));
+        warns.push(...tail.split('\n').map(line => line.replace(/^- /, '')).filter(line => line && line !== 'none'));
+      }
     }
-  }
+    console.log(`${title}: ${fails.length ? 'FAIL' : 'pass'}`);
+    for (const [level, list] of [['FAIL', fails], ['WARN', warns]]) {
+      for (const message of list) {
+        const id = findingId(message, fallback);
+        console.log(`  ${level} [${id}] ${message}`);
+        findings.push({ level, id });
+      }
+    }
+    if (fails.length) failed = true;
+  };
+  await run('Page audit', ['audit_page.js', 'layout_page.js'], 'page');
+  // Real key and mouse events against whatever interactive parts the page has; reloads the page afterwards.
+  await run('Interaction check', ['interact_page.js'], 'interaction');
+  if (!args.includes('--skip-style')) await run('Typography check', ['check_style.js'], 'typography');
 
   if (!args.includes('--no-screenshots')) {
     mkdirSync(out, { recursive: true });
@@ -95,20 +97,36 @@ try {
       await page.evaluate(async () => {
         document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.loading = 'eager'; });
         await Promise.all([...document.images].map(img => img.decode().catch(() => {})));
+        // Scroll through once, as a visitor would, so scroll-revealed content is shown in the shots.
+        for (let y = 0; y < document.documentElement.scrollHeight; y += innerHeight * 0.8) {
+          window.scrollTo(0, y);
+          await new Promise(resolve => setTimeout(resolve, 80));
+        }
+        window.scrollTo(0, 0);
+        await new Promise(resolve => setTimeout(resolve, 400));
       });
       const path = join(out, `page-${width}.png`);
       await page.screenshot({ path, fullPage: true });
       console.log(`  ${path}  (whole page, for overall rhythm; shrunk when viewed)`);
       // Full-page shots shrink to unreadable when viewed, so also save the page in screen-height slices.
       if (width !== 768) {
-        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        const { height, headings } = await page.evaluate(() => ({
+          height: document.documentElement.scrollHeight,
+          headings: [...document.querySelectorAll('h2')].filter(h => h.checkVisibility())
+            .map(h => [h.getBoundingClientRect().top + scrollY, h.textContent.trim().replace(/\s+/g, ' ').slice(0, 30)]),
+        }));
         const count = Math.ceil(height / 900), saved = Math.min(count, maxSlices);
+        // Name what each slice shows, so a finding can be matched to the slice that shows it.
+        const guide = [];
         for (let i = 0; i < saved; i++) {
-          await page.screenshot({ path: join(out, `page-${width}-${String(i + 1).padStart(2, '0')}.png`), fullPage: true,
-            clip: { x: 0, y: i * 900, width, height: Math.min(900, height - i * 900) } });
+          const name = `page-${width}-${String(i + 1).padStart(2, '0')}.png`;
+          await page.screenshot({ path: join(out, name), fullPage: true, clip: { x: 0, y: i * 900, width, height: Math.min(900, height - i * 900) } });
+          const starting = headings.filter(([y]) => y >= i * 900 && y < (i + 1) * 900).map(([, text]) => text);
+          const before = headings.filter(([y]) => y < i * 900).pop();
+          guide.push(`    ${name}: ${[...(before ? [`${before[1]} (cont.)`] : i === 0 ? ['header'] : []), ...starting].join(', ')}`);
         }
-        sliced.push(`  ${width} px: page-${width}-01.png ... page-${width}-${String(saved).padStart(2, '0')}.png (${saved} slices of 900 px, legible; open these)`
-          + (count > saved ? `; the page is ${height} px tall, so slices stop at ${saved * 900} px (rerun with --max-slices ${count} for the rest)` : ''));
+        sliced.push(`  ${width} px, ${saved} slices of 900 px (legible; open every one):\n${guide.join('\n')}`
+          + (count > saved ? `\n    The page is ${height} px tall, so slices stop at ${saved * 900} px; rerun with --max-slices ${count} for the rest.` : ''));
       }
       // Full-page capture leaves an embedded PDF viewer (an out-of-process frame) blank, but a
       // viewport capture paints it once it has loaded: save one of each visible embed.
@@ -128,4 +146,8 @@ try {
 } finally {
   await close();
 }
+// One line to read first, and to cite: defended warnings are named by id in the report.
+const count = level => findings.filter(f => f.level === level).length;
+const ids = [...new Set(findings.map(f => f.id))];
+console.log(`Summary: FAIL ${count('FAIL')} / WARN ${count('WARN')}${ids.length ? `: ${ids.join(', ')}` : ''}`);
 process.exit(failed ? 1 : 0);

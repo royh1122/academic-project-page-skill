@@ -320,7 +320,7 @@ async (page) => {
       const limit = Math.min(plan.expected + 120, 500);
       const seen = new Map();
       let stuck = 0, lost = 0, first = null, previous = null, wrapped = false;
-      const noIndicator = [], hidden = [], tiny = [];
+      const noIndicator = [], hidden = [], tiny = [], underBar = [];
       for (let n = 0; n < limit && !wrapped; n++) {
         await press('Tab');
         const at = await page.evaluate(() => {
@@ -335,8 +335,24 @@ async (page) => {
           const ring = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && cs.outlineColor !== 'rgba(0, 0, 0, 0)';
           const shadow = cs.boxShadow !== 'none' && (!before || before[3] !== cs.boxShadow);
           const otherChange = !!before && before.some((value, i) => i >= 4 && value !== now[i]);
+          // A fixed or sticky bar painted over most of the focused control hides where focus is (WCAG 2.4.11): the bar
+          // overlaps at least half the control and is the topmost element in the middle of the overlap.
+          const pinned = node => { for (let a = node; a && a !== document.body; a = a.parentElement) if (/fixed|sticky/.test(getComputedStyle(a).position)) return a; return null; };
+          let covered = '';
+          if (r.width >= 2 && r.height >= 2 && !pinned(el)) {
+            ip.bars ||= [...document.querySelectorAll('body *')].filter(n => /fixed|sticky/.test(getComputedStyle(n).position));
+            for (const bar of ip.bars) {
+              if (bar.contains(el) || !bar.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
+              const b = bar.getBoundingClientRect();
+              const w = Math.min(r.right, b.right, innerWidth) - Math.max(r.left, b.left, 0);
+              const h = Math.min(r.bottom, b.bottom, innerHeight) - Math.max(r.top, b.top, 0);
+              if (w <= 0 || h <= 0 || w * h < r.width * r.height / 2) continue;
+              const top = document.elementFromPoint(Math.max(r.left, b.left, 0) + w / 2, Math.max(r.top, b.top, 0) + h / 2);
+              if (top && bar.contains(top)) { covered = ip.label(bar); break; }
+            }
+          }
           return { id: ip.ids.get(el), name: ip.label(el), frame: /^(IFRAME|OBJECT|EMBED)$/.test(el.tagName), shadow: /^(VIDEO|AUDIO)$/.test(el.tagName), hidden: !ip.shown(el) || ip.dead(el),
-            tiny: r.width < 2 || r.height < 2, indicator: ring || shadow || otherChange };
+            tiny: r.width < 2 || r.height < 2, indicator: ring || shadow || otherChange, covered };
         });
         if (at.body) {
           if (++lost >= 3 && !seen.size) { failures.push('Keyboard pass: Tab never moved focus into the page.'); return; }
@@ -357,10 +373,12 @@ async (page) => {
         previous = at.id;
         if (at.hidden) hidden.push(at.name);
         else if (at.tiny) tiny.push(at.name);
+        else if (at.covered) underBar.push(`${at.name} under ${at.covered}`);
         if (!at.hidden && !at.frame && !at.tiny && !at.indicator) noIndicator.push(at.name);
       }
       if (hidden.length) failures.push(`Keyboard pass: focus lands on ${hidden.length} invisible, inert or aria-hidden element(s): ${hidden.slice(0, 4).join('; ')}.`);
       if (noIndicator.length) failures.push(`Keyboard pass: ${noIndicator.length} control(s) show no focus indicator (no outline, box-shadow or other style change when focused): ${noIndicator.slice(0, 4).join('; ')}.`);
+      if (underBar.length) warnings.push(`Keyboard pass: focus lands under a fixed or sticky bar for ${underBar.length} control(s): ${underBar.slice(0, 3).join('; ')}. Add scroll-padding-top or scroll-padding-bottom on html equal to the bar's height, or stop fixing the bar.`);
       if (tiny.length) warnings.push(`Keyboard pass: focus lands on ${tiny.length} visually hidden element(s) (under 2px): ${tiny.slice(0, 3).join('; ')}. Fine only when a visible sibling shows the focus.`);
       const unreached = await page.evaluate(() => {
         const { focusSelector, usable, ids, label } = window.__ip;

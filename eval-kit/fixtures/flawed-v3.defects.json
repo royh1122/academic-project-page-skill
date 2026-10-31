@@ -1,0 +1,81 @@
+{
+  "_comment": "FICTIONAL fixture. Planted flaws for the 1.4.0 audit checks: evals/check_fixtures.py checks that the audit reports each audit_id (run in CI); eval 14 (Polish) is graded against the fixes. Keep outside any agent's working folder.",
+  "serve": "preview_server.py --root docs --base quillwave",
+  "defects": [
+    {
+      "id": "W1",
+      "defect": "A fixed 56 px lab header bar was added with body padding but no scroll-padding-top, so every Contents jump lands its section heading under the bar",
+      "detected_by": "audit: [anchor-covered]",
+      "audit_id": "anchor-covered",
+      "fix": "Add html { scroll-padding-top: 56px } (or stop fixing the bar)"
+    },
+    {
+      "id": "W2",
+      "defect": "The abstract was squeezed into a box with max-height: 180px and overflow: hidden (a read-more without the button), so most of it is cut off",
+      "detected_by": "audit: [text-clipped]",
+      "audit_id": "text-clipped",
+      "fix": "Remove the max-height and overflow so the whole abstract shows"
+    },
+    {
+      "id": "W3",
+      "defect": "Limitations fades in with a scroll-reveal whose script only runs when reduced motion is off, so reduced-motion visitors never see the limitations",
+      "detected_by": "audit: [hidden-reduced-motion]",
+      "audit_id": "hidden-reduced-motion",
+      "fix": "Show .reveal content by default and apply the fade only under prefers-reduced-motion: no-preference, or remove the reveal"
+    },
+    {
+      "id": "W4",
+      "defect": "A fixed announcement banner at the bottom of the screen covers controls that keyboard focus scrolls to",
+      "detected_by": "audit: [focus-covered]",
+      "audit_id": "focus-covered",
+      "fix": "Add html { scroll-padding-bottom } equal to the banner's height, or make the banner part of the page flow"
+    },
+    {
+      "id": "W5",
+      "defect": "Carousel dots shrunk to 8 x 8 px with 4 px between them (a tweak to make them look smaller)",
+      "detected_by": "audit: [target-small]",
+      "audit_id": "target-small",
+      "fix": "Restore the dots' 28 x 44 px hit area (keep a small visible dot inside it)"
+    },
+    {
+      "id": "W6",
+      "defect": "An empty 16:9 video wrapper left after the YouTube iframe was removed leaves a blank band in Qualitative Results",
+      "detected_by": "audit: [blank-band]",
+      "audit_id": "blank-band",
+      "fix": "Delete the empty wrapper"
+    },
+    {
+      "id": "W7",
+      "defect": "The Results section's container was given margin-left: 3rem, so the section sits off-centre",
+      "detected_by": "audit: [margin-uneven]",
+      "audit_id": "margin-uneven",
+      "fix": "Remove the margin-left so the container is centred like the others"
+    },
+    {
+      "id": "W8",
+      "defect": "A Vite client script tag left from saving the page from a dev server (it also 404s under the repository subpath)",
+      "detected_by": "audit: [dev-server]",
+      "audit_id": "dev-server",
+      "fix": "Delete the script tag and audit the built page"
+    },
+    {
+      "id": "W10",
+      "defect": "A lab logo placed with position: absolute at the top left of the Method section, on top of the Method heading",
+      "detected_by": "audit: [text-covered]",
+      "audit_id": "text-covered",
+      "fix": "Remove the logo or move it out of the heading's way (for example into the footer)"
+    },
+    {
+      "id": "W9",
+      "defect": "The opening <body> and skip link appear twice (a doubled template block), so two 'Skip to main content' links exist",
+      "detected_by": "audit: [malformed-source]",
+      "audit_id": "malformed-source",
+      "fix": "Delete the second <body> line and the second skip link"
+    }
+  ],
+  "content_must_stay": [
+    "Quillwave: Sparse-Sensor Reconstruction of Synthetic Ripple Fields",
+    "Limitations",
+    "Figure 2."
+  ]
+}

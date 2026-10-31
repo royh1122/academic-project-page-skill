@@ -1,0 +1,47 @@
+WEBVTT
+
+NOTE Synthetic test material. All people, institutions, venues and results are fictional.
+
+1
+00:00:01.000 --> 00:00:05.600
+Quillwave is a fictional project, made as synthetic test material.
+
+2
+00:00:06.200 --> 00:00:09.900
+The task: recover a full 256x256 ripple field from only 64 point sensors.
+
+3
+00:00:10.100 --> 00:00:13.800
+Simple interpolation blurs the wave fronts between the sensors.
+
+4
+00:00:14.200 --> 00:00:18.900
+Quillwave encodes the sensor readings into a compact latent field code.
+
+5
+00:00:19.100 --> 00:00:23.800
+A field decoder then predicts a value and a confidence at every pixel.
+
+6
+00:00:24.200 --> 00:00:27.900
+Left: linear interpolation of the sensors. Right: Quillwave.
+
+7
+00:00:28.100 --> 00:00:31.800
+The wave fronts stay sharp as the sources move.
+
+8
+00:00:32.200 --> 00:00:35.600
+On RippleBench-Synthetic, Quillwave reaches 29.46 dB PSNR.
+
+9
+00:00:35.800 --> 00:00:38.800
+That is 5.41 dB above radial-basis interpolation.
+
+10
+00:00:39.200 --> 00:00:41.900
+Limitations: all results are on synthetic fields only.
+
+11
+00:00:42.100 --> 00:00:44.800
+The baselines are not compute-matched, and the confidence map is not calibrated.

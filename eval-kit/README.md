@@ -11,6 +11,7 @@ Everything here is invented. People, the institution, venues, data, and results 
 | `kits/V3` | A completed final-year project: report PDF, a verified award letter, a "finalist" short paper, private repository READMEs, `authors.json` |
 | `generator/` | Deterministic builder (`build.py`) and checker (`verify.py`); `expected/` holds the answer files |
 | `fixtures/make_flawed_page.py` | Builds `flawed-v1/`, a clean page with 10 injected defects, all caught by the audit script (`evals/check_fixtures.py`; formerly evals 4 and 5) |
+| `fixtures/make_flawed_page_v3.py` | Builds `flawed-v3/`, a clean page with 10 defects that show only when the page is scrolled, tabbed through, tapped or viewed with reduced motion (a fixed header over jumped-to headings, a cut-off abstract, a reveal that never fires, focus under a fixed banner, tiny dots, a blank band, an off-centre section, a dev-server script, a doubled `<body>`, a logo over a heading); all caught by the audit, and Polished in eval 14 |
 | `fixtures/make_flawed_page_v2.py` | Builds `flawed-v2/`, the same clean page with 10 visual and judgement defects (letterboxed teaser, dense figure as teaser, orphaned title word, adjacent tinted bands, carousel gap, stretched table, wrong caption order, black poster, uneven padding, blurry figure) that the audit mostly does not flag; for evals 9 and 10 |
 
 Each kit hides traps whose correct handling is recorded in `generator/expected/<variant>.json`:
@@ -48,7 +49,7 @@ For an agent eval:
    - check each trap in the answer file
    - look at the screenshots
 
-Rebuild the kits with `python generator/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`; the defect lists are written beside them.
+Rebuild the kits with `python generator/build.py`; the output is byte-identical on the same toolchain. Build the award variant (retired eval 7) with `python generator/build.py --variant V1 --award --out <folder>`. Build the fixtures with `python fixtures/make_flawed_page.py <clean docs folder>` and `python fixtures/make_flawed_page_v2.py <clean docs folder>`, and `python fixtures/make_flawed_page_v3.py <clean docs folder made with the 1.3.0+ template>`; the defect lists are written beside them, with the `audit_id` the audit must report for each defect it can catch.
 
 ## Results for v1.1.0
 
