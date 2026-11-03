@@ -1,6 +1,6 @@
 ---
 name: academic-project-page
-description: Use when building, polishing, or auditing an academic project website - a research paper page, thesis or final-year project page, course project page, or demo page hosted on GitHub Pages, including pages based on the Academic Project Page Template or Nerfies. Also use when the user asks to "make a website for my paper", "create a project page", put a paper or project online with its figures, videos, poster, and BibTeX, or says an existing project page looks off, unpolished, or broken (fonts, alignment, videos that will not seek, carousels, images, links).
+description: Use when building, polishing, or auditing an academic project website - a research paper page, thesis or final-year project page, course project page, or demo page hosted on GitHub Pages, including pages based on the Academic Project Page Template or Nerfies. Also use when the user asks to "make a website for my paper", "create a project page", put a paper or project online with its figures, videos, poster, and BibTeX, or says an existing project page looks off, unpolished, or broken (fonts, alignment, videos that will not seek, carousels, images, links), or asks whether a project page is ready to publish or whether its links and buttons work.
 metadata:
   version: "1.4.0"
   author: "Roy Huang"
@@ -32,12 +32,12 @@ Turn a project's materials into an accurate, polished project page on the bundle
 | `python <skill>/scripts/preview_server.py --root <site> --base <repo-name>` | Every path: serves the page under its repository subpath, with video seeking. Omit `--base` for a user or organization site. |
 | `node <skill>/scripts/audit.mjs <url>` | The gate. Needs Node 22+ and an installed Chrome, Edge, or Chromium; `--help` for options. |
 | `python <skill>/scripts/check_numbers.py <site>/index.html <sources>` | Any page that states results. Pass the files the numbers came from, not the whole repository: a large pool matches wrong numbers by coincidence. |
-| `python <skill>/scripts/check_links.py <site>/index.html <sources> [--allow <url>]` | Every page. Pass all the materials (with none, it lists the links as unverified), and `--allow` only links the user gave in the chat, never one to quiet the check. |
+| `python <skill>/scripts/check_links.py <site>/index.html <sources> [--allow <url>]` | Every page. Pass all the materials; with none, it lists the links as unverified. `--allow` takes only links the user gave in the chat, never the page's own links or one to quiet the check. |
 | `python <skill>/scripts/unused_assets.py <site>` | Before reporting a Build or Polish. |
 
 ## Build
 
-1. **Read the materials:** READMEs, reports, drafts, citation files, figures, posters, recordings. Extract title, authors and affiliations, abstract, links, visuals, and citation metadata. Separate reported results and intended capabilities from demonstrated deployment. When numbers disagree, use the latest final run and say which source you followed. Check each claim you reuse from captions, notes, or drafts against the data (a trend's direction, "best"); correct or drop one the data contradicts, and say so.
+1. **Read the materials:** READMEs, reports, drafts, citation files, figures, posters, recordings. Extract title, authors and affiliations, abstract, links, visuals, and citation metadata. Separate reported results and intended capabilities from demonstrated deployment. When numbers disagree, use the latest final run and say which source you followed. Show the user's BibTeX entry as given; suggest corrections in the report instead of editing it. Check each claim you reuse from captions, notes, or drafts against the data (a trend's direction, "best"); correct or drop one the data contradicts, and say so.
 2. **Show only what the sources verify.**
    - Every external link (paper, code, DOI, arXiv, dataset, video, personal page) comes from the materials or the user; never complete one from a pattern such as a likely repository name. Authors without a verified personal URL are plain text.
    - A target venue, LaTeX template, author kit, or "potential submission" is not a venue; use the user's own status wording.
@@ -72,13 +72,13 @@ Passing the gate means nothing measurable is wrong, not that the page is good. D
    - Embedded PDFs are blank in full-page shots, so open each `page-<width>-pdf<N>.png`; check YouTube embeds in the live preview.
    - Batch the fixes from one look before looking again; three rounds at most.
 3. **Interact.** The audit drives figures, carousels, the copy button, menus, and a Tab pass. Judge what it cannot: a zoomed figure is sharp and readable, a carousel video plays, focus rings are visible. If the audit could not run, do those mechanics by hand.
-4. **Report.** In Build and Polish, report only after a gate run with no failures (in a scoped Polish, none in the named part) and after opening every one of its screenshots (in a scoped Polish, those showing the named part). Give the preview URL, the gate result with any defended warnings (each cited by its `[id]`), what you checked by looking, omitted resources, sample content still to replace, and what you could not check. Never claim a check you did not run:
+4. **Report.** In Build and Polish, report only after a gate run with no failures (in a scoped Polish, none in the named part) and after opening every one of its screenshots (in a scoped Polish, those showing the named part). Give the preview URL (say whether its server is still running; stop any other server you started), the gate result with any defended warnings (each cited by its `[id]`), what you checked by looking, omitted resources, sample content still to replace, and what you could not check. Never claim a check you did not run:
    - Label each check (audit, interaction check, `check_numbers.py`, `check_links.py`, `unused_assets.py`, each set of screenshots) as passed, ran with findings (name them), or not run (say why). A gate that could not start, an empty result, or a screenshot you did not open is "not run", never a pass.
    - When the gate could not run at all, open the report with `DEGRADED: <reason>`, then the hand checks.
    - Results go stale: any edit after the last gate run invalidates it, so rerun before reporting. A blank, half-loaded, or wrong-width screenshot is not evidence; retake it.
    - Label what you could not verify as unverified instead of leaving it out: a number traced to no source, a link the user did not give, an optional block kept without matching material.
 
-   Preview approval does not authorize a push, publication, or repository visibility change.
+   Preview approval does not authorize a push, publication, or repository visibility change. After a Build, end with how the user publishes: repository Settings, then Pages, deploying from the branch and folder that hold the page (`/docs`, or a `gh-pages` branch).
 
 ## Polish and Audit
 
@@ -95,8 +95,7 @@ Passing the gate means nothing measurable is wrong, not that the page is good. D
 | Mistake | Instead |
 | --- | --- |
 | Metric counters, icon "contribution" cards, numbered steps, eyebrow labels, badges, or a "key contributions" box on content without that structure; new accent colours | The template's sections, figures, and paragraphs; numbers only for a real sequence |
-| A dense multi-panel figure or the method diagram as the teaser when a legible outcome visual exists | The main finding as the teaser (layout-polish.md, Teaser) |
-| Teaser media in fixed-height boxes with `object-fit: contain` | Grid columns proportional to the media's aspect ratios |
+| A dense multi-panel figure or the method diagram as the teaser when a legible outcome visual exists; teaser media in fixed-height boxes | The main finding as the teaser, in grid columns proportional to the media's aspect ratios (layout-polish.md, Teaser) |
 | The method figure or the key result hidden in a disclosure or on a later carousel slide; one image in two sections | Both inline; each image once |
 | "Coming soon" or greyed-out buttons for a paper, code, or dataset that does not exist | No button; a status line if the user gave one |
 | More Works filled with guesses | Only the user's verified projects, or delete the menu |
