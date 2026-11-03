@@ -12,7 +12,7 @@ Point your coding agent at a folder of project materials (a paper or report PDF,
 
 ![A folder of project materials, one prompt, then the checked project page the skill built, on desktop and phone](./assets/readme/before-after.webp)
 
-The demo uses a fictional project, so nothing real is shown.
+The demo is built from a fictional project.
 
 ## Quick start
 
@@ -56,10 +56,11 @@ git clone https://github.com/royh1122/academic-project-page-skill.git
 cp -r academic-project-page-skill/skills/academic-project-page ~/.claude/skills/
 ```
 
-Tested with Claude Code, Codex and Antigravity (Gemini). In Codex, the browser check needs your approval to run outside Codex's sandbox; Codex asks for it (see the FAQ). `npx skills add` also installs it for Cursor, Gemini CLI, GitHub Copilot and many other agents that read the `SKILL.md` format, but it has not been run in them yet. The browser checks need an agent that can run shell commands, plus the requirements below.
+Tested with Claude Code, Codex and Antigravity (Gemini). `npx skills add` also installs it for Cursor, Gemini CLI, GitHub Copilot and other agents that read the `SKILL.md` format.
 
 **Requirements:**
 
+- an agent that can run shell commands
 - Python 3 and Node 22 or newer
 - an installed Chrome, Edge, or Chromium, for the browser checks
 - ffmpeg, for converting GIFs and recordings
@@ -68,7 +69,7 @@ Tested with Claude Code, Codex and Antigravity (Gemini). In Codex, the browser c
 
 The page builds on the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) and [Nerfies](https://nerfies.github.io/). The skill adds what a template cannot do:
 
-- **It does not invent.** Venues, awards, links, and metrics appear only when your sources verify them. A finalist is not an award; a target venue is not an acceptance.
+- **It sticks to your sources.** Venues, awards, links, and metrics appear when your sources verify them. A finalist is not an award; a target venue is not an acceptance.
 - **It checks reused claims.** Caption text from a paper is compared with the data, and claims the data contradicts are dropped.
 - **It keeps personal data off the page.** Names, IDs, and plates in raw files and video frames stay out.
 - **It checks its own work in a real browser:** a page audit, an interaction check that drives zoom, carousels, menus, and the keyboard, a check of every number and every external link against your sources, and screenshots it opens and reads.
@@ -80,7 +81,7 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 **Content rules.** The page states only what the sources verify:
 
 - A target venue or a finalist listing does not become an acceptance or an award.
-- Draft numbers are not used.
+- Numbers come from the final results, not drafts.
 - Every external link (paper, code, DOI, dataset, video) comes from your materials or your request.
 - Claims in reused captions are checked against the data.
 - Personal data, unreleased data, and harmful text stay off the page, including faces, badges, and plates in video frames.
@@ -96,7 +97,7 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 
 **Polish and Audit.** Polish fixes defects without changing content, stays inside the part you name, checks pasted reviewer notes on the live page before acting on them, and reports the audit before and after. Audit ranks problems from P0 (blocks publishing) to P3 (cosmetic), each with a way to fix it, and edits nothing.
 
-**Honest reports.** Every report says which checks passed, which found problems, and which could not run, and why. A check that could not run is never reported as a pass.
+**Clear reports.** Every report lists which checks passed, which found problems, and which could not run, with the reason.
 
 ## Examples
 
@@ -120,11 +121,11 @@ The [evaluation kit](./eval-kit/) is a fictional project with planted traps: an 
 | Video showing a person's name, ID, and licence plate | none published | one baseline published it |
 | Zoomable figures per page | 8 to 9 | none |
 
-These are small samples, one run per arm. They show what the skill catches, not how often. Details are in [eval-kit/README.md](./eval-kit/README.md).
+One run per arm; the runs and how they were graded are in [eval-kit/README.md](./eval-kit/README.md).
 
 ## Built with this skill
 
-No pages here yet. If you built or polished a public page you own with this skill, [add it](../../issues/new?template=showcase.yml). Only pages the submitter owns are listed.
+Built or polished your own public page with this skill? [Add it here](../../issues/new?template=showcase.yml).
 
 ## FAQ
 
@@ -134,9 +135,9 @@ No pages here yet. If you built or polished a public page you own with this skil
 
 **Does it work offline?** Building and previewing do. The template's CSS, scripts and icons are bundled (icons are inline SVG), but the page requests the Inter font from Google Fonts; offline it falls back to system fonts. YouTube embeds contact YouTube. There are no analytics.
 
-**Which agents?** Tested with Claude Code, Codex and Antigravity (Gemini). In Codex the skill triggered on its own, asked to run the browser audit outside its sandbox, fixed what the audit found, and passed it once approved. Unattended Codex runs (`codex exec`) cannot ask, so there the browser check does not run unless you opt in (below). In Antigravity with Gemini, the skill triggered on its own; a build and a polish of the evaluation kit passed the browser audit, and handled the planted traps and defects on a par with the Claude Code runs. Other agents that read `SKILL.md` can install it, untested so far (see Quick start). Reports from other agents are welcome as issues.
+**Which agents?** Claude Code, Codex and Antigravity (Gemini) are tested: in each, the skill triggered on its own, built the evaluation kit's page, and passed the browser audit. Any agent that reads `SKILL.md` can install it with `npx skills add`. Reports from other agents are welcome as issues.
 
-**The audit says the browser tab never answered.** Your agent runs commands in its own sandbox, and Chrome could not start its own sandbox inside it (Codex's sandbox can do this). Approve the audit command when the agent asks to run it outside the sandbox, or run the audit yourself. If you run the agent unattended, you can set `PAGE_AUDIT_NO_SANDBOX=1`, which runs Chrome without its sandbox for these local checks; that is your call, and the agent never sets it.
+**The audit says the browser tab never answered.** The agent's command sandbox kept Chrome from starting, as Codex's sandbox does. Approve the audit command when the agent asks to run it outside the sandbox, or run the audit yourself. For unattended runs such as `codex exec`, you can set `PAGE_AUDIT_NO_SANDBOX=1` to run Chrome without its sandbox for these local checks; the agent never sets it itself.
 
 **Can it restyle the page?** Yes. An explicit request wins over the default theme. A dark theme or a new accent colour is a `:root` token override with no layout change.
 
