@@ -47,6 +47,8 @@ codex plugin marketplace add royh1122/academic-project-page-skill
 codex plugin add academic-project-page@royh1122-skills
 ```
 
+In Antigravity, use the `npx skills add` command above. It puts the skill in your project's `.agents/skills/` folder, where Antigravity finds it.
+
 Or copy the skill folder into your agent's skills directory by hand:
 
 ```bash
@@ -54,7 +56,7 @@ git clone https://github.com/royh1122/academic-project-page-skill.git
 cp -r academic-project-page-skill/skills/academic-project-page ~/.claude/skills/
 ```
 
-Tested with Claude Code and Codex. In Codex, the browser check needs your approval to run outside Codex's sandbox; Codex asks for it (see the FAQ). `npx skills add` also installs it for Cursor, Gemini CLI, GitHub Copilot and many other agents that read the `SKILL.md` format, but it has not been run in them yet. The browser checks need an agent that can run shell commands, plus the requirements below.
+Tested with Claude Code, Codex and Antigravity (Gemini). In Codex, the browser check needs your approval to run outside Codex's sandbox; Codex asks for it (see the FAQ). `npx skills add` also installs it for Cursor, Gemini CLI, GitHub Copilot and many other agents that read the `SKILL.md` format, but it has not been run in them yet. The browser checks need an agent that can run shell commands, plus the requirements below.
 
 **Requirements:**
 
@@ -132,7 +134,7 @@ No pages here yet. If you built or polished a public page you own with this skil
 
 **Does it work offline?** Building and previewing do. The template's CSS, scripts and icons are bundled (icons are inline SVG), but the page requests the Inter font from Google Fonts; offline it falls back to system fonts. YouTube embeds contact YouTube. There are no analytics.
 
-**Which agents?** Tested with Claude Code and Codex. In Codex the skill triggered on its own, asked to run the browser audit outside its sandbox, fixed what the audit found, and passed it once approved. Unattended Codex runs (`codex exec`) cannot ask, so there the browser check does not run unless you opt in (below). Other agents that read `SKILL.md` can install it, untested so far (see Quick start). Reports from other agents are welcome as issues.
+**Which agents?** Tested with Claude Code, Codex and Antigravity (Gemini). In Codex the skill triggered on its own, asked to run the browser audit outside its sandbox, fixed what the audit found, and passed it once approved. Unattended Codex runs (`codex exec`) cannot ask, so there the browser check does not run unless you opt in (below). In Antigravity with Gemini, the skill triggered on its own; a build and a polish of the evaluation kit passed the browser audit, and handled the planted traps and defects on a par with the Claude Code runs. Other agents that read `SKILL.md` can install it, untested so far (see Quick start). Reports from other agents are welcome as issues.
 
 **The audit says the browser tab never answered.** Your agent runs commands in its own sandbox, and Chrome could not start its own sandbox inside it (Codex's sandbox can do this). Approve the audit command when the agent asks to run it outside the sandbox, or run the audit yourself. If you run the agent unattended, you can set `PAGE_AUDIT_NO_SANDBOX=1`, which runs Chrome without its sandbox for these local checks; that is your call, and the agent never sets it.
 
