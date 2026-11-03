@@ -2,6 +2,35 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.4.1
+
+**Fixes**
+
+- **Link contrast on tinted bands:** links in running text used Bulma's blue (`#3273dc`), which is 4.3:1 on the tinted section background, below WCAG AA. They now use the theme's `#2563eb` (4.7:1 or better on every background). Found by the held-out eval and an earlier Codex run.
+- **`check_numbers.py` and `check_links.py`:** a page with no source files is now an error in `check_numbers.py` (it used to print its help and exit 0), and a missing page or source file gives a one-line error instead of a traceback. Newer PyMuPDF no longer prints a deprecation warning.
+- **`style-fidelity.md`** named a Font Awesome class for the award icon; it now points to the bundled SVG icons.
+
+**Behaviour**
+
+- **BibTeX as given:** the user's entry is shown unchanged; corrections are suggested in the report.
+- **After a Build, the report says how to publish:** repository Settings, then Pages, deploying from the branch and folder that hold the page. The agent still never publishes by itself.
+- **Preview servers:** the report says whether the preview server is still running, and the agent stops any other server it started.
+- **`check_links.py --allow`** never takes the page's own links: without source files, the links are reported as unverified.
+- **One affiliation, no superscripts:** the template's author block says to drop the number superscripts when every author shares one affiliation.
+- **Description:** now also covers asking whether a project page is ready to publish or whether its links and buttons work. In the activation eval, the skill triggered on all 18 matching requests (17 before) and still on none of the 18 near misses.
+
+**Maintenance**
+
+- `check_numbers.py` and `check_links.py` share one source reader (`scripts/source_files.py`) and use `argparse`; their output is otherwise unchanged.
+- The check scripts' headers no longer mention a `playwright-cli run-code` route that the skill does not use.
+- CI checks that the theme tokens in `style-fidelity.md`, `index.css` and `theme-profile.json` agree (`evals/check_theme_tokens.py`).
+
+**Tested**
+
+- **Antigravity with Gemini:** a build and a polish of the evaluation kit passed the browser audit, on a par with Claude Code. Install there through `npx skills add`.
+- **New test material:** a held-out evaluation kit from a different kind of project (H1, a gated dataset with a benchmark, eval 15), a fixture with defects only in CSS and JavaScript (flawed-v4, eval 16), and an activation eval (`evals/activation.json`, `evals/check_activation.py`).
+- **Eval round 14** (all core evals and the held-out kit with and without the skill): no regressions against the previous rounds.
+
 ## 1.4.0
 
 **The audit scrolls, tabs and taps through the page.** New checks, all warnings, each ending with its fix:
