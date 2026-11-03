@@ -1,4 +1,4 @@
-// Playwright CLI: run-code --filename /path/to/this/file.js
+// A function expression over a Playwright-style page; audit.mjs runs it with lib/chrome.mjs.
 // Exercises the interactive parts of the currently loaded page with real key and mouse events:
 // figure viewer, carousels, BibTeX copy button, contents menu, More Works menu, and one Tab pass
 // through the whole page. It tests only what the page has (a page without these parts reports

@@ -1,6 +1,6 @@
 // Zero-dependency headless Chrome driver over the DevTools Protocol (Node 22+ built-in WebSocket).
-// It exposes the small part of Playwright's Page API that audit_page.js and check_style.js use,
-// so the same check files run under `playwright-cli run-code` or under scripts/audit.mjs.
+// It exposes the small part of Playwright's Page API that the check files use, so they stay plain
+// function expressions that audit.mjs loads and runs.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

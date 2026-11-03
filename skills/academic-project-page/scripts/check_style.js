@@ -1,4 +1,4 @@
-// Playwright CLI: run-code --filename /path/to/this/file.js
+// A function expression over a Playwright-style page; audit.mjs runs it with lib/chrome.mjs.
 // Typography check against a theme profile (references/theme-profile.json by default).
 // The profile lists selectors with expected computed values; numbers are pixels (or font weights)
 // compared within the profile's tolerances, colours are compared per RGB channel, fontFamily is the

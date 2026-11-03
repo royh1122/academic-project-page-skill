@@ -1,4 +1,4 @@
-// Playwright CLI: run-code --filename /path/to/this/file.js
+// A function expression over a Playwright-style page; audit.mjs runs it with lib/chrome.mjs.
 // Audits the currently loaded generated page. Failures are defects to fix before delivery;
 // warnings need a look at screenshots. Restores the previous viewport; does not navigate.
 async (page) => {

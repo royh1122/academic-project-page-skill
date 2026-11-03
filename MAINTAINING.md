@@ -15,9 +15,9 @@ Notes for people changing the skill itself. The agent using the skill never need
 
 Profile format: `tolerances` (`px` for lengths and line heights, `weight` for font weights, `color` per RGB channel), then `rules`, each `{ "selector", "expect": { property: value }, "optional" }`. Numbers are pixels or weights; `#rrggbb` values are colours; `fontFamily` matches the first family in the computed list; anything else must match exactly. A single value can carry its own tolerance as `{ "value": 48, "tolerance": 1 }`. `renderedFonts` lists `{ selector, family }` pairs for the rendered-face check.
 
-To change the theme deliberately, change the CSS, re-measure on a filled page, update the profile and this file together, and confirm the check still fails when the fonts are forced to Arial. For a one-off requested redesign, pass `--skip-style` and state the changed expectations.
+To change the theme deliberately, change the CSS, re-measure on a filled page, update the profile and this file together, and confirm the check still fails when the fonts are forced to Arial. `python evals/check_theme_tokens.py` (also run in CI) confirms that style-fidelity.md's token tables, `index.css` and the profile agree. For a one-off requested redesign, pass `--skip-style` and state the changed expectations.
 
-Under `playwright-cli run-code --filename scripts/check_style.js`, set `THEME_PROFILE` to the profile's path. If fonts cannot load or the browser cannot report the rendered face, report the check as incomplete; a CSS family name is not proof.
+To check against another profile, set `THEME_PROFILE` to its path. If fonts cannot load or the browser cannot report the rendered face, report the check as incomplete; a CSS family name is not proof.
 
 ## Defects fixed relative to APT (checked at APT commit `d38af1c`; values measured 2026-10-28)
 

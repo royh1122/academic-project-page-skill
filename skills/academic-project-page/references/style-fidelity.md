@@ -15,7 +15,7 @@ One family, Inter, requested from Google Fonts css2 at the five weights the CSS 
 | Affiliations `.publication-affiliations` | 20 / 32 px; 17 px at ≤768 px | 400 | `#475569` |
 | Equal-contribution note `.eql-cntrb` | 14 px, italic; its `sup` stays ≥12 px | 400 | `#5b6576` |
 | Venue / status `.publication-venue` | 16 px | 600 | `#475569` on `#f1f5f9` pill |
-| Award `.publication-awards` | 16 px | 600 | `#7c4a03` on `#fef3c7`, 1 px `#f3d98b` border, 12 px radius (the venue pill's shape); optional `fa-trophy` or `fa-award` icon in the text colour |
+| Award `.publication-awards` | 16 px | 600 | `#7c4a03` on `#fef3c7`, 1 px `#f3d98b` border, 12 px radius (the venue pill's shape); optional trophy or award SVG icon (icons.md) in the text colour |
 | Resource buttons `.publication-links .button` | 16 px | 600 | white on `#1e293b`; hover `#2563eb`; 12 px radius |
 | Section heading `h2.title.is-3` | 32 / 36 px | 700 | `#1e293b`; 60 × 3 px gradient accent bar 16 px below |
 | Sub-heading `h3.title.is-4` | 24 px | 600 | `#1e293b` |

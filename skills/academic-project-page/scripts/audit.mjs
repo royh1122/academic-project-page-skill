@@ -35,7 +35,7 @@ const out = resolve(outIndex >= 0 ? args[outIndex + 1] : '.page-audit');
 const sliceIndex = args.indexOf('--max-slices');
 const maxSlices = sliceIndex >= 0 ? Math.max(1, parseInt(args[sliceIndex + 1], 10) || 12) : 12;
 
-// The check files are Playwright function expressions shared with `playwright-cli run-code`.
+// The check files are function expressions over a Playwright-style page (lib/chrome.mjs).
 const here = dirname(fileURLToPath(import.meta.url));
 const load = name => (0, eval)(readFileSync(join(here, name), 'utf8'));
 

@@ -1,6 +1,7 @@
 // Layout checks at 375, 768 and 1440 px: headings and captions covered by another element or cut off by an ancestor,
 // in-page jumps that land under a fixed bar, blank bands, uneven side margins, and tap targets under 24 x 24 px.
-// Playwright function expression; audit.mjs runs it. Warnings only; each message ends with its fix.
+// A function expression over a Playwright-style page; audit.mjs runs it with lib/chrome.mjs. Warnings only;
+// each message ends with its fix.
 async (page) => {
   const warnings = [];
   const previousViewport = page.viewportSize();

@@ -94,15 +94,18 @@ jobs:
           for f in skills/academic-project-page/scripts/audit_page.js skills/academic-project-page/scripts/layout_page.js skills/academic-project-page/scripts/interact_page.js skills/academic-project-page/scripts/check_style.js; do
             node -e "new Function('return ' + require('fs').readFileSync('$f', 'utf8'))" || exit 1
           done
-          python3 -m py_compile skills/academic-project-page/scripts/preview_server.py skills/academic-project-page/scripts/unused_assets.py skills/academic-project-page/scripts/check_numbers.py skills/academic-project-page/scripts/check_links.py
+          python3 -m py_compile skills/academic-project-page/scripts/preview_server.py skills/academic-project-page/scripts/unused_assets.py skills/academic-project-page/scripts/check_numbers.py skills/academic-project-page/scripts/check_links.py skills/academic-project-page/scripts/source_files.py evals/check_theme_tokens.py
 
           echo "Checking referenced bundle files exist..."
-          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs scripts/check_numbers.py scripts/check_links.py scripts/layout_page.js scripts/lib/findings.mjs references/icons.md; do
+          for f in references/layout-polish.md references/style-fidelity.md references/theme-profile.json static/css/figure-viewer.css static/js/figure-viewer.js scripts/audit.mjs scripts/lib/chrome.mjs scripts/check_numbers.py scripts/check_links.py scripts/source_files.py scripts/layout_page.js scripts/lib/findings.mjs references/icons.md; do
             test -f "skills/academic-project-page/$f" || (echo "Missing $f" && exit 1)
           done
 
           echo "Checking every audit finding id has a planted flaw or a stated reason..."
           python3 evals/check_fixtures.py --coverage
+
+          echo "Checking the theme tokens agree across style-fidelity.md, index.css and theme-profile.json..."
+          python3 evals/check_theme_tokens.py
 
           echo "Validation passed successfully!"
 

@@ -12,12 +12,13 @@ flagged. With no source files (a Polish or Audit of a page alone), the links are
 unverified, and only empty and placeholder links fail. PDF sources are read with PyMuPDF (text and link targets) when installed, else with the
 pdftotext command (text only); the extractor used is named in the output.
 """
+import argparse
 import html
 import re
-import shutil
-import subprocess
 import sys
 from pathlib import Path
+
+from source_files import missing, read_source, source_files
 
 URL = re.compile(r'''https?://[^\s"'<>`\\(){}\[\]]+''')
 TEXT_SUFFIXES = {'.md', '.rst', '.txt', '.tex', '.bib', '.cff', '.json', '.yaml', '.yml', '.toml',
@@ -54,56 +55,26 @@ def page_links(markup):
     return links, len(empty) + inserts
 
 
-def pdf_text(path):
-    """Return (text including link targets, extractor name), or (None, None) when none is available."""
-    try:
-        import fitz
-        with fitz.open(path) as document:
-            parts = []
-            for page in document:
-                parts.append(page.get_text())
-                parts += [link['uri'] for link in page.get_links() if link.get('uri')]
-            return ' '.join(parts), 'PyMuPDF'
-    except ImportError:
-        pass
-    if shutil.which('pdftotext'):
-        result = subprocess.run(['pdftotext', '-enc', 'UTF-8', str(path), '-'], capture_output=True)
-        if result.returncode == 0:
-            return result.stdout.decode('utf-8', errors='ignore'), 'pdftotext'
-        print(f'note: pdftotext could not read {path}')
-    return None, None
-
-
-def source_text(path, explicit, extractors):
-    if path.suffix.lower() == '.pdf':
-        text, extractor = pdf_text(path)
-        if text is None:
-            print(f'note: skipped {path} (install PyMuPDF or pdftotext to read PDFs)')
-            return ''
-        extractors.add(extractor)
-        return text
-    if explicit or path.suffix.lower() in TEXT_SUFFIXES:
-        return path.read_text(encoding='utf-8', errors='ignore')
-    return ''
-
-
 def main():
-    args = sys.argv[1:]
-    if not args or args[0] in ('-h', '--help'):
+    if len(sys.argv) < 2:
         print(__doc__)
-        sys.exit(0 if args else 2)
-    allowed = [args[i + 1] for i, a in enumerate(args) if a == '--allow' and i + 1 < len(args)]
-    paths = [a for i, a in enumerate(args) if a != '--allow' and (i == 0 or args[i - 1] != '--allow')]
-    page = Path(paths[0])
+        sys.exit(2)
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('page', help='the page, such as docs/index.html')
+    parser.add_argument('sources', nargs='*', help='files or folders the links came from')
+    parser.add_argument('--allow', action='append', default=[], metavar='URL',
+                        help='a link the user gave outside the files; repeat for each')
+    args = parser.parse_args()
+    if missing([args.page, *args.sources]):
+        parser.error(f'not found: {", ".join(missing([args.page, *args.sources]))}')
+    allowed = args.allow
+    page = Path(args.page)
     links, empty = page_links(page.read_text(encoding='utf-8'))
 
-    files = []
-    for argument in paths[1:]:
-        path = Path(argument)
-        files += [(p, False) for p in sorted(path.rglob('*')) if p.is_file() and '.git' not in p.parts[:-1]] \
-            if path.is_dir() else [(path, True)]
+    files = source_files(args.sources)
     extractors = set()
-    text = ' '.join(source_text(f, explicit, extractors) for f, explicit in files if f.resolve() != page.resolve())
+    text = ' '.join(read_source(f, TEXT_SUFFIXES, extractors, read_any=explicit, links=True)
+                    for f, explicit in files if f.resolve() != page.resolve())
     text += ' ' + ' '.join(allowed)
     # git@github.com:owner/repo.git and other scp-style remotes name the same repository.
     text = re.sub(r'git@([\w.-]+):', r'https://\1/', text)

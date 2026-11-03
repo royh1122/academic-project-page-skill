@@ -159,8 +159,9 @@ skills/academic-project-page/
 │   ├── preview_server.py       local preview under a repository subpath, with video seeking
 │   ├── check_numbers.py        numbers on the page against the source files
 │   ├── check_links.py          external links on the page against the source files
+│   ├── source_files.py         the source reader both checks share
 │   └── unused_assets.py        static files the page no longer uses
-evals/                          agent evals (8 core, 2 topic, 4 retired) and check_fixtures.py, which tests the audit on planted flaws
+evals/                          agent evals, check_fixtures.py (the audit on planted flaws) and check_theme_tokens.py
 eval-kit/                       fictional projects, generator, and flawed-page fixtures for the evals
 examples/                       example runs with screenshots
 MAINTAINING.md                  notes for changing the skill: size budget, icons, the typography check

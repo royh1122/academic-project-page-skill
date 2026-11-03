@@ -9,13 +9,14 @@ derivation you can state (a sum, a difference, a count). Exit code 1 when any ar
 PDF sources are read with PyMuPDF (fitz) when installed, else with the pdftotext command (Poppler, MiKTeX,
 Xpdf); the extractor used is named in the output. With neither, PDFs are skipped with a note.
 """
+import argparse
 import html
 import re
-import shutil
-import subprocess
 import sys
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
+
+from source_files import missing, read_source, source_files
 
 # Standalone numbers only: digits touching letters (hashes, IDs, labels such as P70) are not values,
 # except a factor written with a trailing x ("1.36x"), which pages often render as "1.36×".
@@ -35,36 +36,6 @@ def visible_text(markup):
     return split_dimensions(re.sub(r'\s+', ' ', text.replace('−', '-').replace(' ', ' ').replace(' ', ' ')))
 
 
-def pdf_text(path):
-    """Return (text, extractor name), or (None, None) when no extractor is available."""
-    try:
-        import fitz
-        with fitz.open(path) as document:
-            return ' '.join(page.get_text() for page in document), 'PyMuPDF'
-    except ImportError:
-        pass
-    if shutil.which('pdftotext'):
-        result = subprocess.run(['pdftotext', '-enc', 'UTF-8', str(path), '-'], capture_output=True)
-        if result.returncode == 0:
-            return result.stdout.decode('utf-8', errors='ignore'), 'pdftotext'
-        print(f'note: pdftotext could not read {path}')
-        return None, None
-    return None, None
-
-
-def source_text(path, extractors):
-    if path.suffix.lower() == '.pdf':
-        text, extractor = pdf_text(path)
-        if text is None:
-            print(f'note: skipped {path} (install PyMuPDF or pdftotext to read PDFs)')
-            return ''
-        extractors.add(extractor)
-        return split_dimensions(text)
-    if path.suffix.lower() in TEXT_SUFFIXES:
-        return split_dimensions(path.read_text(encoding='utf-8', errors='ignore'))
-    return ''
-
-
 def to_decimal(token):
     return Decimal(token.replace(',', ''))
 
@@ -74,19 +45,23 @@ def rounded(value, places):
 
 
 def main():
-    if len(sys.argv) < 3 or sys.argv[1] in ('-h', '--help'):
+    if len(sys.argv) < 2:
         print(__doc__)
-        sys.exit(0 if len(sys.argv) > 1 else 2)
-    page = Path(sys.argv[1])
+        sys.exit(2)
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('page', help='the page, such as docs/index.html')
+    parser.add_argument('sources', nargs='+', help='files or folders the numbers came from')
+    args = parser.parse_args()
+    if missing([args.page, *args.sources]):
+        parser.error(f'not found: {", ".join(missing([args.page, *args.sources]))}')
+    page = Path(args.page)
     text = visible_text(page.read_text(encoding='utf-8'))
 
-    files = []
-    for argument in sys.argv[2:]:
-        path = Path(argument)
-        files += [p for p in sorted(path.rglob('*')) if p.is_file()] if path.is_dir() else [path]
+    files = [f for f, _ in source_files(args.sources)]
     extractors = set()
     sources = [to_decimal(m.group()) for f in files if f.resolve() != page.resolve()
-               for m in NUMBER.finditer(source_text(f, extractors)) if len(m.group().replace(',', '').replace('.', '')) <= 15]
+               for m in NUMBER.finditer(split_dimensions(read_source(f, TEXT_SUFFIXES, extractors)))
+               if len(m.group().replace(',', '').replace('.', '')) <= 15]
 
     found, unmatched, cache = 0, [], {}
     for match in NUMBER.finditer(text):
