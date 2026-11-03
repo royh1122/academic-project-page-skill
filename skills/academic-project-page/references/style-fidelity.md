@@ -49,7 +49,7 @@ Further tokens, all on `:root` in `index.css` (and read by `figure-viewer.css`, 
 | `--button-background` | `var(--text-primary)` | resource buttons, skip link, contents-pill toggle |
 | `--on-button` | `var(--background-primary)` | their label colour; follows the two tokens above, so it flips by itself in a dark theme |
 | `--on-success` | `#ffffff` | text on the `--success-color` fill |
-| `--link-color` / `--link-hover` | `#3273dc` / `var(--text-strong)` | links in running text (transcript, poster); Bulma's blue |
+| `--link-color` / `--link-hover` | `#2563eb` / `var(--text-strong)` | links in running text (transcript, poster); 4.7:1 on `#f1f5f9` (Bulma's `#3273dc`: 4.3:1 on a tinted band) |
 | `--text-strong` | `#363636` | bold text, row headers, content headings, viewer controls; set it equal to `--text-primary` |
 | `--shadow-sm` to `--shadow-xl`, `--border-radius*`, `--font-*` | | not colours of the palette, but overridable the same way |
 

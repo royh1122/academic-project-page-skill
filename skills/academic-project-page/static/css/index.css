@@ -16,7 +16,7 @@
   --text-secondary: #475569;       /* APT #64748b is 4.3:1 on #f1f5f9; this is 6.9:1 */
   --text-strong: #363636;          /* Bulma's grey for bold text, row headers and viewer controls; keep it equal to --text-primary in a re-theme */
   --text-light: #5b6576;           /* APT #94a3b8 is 2.6:1 on white; this is 5.4:1 on #f1f5f9 */
-  --link-color: #3273dc;           /* links in running text (transcript, poster); Bulma's blue, 4.7:1 on white */
+  --link-color: #2563eb;           /* links in running text (transcript, poster); 4.7:1 on #f1f5f9 (Bulma's #3273dc is 4.3:1 on the tinted band) */
   --link-hover: var(--text-strong);
   --button-background: var(--text-primary);   /* resource buttons and the skip link; the label colour is derived: */
   --on-button: var(--background-primary);
