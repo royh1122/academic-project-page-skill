@@ -125,8 +125,22 @@ try {
           const before = headings.filter(([y]) => y < i * 900).pop();
           guide.push(`    ${name}: ${[...(before ? [`${before[1]} (cont.)`] : i === 0 ? ['header'] : []), ...starting].join(', ')}`);
         }
+        // On phones a dense teaser can shrink until its labels are unreadable. Information for the look step, not a warning:
+        // whether it still reads is judged in the slice.
+        const teaser = width === 375 ? await page.evaluate(() => {
+          const shown = el => el.checkVisibility() && el.getBoundingClientRect().width > 0;
+          const title = document.querySelector('h1');
+          const after = el => title && title.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING;
+          const media = [...document.querySelectorAll('.teaser img, .teaser video')].find(shown)
+            || [...document.querySelectorAll('img, video')].find(el => shown(el) && after(el) && !el.closest('a, button, nav, header'));
+          if (!media) return null;
+          const natural = media.tagName === 'VIDEO' ? media.videoWidth : media.naturalWidth;
+          return { tag: media.tagName.toLowerCase(), src: (media.currentSrc || media.getAttribute('src') || media.querySelector('source')?.getAttribute('src') || '').split('/').pop(), shown: Math.round(media.getBoundingClientRect().width), natural };
+        }) : null;
         sliced.push(`  ${width} px, ${saved} slices of 900 px (legible; open every one):\n${guide.join('\n')}`
-          + (count > saved ? `\n    The page is ${height} px tall, so slices stop at ${saved * 900} px; rerun with --max-slices ${count} for the rest.` : ''));
+          + (count > saved ? `\n    The page is ${height} px tall, so slices stop at ${saved * 900} px; rerun with --max-slices ${count} for the rest.` : '')
+          + (teaser ? `\n    Teaser at ${width} px: ${teaser.tag} ${teaser.src ? `${teaser.src} ` : ''}shown ${teaser.shown} px wide`
+            + (teaser.natural ? `, ${Math.round(100 * teaser.shown / teaser.natural)}% of its natural ${teaser.natural} px; check its text and labels still read.` : ' (natural width not loaded).') : ''));
       }
       // Full-page capture leaves an embedded PDF viewer (an out-of-process frame) blank, but a
       // viewport capture paints it once it has loaded: save one of each visible embed.

@@ -27,6 +27,7 @@ Read this before arranging media. Part 1 applies to any academic project page, w
 - One caption per medium, or one caption for the group, not both. Do not refer to media by position ("left", "right"): they stack on phones.
 - Open with a teaser whenever the project has any visual. The teaser shows the project's main finding or outcome: whichever visual a visitor would most want to see first, in whatever form the project has it (a result image or plot, a demo or result clip, a qualitative example, a before/after, a screenshot of the working system). Prefer the visual that is legible at 375 px and needs the least explanation. Use the overview or method diagram only when the method itself is the contribution or no outcome visual exists or reads at that size; then the method section refers to it instead of repeating it.
 - Prefer a teaser whose key content is legible in the 375 px screenshot. A dense multi-panel figure is the last choice for the teaser; if it is used, make it zoomable, and never drop the teaser only because the best visual is dense.
+- On an existing page, a teaser whose text or labels cannot be read in the 375 px slice (the audit prints its shown size against its natural width) is a question for the user, with a suggestion: a clearer visual, or a crop for phones. Polish does not swap it unasked; Audit ranks it P2, "ask the user".
 
 ### Figures
 
