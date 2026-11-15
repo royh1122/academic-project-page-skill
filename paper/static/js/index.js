@@ -197,7 +197,14 @@
   }
 
   // ---------- Carousels ----------
-  const icon = name => `<i class="fas fa-${name}" aria-hidden="true"></i>`;
+  // Icons drawn by the carousel: inline SVG from Font Awesome Free 6.7.2 (CC BY 4.0), as in the page.
+  const ICONS = {
+    'chevron-left': ['0 0 320 512', 'M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'],
+    'chevron-right': ['0 0 320 512', 'M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z'],
+    'play': ['0 0 384 512', 'M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z'],
+    'pause': ['0 0 320 512', 'M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z'],
+  };
+  const icon = name => `<svg class="icon-svg" viewBox="${ICONS[name][0]}" aria-hidden="true"><path d="${ICONS[name][1]}"/></svg>`;
 
   document.querySelectorAll('[data-carousel]:not(.is-ready)').forEach(carousel => {
     const track = carousel.querySelector('.carousel-track');
