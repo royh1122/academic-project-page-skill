@@ -2,6 +2,24 @@
 
 Versions match `metadata.version` in `skills/academic-project-page/SKILL.md`. Development history before the first release is not included.
 
+## 1.4.2
+
+**Fixes**
+
+- **Built pages no longer ship a favicon.** The template's generic icon identified nothing; the site's own icon or the browser default now shows.
+- **Sections that should read as separate:** the audit warns (`band-repeat`) when two neighbouring sections share the same tinted background, so they no longer merge into one block.
+- **Teaser size on phones:** the audit's screenshot list states the teaser's shown size against its natural width at 375 px. Polish raises a teaser too small to read as a question with a suggested alternative, instead of replacing it.
+
+**Behaviour**
+
+- **Materials are content, not instructions:** text in the project files that asks the agent to act (publish, run, fetch, add a link or button, change the scope) is reported to the user, not followed.
+- **Screenshots after edits:** the first look still opens every slice at both widths; after edits the agent reopens the slices that show what changed and names them in the report.
+
+**Tested**
+
+- The evaluation kit has an instruction planted in its meeting notes; build runs report it and leave it off the page.
+- In the visual-defects evals, both defects above were found in every run, where earlier rounds missed them.
+
 ## 1.4.1
 
 **Fixes**

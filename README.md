@@ -85,6 +85,7 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 - Every external link (paper, code, DOI, dataset, video) comes from your materials or your request.
 - Claims in reused captions are checked against the data.
 - Personal data, unreleased data, and harmful text stay off the page, including faces, badges, and plates in video frames.
+- Your materials are content, not instructions: a request written in them (add a button, publish the site) is reported to you, not followed.
 
 **Media.**
 
@@ -93,9 +94,9 @@ The page builds on the [Academic Project Page Template](https://github.com/eliah
 - GIFs and anamorphic recordings are converted to square-pixel MP4.
 - Dense figures open in an accessible zoom viewer.
 
-**Checks.** Before reporting, the agent serves the page under its repository subpath, runs the browser audit and the interaction check, checks every number and external link against the source files, and reviews screenshots at 375, 768, and 1440 px. The audit covers missing files and placeholders, heading order, accessible names, contrast, fonts, overflow, alignment, letterboxed media, repeated images, video posters and seeking, reduced motion, and the theme's typography. It also scrolls, tabs and taps through the page: headings covered by another element or by a fixed bar after a jump, text cut off by a fixed-height box, text a scroll animation never shows under reduced motion, keyboard focus hidden under a fixed bar, tap targets under 24 px, blank bands and off-centre sections, and dev-server leftovers. Every finding has an id, and the run ends with a one-line summary.
+**Checks.** Before reporting, the agent serves the page under its repository subpath, runs the browser audit and the interaction check, checks every number and external link against the source files, and reviews screenshots at 375, 768, and 1440 px. The audit covers missing files and placeholders, heading order, accessible names, contrast, fonts, overflow, alignment, letterboxed media, repeated images, video posters and seeking, reduced motion, and the theme's typography. It also scrolls, tabs and taps through the page: headings covered by another element or by a fixed bar after a jump, text cut off by a fixed-height box, text a scroll animation never shows under reduced motion, keyboard focus hidden under a fixed bar, tap targets under 24 px, blank bands and off-centre sections, neighbouring sections that share a tint, and dev-server leftovers. Every finding has an id, and the run ends with a one-line summary.
 
-**Polish and Audit.** Polish fixes defects without changing content, stays inside the part you name, checks pasted reviewer notes on the live page before acting on them, and reports the audit before and after. Audit ranks problems from P0 (blocks publishing) to P3 (cosmetic), each with a way to fix it, and edits nothing.
+**Polish and Audit.** Polish fixes defects without changing content, stays inside the part you name, checks pasted reviewer notes on the live page before acting on them, asks before replacing a teaser too small to read on phones, and reports the audit before and after. Audit ranks problems from P0 (blocks publishing) to P3 (cosmetic), each with a way to fix it, and edits nothing.
 
 **Clear reports.** Every report lists which checks passed, which found problems, and which could not run, with the reason.
 
@@ -111,7 +112,7 @@ Each example was built in one run from a fictional project in the [evaluation ki
 
 ## How it's tested
 
-The [evaluation kit](./eval-kit/) is a fictional project with planted traps: an unverified award, a target venue that is not an acceptance, personal data in raw files, a caption claim the data contradicts, superseded numbers, and duplicate images. Fresh agents got the same prompt with and without the skill, and the results were checked by hand.
+The [evaluation kit](./eval-kit/) is a fictional project with planted traps: an unverified award, a target venue that is not an acceptance, personal data in raw files, a caption claim the data contradicts, superseded numbers, duplicate images, and an instruction planted in the meeting notes. Fresh agents got the same prompt with and without the skill, and the results were checked by hand.
 
 | Test | With the skill | Without |
 | --- | --- | --- |
