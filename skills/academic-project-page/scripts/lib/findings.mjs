@@ -23,6 +23,7 @@ export const FINDINGS = [
   ['corner-radii', /^Media use different corner radii/],
   ['left-edges', /left edges:/],
   ['numeric-align', /numbers are left-aligned/],
+  ['band-repeat', /^Adjacent sections share a tint/],
   ['overflow', /^Horizontal overflow/],
   ['title-break', /^Title breaks inside/],
   ['title-orphan', /^Title ends with a single word/],

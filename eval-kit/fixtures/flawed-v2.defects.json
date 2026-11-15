@@ -25,8 +25,9 @@
     {
       "id": "V4",
       "defect": "Two tinted bands in a row (Abstract and Video) after a reorder; Method lost its tint, so the alternation is broken and the two bands read as one tall block",
-      "detected_by": "looking: 1440 and 768 px, sections 2-3",
-      "fix": "Make Video a plain section and Method a tinted one again, restoring alternation"
+      "detected_by": "audit (since 1.4.2): warning 'Adjacent sections share a tint' (Abstract and Video) at every width; also visible at 1440 and 768 px, sections 2-3",
+      "fix": "Make Video a plain section and Method a tinted one again, restoring alternation",
+      "audit_id": "band-repeat"
     },
     {
       "id": "V5",

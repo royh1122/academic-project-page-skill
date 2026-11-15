@@ -117,6 +117,31 @@ async (page) => {
         if (edges.size > 1) out.warnings.push(`Section "${name}" starts content at ${edges.size} left edges: ${[...edges].map(([x, what]) => `${x}px ${what}`).join('; ')}`);
       });
 
+      // Sections meant to be separate alternate tinted and plain: two touching top-level sections with the same tint
+      // read as one band. The header, hero and teaser are not content sections; nested sections are not compared.
+      const opaque = c => { const a = parse(c)[3]; return a === undefined || a > .9; };
+      const pageBackground = [document.body, document.documentElement].map(e => getComputedStyle(e).backgroundColor).find(opaque) || 'rgb(255, 255, 255)';
+      const sectionName = s => `"${(s.querySelector('h2, h3')?.textContent.trim().replace(/\s+/g, ' ') || s.id || label(s)).slice(0, 30)}"`;
+      const runs = [];
+      for (const container of [document.body, ...document.querySelectorAll('body > main')]) {
+        let run = [];
+        for (const s of [...container.children].filter(visible)) {
+          const tint = getComputedStyle(s).backgroundColor;
+          const content = s.tagName === 'SECTION' && !s.matches('.hero, .teaser') && !s.querySelector('h1');
+          const tinted = content && opaque(tint) && tint !== pageBackground;
+          const prev = run[run.length - 1];
+          const touches = prev && s.getBoundingClientRect().top - prev.getBoundingClientRect().bottom <= 2;
+          if (tinted && prev && touches && getComputedStyle(prev).backgroundColor === tint) { run.push(s); continue; }
+          if (run.length > 1) runs.push(run);
+          run = tinted ? [s] : [];
+        }
+        if (run.length > 1) runs.push(run);
+      }
+      runs.forEach(run => {
+        const names = run.map(sectionName);
+        out.warnings.push(`Adjacent sections share a tint: ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} have the same background, so they read as one band. Make one of them plain (in the template, remove is-light), so tinted and plain sections alternate.`);
+      });
+
       // Numeric columns read best right-aligned, so digits line up.
       const number = /^[~≈<>≥≤+\-−–\s]*\d[\d.,]*\s*(±\s*[\d.,]+\s*)?(%|×|x|ms|s|m|k|M|B|G|GB|MB|dB|fps|px)?(\s*\([^)]*\))?\*?$/;
       document.querySelectorAll('table').forEach(table => {
